@@ -1,10 +1,10 @@
 package com.robot.hotel.rest;
 
-import com.robot.hotel.dto.RoomsDto;
+import com.robot.hotel.dto.RoomDto;
 import com.robot.hotel.exception.DublicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.WrongDatesException;
-import com.robot.hotel.service.RoomsService;
+import com.robot.hotel.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,19 +18,19 @@ import java.util.Set;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/rooms")
-public class RoomsController {
+public class RoomController {
 
-    private final RoomsService roomsService;
+    private final RoomService roomService;
 
     @GetMapping()
-    public ResponseEntity<List<RoomsDto>> findAll() {
-        return ResponseEntity.ok(roomsService.findAll());
+    public ResponseEntity<List<RoomDto>> findAll() {
+        return ResponseEntity.ok(roomService.findAll());
     }
 
     @PostMapping()
-    public ResponseEntity<Void> save(@RequestBody RoomsDto roomsDto) {
+    public ResponseEntity<Void> save(@RequestBody RoomDto roomsDto) {
         try {
-            roomsService.save(roomsDto);
+            roomService.save(roomsDto);
         } catch (DublicateObjectException | NoSuchElementException e) {
             System.err.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
@@ -40,23 +40,23 @@ public class RoomsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RoomsDto> findById(@PathVariable Long id) {
-        return roomsService.findById(id)
+    public ResponseEntity<RoomDto> findById(@PathVariable Long id) {
+        return roomService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/number/{number}")
-    public ResponseEntity<RoomsDto> findByNumber(@PathVariable String number) {
-        return roomsService.findRoomsByNumber(number)
+    public ResponseEntity<RoomDto> findByNumber(@PathVariable String number) {
+        return roomService.findRoomsByNumber(number)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/type/{type}")
-    public ResponseEntity<List<RoomsDto>> findByType(@PathVariable String type) {
+    public ResponseEntity<List<RoomDto>> findByType(@PathVariable String type) {
         try {
-            return ResponseEntity.ok(roomsService.findByType(type));
+            return ResponseEntity.ok(roomService.findByType(type));
         } catch (NoSuchElementException e) {
             System.err.println(e.getMessage());
             return ResponseEntity.notFound().build();
@@ -64,23 +64,23 @@ public class RoomsController {
     }
 
     @GetMapping("/price>/{sum}")
-    public ResponseEntity<List<RoomsDto>> findByPriceMoreThan(@PathVariable BigDecimal sum) {
-        return ResponseEntity.ok(roomsService.findByPriceMoreThan(sum));
+    public ResponseEntity<List<RoomDto>> findByPriceMoreThan(@PathVariable BigDecimal sum) {
+        return ResponseEntity.ok(roomService.findByPriceMoreThan(sum));
     }
 
     @GetMapping("/price</{sum}")
-    public ResponseEntity<List<RoomsDto>> findByPriceLessThan(@PathVariable BigDecimal sum) {
-        return ResponseEntity.ok(roomsService.findByPriceLessThan(sum));
+    public ResponseEntity<List<RoomDto>> findByPriceLessThan(@PathVariable BigDecimal sum) {
+        return ResponseEntity.ok(roomService.findByPriceLessThan(sum));
     }
 
     @GetMapping("/guestsCount/{guestCount}")
-    public ResponseEntity<List<RoomsDto>> findByGuestsCount(@PathVariable int guestCount) {
-        return ResponseEntity.ok(roomsService.findByGuestsCount(guestCount));
+    public ResponseEntity<List<RoomDto>> findByGuestsCount(@PathVariable int guestCount) {
+        return ResponseEntity.ok(roomService.findByGuestsCount(guestCount));
     }
     @GetMapping("/available/{checkIn}/{checkOut}")
-    public ResponseEntity<Set<RoomsDto>> findAvailableRooms(@PathVariable String checkIn, @PathVariable String checkOut) {
+    public ResponseEntity<Set<RoomDto>> findAvailableRooms(@PathVariable String checkIn, @PathVariable String checkOut) {
         try {
-            return ResponseEntity.ok(roomsService.findAvailableRooms(checkIn, checkOut));
+            return ResponseEntity.ok(roomService.findAvailableRooms(checkIn, checkOut));
         } catch (WrongDatesException e) {
             System.err.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
@@ -88,9 +88,9 @@ public class RoomsController {
     }
 
     @PutMapping("/number/{number}")
-    public ResponseEntity<Void> update(@PathVariable String number, @RequestBody RoomsDto roomsDto) {
+    public ResponseEntity<Void> update(@PathVariable String number, @RequestBody RoomDto roomsDto) {
         try {
-            roomsService.update(number, roomsDto);
+            roomService.update(number, roomsDto);
         } catch (NoSuchElementException e) {
             System.err.println(e.getMessage());
             return ResponseEntity.notFound().build();
@@ -101,7 +101,7 @@ public class RoomsController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         try {
-            roomsService.deleteById(id);
+            roomService.deleteById(id);
         } catch (NotEmptyObjectException | NoSuchElementException e) {
             System.err.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();

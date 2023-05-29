@@ -16,24 +16,24 @@ import java.util.Set;
 @AllArgsConstructor
 @Table
 @Entity
-public class Reservations {
+public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
-    private Rooms room;
+    private Room room;
 
     @Column(nullable = false)
     private LocalDate checkInDate;
     @Column(nullable = false)
-    private LocalDate CheckOutDate;
+    private LocalDate checkOutDate;
 
     @ManyToMany()
     @JoinTable(
             name = "reservations_guests",
             joinColumns = @JoinColumn(name = "reservations_id"),
             inverseJoinColumns = @JoinColumn(name = "guests_id"))
-    private Set<Guests> guests = new HashSet<>();
+    private Set<Guest> guests = new HashSet<>();
 }

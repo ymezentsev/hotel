@@ -1,7 +1,7 @@
 package com.robot.hotel.service;
 
 import com.robot.hotel.domain.RoomType;
-import com.robot.hotel.domain.Rooms;
+import com.robot.hotel.domain.Room;
 import com.robot.hotel.dto.RoomTypeDto;
 import com.robot.hotel.exception.DublicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
@@ -20,12 +20,12 @@ public class RoomTypeService {
 
     private final RoomTypeRepository roomTypeRepository;
 
-    public void save(RoomTypeDto roomTypeDto) throws DublicateObjectException {
+    public RoomType save(RoomTypeDto roomTypeDto) throws DublicateObjectException {
         if (findByType(roomTypeDto.getType()).isPresent()) {
             throw new DublicateObjectException("Such type of room is already exists");
         } else {
             RoomType roomType = buildRoomType(roomTypeDto);
-            roomTypeRepository.save(roomType);
+            return roomTypeRepository.save(roomType);
         }
     }
 
@@ -46,7 +46,7 @@ public class RoomTypeService {
                 .id(roomType.getId())
                 .type(roomType.getType())
                 .rooms(roomType.getRooms().stream()
-                        .map(Rooms::getNumber)
+                        .map(Room::getNumber)
                         .collect(Collectors.toList()))
                 .build();
     }

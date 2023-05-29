@@ -12,11 +12,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoomsDto {
+public class RoomDto {
     private Long id;
     private String number;
     private BigDecimal price;
     private int maxCountOfGuests;
     private String roomType;
-    private List<String> reservation;
+    private List<String> reservations;
 }

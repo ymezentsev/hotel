@@ -1,15 +1,15 @@
 package com.robot.hotel.service;
 
-import com.robot.hotel.domain.Guests;
-import com.robot.hotel.domain.Reservations;
-import com.robot.hotel.domain.Rooms;
-import com.robot.hotel.dto.ReservationsDto;
-import com.robot.hotel.dto.RoomsDto;
+import com.robot.hotel.domain.Guest;
+import com.robot.hotel.domain.Reservation;
+import com.robot.hotel.domain.Room;
+import com.robot.hotel.dto.ReservationDto;
+import com.robot.hotel.dto.RoomDto;
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.WrongDatesException;
-import com.robot.hotel.repository.GuestsRepository;
-import com.robot.hotel.repository.ReservationsRepository;
-import com.robot.hotel.repository.RoomsRepository;
+import com.robot.hotel.repository.GuestRepository;
+import com.robot.hotel.repository.ReservationRepository;
+import com.robot.hotel.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,31 +22,31 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
-    private final ReservationsRepository reservationsRepository;
-    private final RoomsRepository roomsRepository;
-    private final GuestsRepository guestsRepository;
-    private final RoomsService roomsService;
+    private final ReservationRepository reservationRepository;
+    private final RoomRepository roomRepository;
+    private final GuestRepository guestRepository;
+    private final RoomService roomService;
 
-    public List<ReservationsDto> findAll() {
-        return reservationsRepository.findAll().stream()
+    public List<ReservationDto> findAll() {
+        return reservationRepository.findAll().stream()
                 .map(this::buildReservationsDto)
                 .collect(Collectors.toList());
     }
 
-    public Optional<ReservationsDto> findById(Long id) {
-        return reservationsRepository.findById(id).map(this::buildReservationsDto);
+    public Optional<ReservationDto> findById(Long id) {
+        return reservationRepository.findById(id).map(this::buildReservationsDto);
     }
 
-    public List<ReservationsDto> findReservationsByGuestsId(Long guestId) {
-        return reservationsRepository.findReservationsByGuestsId(guestId).stream()
+    public List<ReservationDto> findReservationsByGuestsId(Long guestId) {
+        return reservationRepository.findReservationsByGuestsId(guestId).stream()
                 .map(this::buildReservationsDto)
                 .collect(Collectors.toList());
     }
 
-    public List<ReservationsDto> findReservationsByRoom(String roomNumber) {
-        if (roomsRepository.findRoomsByNumber(roomNumber).isPresent()) {
-            return reservationsRepository
-                    .findReservationsByRoomId(roomsRepository.findRoomsByNumber(roomNumber).get()
+    public List<ReservationDto> findReservationsByRoom(String roomNumber) {
+        if (roomRepository.findRoomsByNumber(roomNumber).isPresent()) {
+            return reservationRepository
+                    .findReservationsByRoomId(roomRepository.findRoomsByNumber(roomNumber).get()
                             .getId()).stream()
                     .map(this::buildReservationsDto)
                     .collect(Collectors.toList());
@@ -55,13 +55,13 @@ public class ReservationService {
         }
     }
 
-    private ReservationsDto buildReservationsDto(Reservations reservation) {
-        Set<Guests> guestsSet = guestsRepository.findGuestsByReservationsId(reservation.getId());
+    private ReservationDto buildReservationsDto(Reservation reservation) {
+        Set<Guest> guestsSet = guestRepository.findGuestsByReservationsId(reservation.getId());
 
-        return ReservationsDto.builder()
+        return ReservationDto.builder()
                 .id(reservation.getId())
                 .checkInDate(reservation.getCheckInDate())
-                .CheckOutDate(reservation.getCheckOutDate())
+                .checkOutDate(reservation.getCheckOutDate())
                 .roomNumber(reservation.getRoom().getNumber())
                 .guests(guestsSet.stream()
                         .map(getGuestsString())
@@ -69,31 +69,31 @@ public class ReservationService {
                 .build();
     }
 
-    private Function<Guests, String> getGuestsString() {
+    private Function<Guest, String> getGuestsString() {
         return guests -> "Id:" + guests.getId().toString()
                 + ", " + guests.getFirstName() + " " + guests.getLastName()
                 + ", " + guests.getTelNumber()
                 + ", " + guests.getEmail();
     }
 
-    public void save(ReservationsDto reservationsDto)
+    public Reservation save(ReservationDto reservationsDto)
             throws NoSuchElementException, GuestsQuantityException, WrongDatesException {
-        Reservations reservation = buildReservations(reservationsDto);
-        reservationsRepository.save(reservation);
+        Reservation reservation = buildReservations(reservationsDto);
+        return reservationRepository.save(reservation);
     }
 
-    private Reservations buildReservations(ReservationsDto reservationsDto)
+    private Reservation buildReservations(ReservationDto reservationsDto)
             throws NoSuchElementException, GuestsQuantityException, WrongDatesException {
         String roomNumber = reservationsDto.getRoomNumber().toLowerCase();
-        Rooms room = null;
+        Room room = null;
 
-        if (roomsRepository.findRoomsByNumber(roomNumber).isPresent()) {
-            room = roomsRepository.findRoomsByNumber(roomNumber).get();
+        if (roomRepository.findRoomsByNumber(roomNumber).isPresent()) {
+            room = roomRepository.findRoomsByNumber(roomNumber).get();
         } else {
             throw new NoSuchElementException("Such room is not exists");
         }
 
-        Set<Guests> guestsHashSet = new HashSet<>();
+        Set<Guest> guestsHashSet = new HashSet<>();
         Set<Long> idGuests = reservationsDto.getGuests().stream().map(Long::parseLong).collect(Collectors.toSet());
 
         if (idGuests.size() == 0) {
@@ -104,8 +104,8 @@ public class ReservationService {
         }
 
         for (Long idGuest : idGuests) {
-            if (guestsRepository.findById(idGuest).isPresent()) {
-                guestsHashSet.add(guestsRepository.findById(idGuest).get());
+            if (guestRepository.findById(idGuest).isPresent()) {
+                guestsHashSet.add(guestRepository.findById(idGuest).get());
             } else {
                 throw new NoSuchElementException("Such guest is not exists");
             }
@@ -125,24 +125,24 @@ public class ReservationService {
             throw new WrongDatesException("Reservation of rooms opens 180 days in advance");
         }
 
-        Set<RoomsDto> availableRooms = roomsService.findAvailableRooms(reservationsDto.getCheckInDate().toString(), reservationsDto.getCheckOutDate().toString());
-        RoomsDto roomsDto = roomsService.buildRoomsDto(room);
+        Set<RoomDto> availableRooms = roomService.findAvailableRooms(reservationsDto.getCheckInDate().toString(), reservationsDto.getCheckOutDate().toString());
+        RoomDto roomsDto = roomService.buildRoomsDto(room);
         if(!availableRooms.contains(roomsDto)){
             throw new WrongDatesException("This room is occupied for your dates");
         }
 
-        return Reservations.builder()
+        return Reservation.builder()
                 .checkInDate(reservationsDto.getCheckInDate())
-                .CheckOutDate(reservationsDto.getCheckOutDate())
+                .checkOutDate(reservationsDto.getCheckOutDate())
                 .room(room)
                 .guests(guestsHashSet)
                 .build();
     }
 
-    public List<ReservationsDto> findCurrentReservations() {
+    public List<ReservationDto> findCurrentReservations() {
         LocalDate now = LocalDate.now();
 
-        return reservationsRepository.findCurrentReservations(now)
+        return reservationRepository.findCurrentReservations(now)
                 .stream().map(this::buildReservationsDto)
                 .toList();
     }
@@ -152,6 +152,6 @@ public class ReservationService {
             throw new NoSuchElementException("Such reservation is not exists");
         }
 
-        reservationsRepository.deleteById(id);
+        reservationRepository.deleteById(id);
     }
 }

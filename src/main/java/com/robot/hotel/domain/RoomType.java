@@ -23,6 +23,6 @@ public class RoomType {
     private String type;
 
     @OneToMany(mappedBy = "roomType")
-    private List<Rooms> rooms;
+    private List<Room> rooms;
 }
 
