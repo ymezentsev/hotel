@@ -1,6 +1,6 @@
 package com.robot.hotel.rest;
 
-import com.robot.hotel.dto.ReservationsDto;
+import com.robot.hotel.dto.ReservationDto;
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.service.ReservationService;
@@ -19,19 +19,19 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @GetMapping()
-    public ResponseEntity<List<ReservationsDto>> findAll() {
+    public ResponseEntity<List<ReservationDto>> findAll() {
         return ResponseEntity.ok(reservationService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReservationsDto> findById(@PathVariable Long id) {
+    public ResponseEntity<ReservationDto> findById(@PathVariable Long id) {
         return reservationService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping()
-    public ResponseEntity<Void> save(@RequestBody ReservationsDto reservationsDto) {
+    public ResponseEntity<Void> save(@RequestBody ReservationDto reservationsDto) {
         try {
             reservationService.save(reservationsDto);
         } catch (NoSuchElementException | GuestsQuantityException | WrongDatesException e) {
@@ -43,12 +43,12 @@ public class ReservationController {
     }
 
     @GetMapping("/guest/{id}")
-    public ResponseEntity<List<ReservationsDto>> findReservationsByGuestsId(@PathVariable Long id) {
+    public ResponseEntity<List<ReservationDto>> findReservationsByGuestsId(@PathVariable Long id) {
         return ResponseEntity.ok(reservationService.findReservationsByGuestsId(id));
     }
 
     @GetMapping("/room/{roomNumber}")
-    public ResponseEntity<List<ReservationsDto>> findReservationsByRoom(@PathVariable String roomNumber) {
+    public ResponseEntity<List<ReservationDto>> findReservationsByRoom(@PathVariable String roomNumber) {
         try {
             return ResponseEntity.ok(reservationService.findReservationsByRoom(roomNumber));
         } catch (NoSuchElementException e) {
@@ -58,7 +58,7 @@ public class ReservationController {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<List<ReservationsDto>> findCurrentReservations() {
+    public ResponseEntity<List<ReservationDto>> findCurrentReservations() {
         return ResponseEntity.ok(reservationService.findCurrentReservations());
     }
 

@@ -12,10 +12,10 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservationsDto {
+public class ReservationDto {
     private Long id;
     private String roomNumber;
     private LocalDate checkInDate;
-    private LocalDate CheckOutDate;
+    private LocalDate checkOutDate;
     private Set<String> guests;
 }

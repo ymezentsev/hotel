@@ -11,7 +11,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GuestsDto {
+public class GuestDto {
     private Long id;
     private String firstName;
     private String lastName;

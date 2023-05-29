@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table
-public class Rooms {
+public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,5 +34,5 @@ public class Rooms {
     private RoomType roomType;
 
     @OneToMany(mappedBy = "room")
-    private List<Reservations> reservations;
+    private List<Reservation> reservations;
 }

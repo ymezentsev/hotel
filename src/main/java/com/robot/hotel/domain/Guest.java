@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table
 @Entity
-public class Guests {
+public class Guest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,5 +33,5 @@ public class Guests {
 
     @ManyToMany(mappedBy = "guests")
     @JsonIgnore
-    private Set<Reservations> reservations = new HashSet<>();
+    private Set<Reservation> reservations = new HashSet<>();
 }

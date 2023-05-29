@@ -1,12 +1,12 @@
 package com.robot.hotel.service;
 
-import com.robot.hotel.domain.Guests;
-import com.robot.hotel.domain.Reservations;
-import com.robot.hotel.dto.GuestsDto;
+import com.robot.hotel.domain.Guest;
+import com.robot.hotel.domain.Reservation;
+import com.robot.hotel.dto.GuestDto;
 import com.robot.hotel.exception.DublicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
-import com.robot.hotel.repository.GuestsRepository;
-import com.robot.hotel.repository.ReservationsRepository;
+import com.robot.hotel.repository.GuestRepository;
+import com.robot.hotel.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,27 +18,27 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class GuestsService {
-    private final GuestsRepository guestsRepository;
-    private final ReservationsRepository reservationsRepository;
+public class GuestService {
+    private final GuestRepository guestRepository;
+    private final ReservationRepository reservationRepository;
 
 
-    public List<GuestsDto> findAll() {
-        return guestsRepository.findAll().stream()
+    public List<GuestDto> findAll() {
+        return guestRepository.findAll().stream()
                 .map(this::buildGuestsDto)
                 .collect(Collectors.toList());
     }
 
-    public List<GuestsDto> findReservation(Long id) {
-        return guestsRepository.findGuestsByReservationsId(id).stream()
+    public List<GuestDto> findGuestByReservation(Long id) {
+        return guestRepository.findGuestsByReservationsId(id).stream()
                 .map(this::buildGuestsDto)
                 .collect(Collectors.toList());
     }
 
-    private GuestsDto buildGuestsDto(Guests guest) {
-        List<Reservations> reservationsByGuestsId = reservationsRepository.findReservationsByGuestsId(guest.getId());
+    private GuestDto buildGuestsDto(Guest guest) {
+        List<Reservation> reservationsByGuestsId = reservationRepository.findReservationsByGuestsId(guest.getId());
 
-        return GuestsDto.builder()
+        return GuestDto.builder()
                 .id(guest.getId())
                 .firstName(guest.getFirstName())
                 .lastName(guest.getLastName())
@@ -51,14 +51,14 @@ public class GuestsService {
                 .build();
     }
 
-    private Function<Reservations, String> getReservationsString() {
+    private Function<Reservation, String> getReservationsString() {
         return reservations -> "Id:" + reservations.getId().toString()
                 + ", room:" + reservations.getRoom().getNumber()
                 + ", " + reservations.getCheckInDate().toString() + " - "
                 + reservations.getCheckOutDate().toString();
     }
 
-    public void save(GuestsDto guestsDto) throws DublicateObjectException {
+    public Guest save(GuestDto guestsDto) throws DublicateObjectException {
         if (findByEmail(guestsDto.getEmail()).isPresent()) {
             throw new DublicateObjectException("Guest with such email is already exists");
         }
@@ -69,12 +69,12 @@ public class GuestsService {
             throw new DublicateObjectException("Guest with such passport is already exists");
         }
 
-        Guests guest = buildGuest(guestsDto);
-        guestsRepository.save(guest);
+        Guest guest = buildGuest(guestsDto);
+        return guestRepository.save(guest);
     }
 
-    private Guests buildGuest(GuestsDto guestsDto) {
-        return Guests.builder()
+    private Guest buildGuest(GuestDto guestsDto) {
+        return Guest.builder()
                 .firstName(guestsDto.getFirstName().toLowerCase())
                 .lastName(guestsDto.getLastName().toLowerCase())
                 .telNumber(guestsDto.getTelNumber())
@@ -83,31 +83,31 @@ public class GuestsService {
                 .build();
     }
 
-    public Optional<GuestsDto> findById(Long id) {
-        return guestsRepository.findById(id).map(this::buildGuestsDto);
+    public Optional<GuestDto> findById(Long id) {
+        return guestRepository.findById(id).map(this::buildGuestsDto);
     }
 
-    public Optional<GuestsDto> findByEmail(String email) {
-        return guestsRepository.findGuestsByEmail(email.toLowerCase()).map(this::buildGuestsDto);
+    public Optional<GuestDto> findByEmail(String email) {
+        return guestRepository.findGuestsByEmail(email.toLowerCase()).map(this::buildGuestsDto);
     }
 
-    public Optional<GuestsDto> findByTelNumber(String telNumber) {
-        return guestsRepository.findGuestsByTelNumber(telNumber.toLowerCase()).map(this::buildGuestsDto);
+    public Optional<GuestDto> findByTelNumber(String telNumber) {
+        return guestRepository.findGuestsByTelNumber(telNumber.toLowerCase()).map(this::buildGuestsDto);
     }
 
-    public Optional<GuestsDto> findByPassportSerialNumber(String passportSerialNumber) {
-        return guestsRepository.findGuestsByPassportSerialNumber(passportSerialNumber.toLowerCase()).map(this::buildGuestsDto);
+    public Optional<GuestDto> findByPassportSerialNumber(String passportSerialNumber) {
+        return guestRepository.findGuestsByPassportSerialNumber(passportSerialNumber.toLowerCase()).map(this::buildGuestsDto);
     }
 
-    public List<GuestsDto> findByLastName(String lastName) {
-        return guestsRepository.findGuestsByLastName(lastName).stream()
+    public List<GuestDto> findByLastName(String lastName) {
+        return guestRepository.findGuestsByLastName(lastName).stream()
                 .map(this::buildGuestsDto)
                 .collect(Collectors.toList());
     }
 
-    public void update(Long id, GuestsDto newGuestsDto) throws NoSuchElementException, DublicateObjectException {
-        Optional<GuestsDto> optionalGuestsDto = findById(id);
-        GuestsDto guestsDto = null;
+    public void update(Long id, GuestDto newGuestsDto) throws NoSuchElementException, DublicateObjectException {
+        Optional<GuestDto> optionalGuestsDto = findById(id);
+        GuestDto guestsDto = null;
 
         if (optionalGuestsDto.isEmpty()) {
             throw new NoSuchElementException("Such guest is not exists");
@@ -140,9 +140,9 @@ public class GuestsService {
             guestsDto.setPassportSerialNumber(newGuestsDto.getPassportSerialNumber());
         }
 
-        Guests guest = buildGuest(guestsDto);
+        Guest guest = buildGuest(guestsDto);
         guest.setId(id);
-        guestsRepository.save(guest);
+        guestRepository.save(guest);
     }
 
     public void deleteById(Long id) throws NoSuchElementException, NotEmptyObjectException {
@@ -150,8 +150,8 @@ public class GuestsService {
             throw new NoSuchElementException("Such guest is not exists");
         }
 
-        if (reservationsRepository.findReservationsByGuestsId(id).isEmpty()) {
-            guestsRepository.deleteById(id);
+        if (reservationRepository.findReservationsByGuestsId(id).isEmpty()) {
+            guestRepository.deleteById(id);
         } else {
             throw new NotEmptyObjectException("This guest has reservations. At first delete reservations.");
         }
