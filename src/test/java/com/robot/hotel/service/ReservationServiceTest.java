@@ -72,7 +72,7 @@ class ReservationServiceTest {
     }
 
     @Test
-    void shouldSave() throws WrongDatesException, GuestsQuantityException {
+    void shouldSave() {
         when(reservationRepository.save(any(Reservation.class))).thenReturn(getReservation1());
         when(roomRepository.findRoomsByNumber(anyString())).thenReturn(Optional.ofNullable(getRoom1()));
 
@@ -87,7 +87,7 @@ class ReservationServiceTest {
     }
 
     @Test
-    void shouldSaveWithWrongDatesException() throws WrongDatesException, GuestsQuantityException {
+    void shouldSaveWithWrongDatesException() {
         when(reservationRepository.save(any(Reservation.class))).thenReturn(getReservation1());
         when(roomRepository.findRoomsByNumber(anyString())).thenReturn(Optional.ofNullable(getRoom1()));
 
@@ -100,13 +100,13 @@ class ReservationServiceTest {
     }
 
     @Test
-    void shouldSaveWithNoSuchElementException() throws WrongDatesException, GuestsQuantityException {
+    void shouldSaveWithNoSuchElementException() {
         when(reservationRepository.save(any(Reservation.class))).thenReturn(getReservation1());
         assertThrows(NoSuchElementException.class, () -> reservationService.save(getReservationDto1()));
     }
 
     @Test
-    void shouldSaveWithGuestsQuantityException() throws WrongDatesException, GuestsQuantityException {
+    void shouldSaveWithGuestsQuantityException() {
         when(reservationRepository.save(any(Reservation.class))).thenReturn(getReservation1());
         when(roomRepository.findRoomsByNumber(anyString())).thenReturn(Optional.ofNullable(getRoom1()));
         assertThrows(GuestsQuantityException.class, () -> reservationService.save(getReservationDto1()));

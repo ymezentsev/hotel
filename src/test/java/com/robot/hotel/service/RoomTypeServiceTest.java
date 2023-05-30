@@ -1,7 +1,7 @@
 package com.robot.hotel.service;
 
 import com.robot.hotel.domain.RoomType;
-import com.robot.hotel.exception.DublicateObjectException;
+import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.repository.RoomTypeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +27,16 @@ class RoomTypeServiceTest {
     private RoomTypeRepository roomTypeRepository;
 
     @Test
-    void shouldSave() throws DublicateObjectException {
+    void shouldSave() {
         when(roomTypeRepository.save(any(RoomType.class))).thenReturn(getRoomType1());
         assertEquals(getRoomType1(), roomTypeService.save(getRoomTypeDto1()));
     }
 
     @Test
-    void shouldSaveWithException() throws DublicateObjectException {
+    void shouldSaveWithException() {
         when(roomTypeRepository.save(any(RoomType.class))).thenReturn(getRoomType1());
         when(roomTypeRepository.findRoomTypeByType(anyString())).thenReturn(Optional.ofNullable(getRoomType1()));
-        assertThrows(DublicateObjectException.class, () -> roomTypeService.save(getRoomTypeDto1()));
+        assertThrows(DuplicateObjectException.class, () -> roomTypeService.save(getRoomTypeDto1()));
     }
 
     @Test

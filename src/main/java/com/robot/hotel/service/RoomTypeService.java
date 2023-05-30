@@ -3,7 +3,7 @@ package com.robot.hotel.service;
 import com.robot.hotel.domain.RoomType;
 import com.robot.hotel.domain.Room;
 import com.robot.hotel.dto.RoomTypeDto;
-import com.robot.hotel.exception.DublicateObjectException;
+import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.repository.RoomTypeRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +20,9 @@ public class RoomTypeService {
 
     private final RoomTypeRepository roomTypeRepository;
 
-    public RoomType save(RoomTypeDto roomTypeDto) throws DublicateObjectException {
+    public RoomType save(RoomTypeDto roomTypeDto) {
         if (findByType(roomTypeDto.getType()).isPresent()) {
-            throw new DublicateObjectException("Such type of room is already exists");
+            throw new DuplicateObjectException("Such type of room is already exists");
         } else {
             RoomType roomType = buildRoomType(roomTypeDto);
             return roomTypeRepository.save(roomType);
@@ -59,13 +59,13 @@ public class RoomTypeService {
         return roomTypeRepository.findById(id).map(RoomTypeService::buildRoomTypeDto);
     }
 
-    public void update(Long id, RoomTypeDto roomTypeDto) throws NoSuchElementException, DublicateObjectException {
+    public void update(Long id, RoomTypeDto roomTypeDto) {
         if (roomTypeRepository.findById(id).isEmpty()) {
             throw new NoSuchElementException("Type of room with id " + id + " is not exists");
         }
 
         if (findByType(roomTypeDto.getType()).isPresent()) {
-            throw new DublicateObjectException("Such type of room is already exists");
+            throw new DuplicateObjectException("Such type of room is already exists");
         }
 
         RoomType roomType = roomTypeRepository.findById(id).get();
@@ -73,7 +73,7 @@ public class RoomTypeService {
         roomTypeRepository.save(roomType);
     }
 
-    public void deleteById(Long id) throws NotEmptyObjectException, NoSuchElementException {
+    public void deleteById(Long id) {
         if (roomTypeRepository.findById(id).orElseThrow().getRooms().isEmpty()) {
             roomTypeRepository.deleteById(id);
         } else {

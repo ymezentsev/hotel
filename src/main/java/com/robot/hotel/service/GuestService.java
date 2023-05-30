@@ -3,7 +3,7 @@ package com.robot.hotel.service;
 import com.robot.hotel.domain.Guest;
 import com.robot.hotel.domain.Reservation;
 import com.robot.hotel.dto.GuestDto;
-import com.robot.hotel.exception.DublicateObjectException;
+import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.repository.GuestRepository;
 import com.robot.hotel.repository.ReservationRepository;
@@ -58,15 +58,15 @@ public class GuestService {
                 + reservations.getCheckOutDate().toString();
     }
 
-    public Guest save(GuestDto guestsDto) throws DublicateObjectException {
+    public Guest save(GuestDto guestsDto) {
         if (findByEmail(guestsDto.getEmail()).isPresent()) {
-            throw new DublicateObjectException("Guest with such email is already exists");
+            throw new DuplicateObjectException("Guest with such email is already exists");
         }
         if (findByTelNumber(guestsDto.getTelNumber()).isPresent()) {
-            throw new DublicateObjectException("Guest with such tel. number is already exists");
+            throw new DuplicateObjectException("Guest with such tel.number is already exists");
         }
         if (findByPassportSerialNumber(guestsDto.getPassportSerialNumber()).isPresent()) {
-            throw new DublicateObjectException("Guest with such passport is already exists");
+            throw new DuplicateObjectException("Guest with such passport is already exists");
         }
 
         Guest guest = buildGuest(guestsDto);
@@ -100,12 +100,12 @@ public class GuestService {
     }
 
     public List<GuestDto> findByLastName(String lastName) {
-        return guestRepository.findGuestsByLastName(lastName).stream()
+        return guestRepository.findGuestsByLastName(lastName.toLowerCase()).stream()
                 .map(this::buildGuestsDto)
                 .collect(Collectors.toList());
     }
 
-    public void update(Long id, GuestDto newGuestsDto) throws NoSuchElementException, DublicateObjectException {
+    public void update(Long id, GuestDto newGuestsDto) {
         Optional<GuestDto> optionalGuestsDto = findById(id);
         GuestDto guestsDto = null;
 
@@ -123,19 +123,19 @@ public class GuestService {
         }
         if (newGuestsDto.getTelNumber() != null) {
             if (findByTelNumber(newGuestsDto.getTelNumber()).isPresent()) {
-                throw new DublicateObjectException("Guest with such tel. number is already exists");
+                throw new DuplicateObjectException("Guest with such tel.number is already exists");
             }
             guestsDto.setTelNumber(newGuestsDto.getTelNumber());
         }
         if (newGuestsDto.getEmail() != null) {
             if (findByEmail(newGuestsDto.getEmail()).isPresent()) {
-                throw new DublicateObjectException("Guest with such email is already exists");
+                throw new DuplicateObjectException("Guest with such email is already exists");
             }
             guestsDto.setEmail(newGuestsDto.getEmail());
         }
         if (newGuestsDto.getPassportSerialNumber() != null) {
             if (findByPassportSerialNumber(newGuestsDto.getPassportSerialNumber()).isPresent()) {
-                throw new DublicateObjectException("Guest with such passport is already exists");
+                throw new DuplicateObjectException("Guest with such passport is already exists");
             }
             guestsDto.setPassportSerialNumber(newGuestsDto.getPassportSerialNumber());
         }
@@ -145,7 +145,7 @@ public class GuestService {
         guestRepository.save(guest);
     }
 
-    public void deleteById(Long id) throws NoSuchElementException, NotEmptyObjectException {
+    public void deleteById(Long id) {
         if(findById(id).isEmpty()){
             throw new NoSuchElementException("Such guest is not exists");
         }

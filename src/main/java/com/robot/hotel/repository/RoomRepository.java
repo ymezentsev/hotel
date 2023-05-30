@@ -16,10 +16,10 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     List<Room> findRoomsByRoomTypeId(Long id);
 
     @Query(nativeQuery = true, value = "select * from room where price >= ?1")
-    List<Room> findRoomsByPriceMoreThan(BigDecimal sum);
+    List<Room> findRoomsByPriceMoreThanOrEqual(BigDecimal sum);
 
     @Query(nativeQuery = true, value = "select * from room where price <= ?1")
-    List<Room> findRoomsByPriceLessThan(BigDecimal sum);
+    List<Room> findRoomsByPriceLessThanOrEqual(BigDecimal sum);
     @Query(nativeQuery = true, value = "select * from room where max_count_of_guests >= ?1")
     List<Room> findRoomsByGuestsCount(int guestsCount);
 

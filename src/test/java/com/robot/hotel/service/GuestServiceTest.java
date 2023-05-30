@@ -1,7 +1,7 @@
 package com.robot.hotel.service;
 
 import com.robot.hotel.domain.Guest;
-import com.robot.hotel.exception.DublicateObjectException;
+import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.repository.GuestRepository;
 import com.robot.hotel.repository.ReservationRepository;
 import org.junit.jupiter.api.Test;
@@ -42,16 +42,16 @@ class GuestServiceTest {
     }
 
     @Test
-    void shouldSave() throws DublicateObjectException {
+    void shouldSave() {
         when(guestRepository.save(any(Guest.class))).thenReturn(getGuest1());
         assertEquals(getGuest1(), guestService.save(getGuestDto1()));
     }
 
     @Test
-    void shouldSaveWithExceptionDublicateObject() throws DublicateObjectException {
+    void shouldSaveWithExceptionDuplicateObject() {
         when(guestRepository.save(any(Guest.class))).thenReturn(getGuest1());
         when(guestRepository.findGuestsByTelNumber(anyString())).thenReturn(Optional.ofNullable(getGuest1()));
-        assertThrows(DublicateObjectException.class, () -> guestService.save(getGuestDto1()));
+        assertThrows(DuplicateObjectException.class, () -> guestService.save(getGuestDto1()));
     }
 
     @Test

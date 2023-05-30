@@ -76,14 +76,12 @@ public class ReservationService {
                 + ", " + guests.getEmail();
     }
 
-    public Reservation save(ReservationDto reservationsDto)
-            throws NoSuchElementException, GuestsQuantityException, WrongDatesException {
+    public Reservation save(ReservationDto reservationsDto){
         Reservation reservation = buildReservations(reservationsDto);
         return reservationRepository.save(reservation);
     }
 
-    private Reservation buildReservations(ReservationDto reservationsDto)
-            throws NoSuchElementException, GuestsQuantityException, WrongDatesException {
+    private Reservation buildReservations(ReservationDto reservationsDto){
         String roomNumber = reservationsDto.getRoomNumber().toLowerCase();
         Room room = null;
 
@@ -147,7 +145,7 @@ public class ReservationService {
                 .toList();
     }
 
-    public void deleteById(Long id) throws NoSuchElementException {
+    public void deleteById(Long id) {
         if(findById(id).isEmpty()){
             throw new NoSuchElementException("Such reservation is not exists");
         }
