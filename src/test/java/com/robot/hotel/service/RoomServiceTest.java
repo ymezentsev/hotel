@@ -1,7 +1,7 @@
 package com.robot.hotel.service;
 
 import com.robot.hotel.domain.Room;
-import com.robot.hotel.exception.DublicateObjectException;
+import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.repository.ReservationRepository;
 import com.robot.hotel.repository.RoomTypeRepository;
 import com.robot.hotel.repository.RoomRepository;
@@ -40,23 +40,23 @@ class RoomServiceTest {
     }
 
     @Test
-    void shouldSave() throws DublicateObjectException {
+    void shouldSave() {
         when(roomRepository.save(any(Room.class))).thenReturn(getRoom1());
         when(roomTypeRepository.findRoomTypeByType(anyString())).thenReturn(Optional.ofNullable(getRoomType1()));
         assertEquals(getRoom1(), roomService.save(getRoomDto1()));
     }
 
     @Test
-    void shouldSaveWithExceptionNoSuchElement() throws NoSuchElementException {
+    void shouldSaveWithExceptionNoSuchElement() {
         when(roomRepository.save(any(Room.class))).thenReturn(getRoom1());
         assertThrows(NoSuchElementException.class, () -> roomService.save(getRoomDto1()));
     }
 
     @Test
-    void shouldSaveWithExceptionDublicateObject() throws DublicateObjectException {
+    void shouldSaveWithExceptionDuplicateObject() {
         when(roomRepository.save(any(Room.class))).thenReturn(getRoom1());
         when(roomRepository.findRoomsByNumber(anyString())).thenReturn(Optional.ofNullable(getRoom1()));
-        assertThrows(DublicateObjectException.class, () -> roomService.save(getRoomDto1()));
+        assertThrows(DuplicateObjectException.class, () -> roomService.save(getRoomDto1()));
     }
 
     @Test
@@ -85,15 +85,15 @@ class RoomServiceTest {
     }
 
     @Test
-    void shouldFindByPriceMoreThan() {
-        when(roomRepository.findRoomsByPriceMoreThan(any(BigDecimal.class))).thenReturn(List.of(getRoom1()));
-        assertEquals(1, roomService.findByPriceMoreThan(ROOM_PRICE).size());
+    void shouldFindByPriceMoreThanOrEqual() {
+        when(roomRepository.findRoomsByPriceMoreThanOrEqual(any(BigDecimal.class))).thenReturn(List.of(getRoom1()));
+        assertEquals(1, roomService.findByPriceMoreThanOrEqual(ROOM_PRICE).size());
     }
 
     @Test
-    void shouldFindByPriceLessThan() {
-        when(roomRepository.findRoomsByPriceLessThan(any(BigDecimal.class))).thenReturn(List.of(getRoom1()));
-        assertEquals(1, roomService.findByPriceLessThan(ROOM_PRICE).size());
+    void shouldFindByPriceLessThanOrEqual() {
+        when(roomRepository.findRoomsByPriceLessThanOrEqual(any(BigDecimal.class))).thenReturn(List.of(getRoom1()));
+        assertEquals(1, roomService.findByPriceLessThanOrEqual(ROOM_PRICE).size());
     }
 
     @Test

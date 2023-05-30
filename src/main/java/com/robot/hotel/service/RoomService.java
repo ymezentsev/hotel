@@ -5,7 +5,7 @@ import com.robot.hotel.domain.Reservation;
 import com.robot.hotel.domain.RoomType;
 import com.robot.hotel.domain.Room;
 import com.robot.hotel.dto.RoomDto;
-import com.robot.hotel.exception.DublicateObjectException;
+import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.repository.ReservationRepository;
@@ -53,16 +53,16 @@ public class RoomService {
                 + reservations.getCheckOutDate().toString();
     }
 
-    public Room save(RoomDto roomsDto) throws DublicateObjectException, NoSuchElementException {
+    public Room save(RoomDto roomsDto) {
         if (findRoomsByNumber(roomsDto.getNumber()).isPresent()) {
-            throw new DublicateObjectException("Such room is already exists");
+            throw new DuplicateObjectException("Such room is already exists");
         } else {
             Room room = buildRoom(roomsDto);
             return roomRepository.save(room);
         }
     }
 
-    private Room buildRoom(RoomDto roomsDto) throws NoSuchElementException {
+    private Room buildRoom(RoomDto roomsDto) {
         String type = roomsDto.getRoomType().toLowerCase();
         RoomType roomType = null;
 
@@ -87,7 +87,7 @@ public class RoomService {
         return roomRepository.findRoomsByNumber(number.toLowerCase()).map(this::buildRoomsDto);
     }
 
-    public List<RoomDto> findByType(String type) throws NoSuchElementException {
+    public List<RoomDto> findByType(String type) {
         Long id = roomTypeRepository.findRoomTypeByType(type).orElseThrow().getId();
         if (id == null) {
             throw new NoSuchElementException("Room type is not exists");
@@ -98,14 +98,14 @@ public class RoomService {
                 .collect(Collectors.toList());
     }
 
-    public List<RoomDto> findByPriceMoreThan(BigDecimal sum) {
-        return roomRepository.findRoomsByPriceMoreThan(sum).stream()
+    public List<RoomDto> findByPriceMoreThanOrEqual(BigDecimal sum) {
+        return roomRepository.findRoomsByPriceMoreThanOrEqual(sum).stream()
                 .map(this::buildRoomsDto)
                 .collect(Collectors.toList());
     }
 
-    public List<RoomDto> findByPriceLessThan(BigDecimal sum) {
-        return roomRepository.findRoomsByPriceLessThan(sum).stream()
+    public List<RoomDto> findByPriceLessThanOrEqual(BigDecimal sum) {
+        return roomRepository.findRoomsByPriceLessThanOrEqual(sum).stream()
                 .map(this::buildRoomsDto)
                 .collect(Collectors.toList());
     }
@@ -116,7 +116,7 @@ public class RoomService {
                 .collect(Collectors.toList());
     }
 
-    public Set<RoomDto> findAvailableRooms(String checkInString, String checkOutString) throws WrongDatesException {
+    public Set<RoomDto> findAvailableRooms(String checkInString, String checkOutString) {
         LocalDate checkIn = LocalDate.parse(checkInString);
         LocalDate checkOut = LocalDate.parse(checkOutString);
         if (ChronoUnit.DAYS.between(checkIn, checkOut) <= 0) {
@@ -139,7 +139,7 @@ public class RoomService {
         return availableRoomsDto;
     }
 
-    public void update(String number, RoomDto roomsDto) throws NoSuchElementException {
+    public void update(String number, RoomDto roomsDto) {
         Optional<RoomDto> optionalRoom = findRoomsByNumber(number.toLowerCase());
         Long id;
         RoomDto roomDto = null;
@@ -166,7 +166,7 @@ public class RoomService {
         roomRepository.save(room);
     }
 
-    public void deleteById(Long id) throws NoSuchElementException, NotEmptyObjectException {
+    public void deleteById(Long id) {
         if (roomRepository.findById(id).orElseThrow().getReservations().isEmpty()) {
             roomRepository.deleteById(id);
         } else {

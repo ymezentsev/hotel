@@ -1,6 +1,6 @@
 package com.robot.hotel.exception;
 
-public class WrongDatesException extends Exception {
+public class WrongDatesException extends RuntimeException {
     public WrongDatesException(String message) {
         super(message);
     }

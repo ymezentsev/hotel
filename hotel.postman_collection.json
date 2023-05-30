@@ -1,0 +1,410 @@
+{
+	"info": {
+		"_postman_id": "1989236a-250f-4a35-90a5-c23f63269145",
+		"name": "hotel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "27450546"
+	},
+	"item": [
+		{
+			"name": "rooms",
+			"item": [
+				{
+					"name": "find all rooms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/rooms"
+					},
+					"response": []
+				},
+				{
+					"name": "add new room",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"id\": 1,\r\n        \"number\": \"406\",\r\n        \"price\": 300.00,\r\n        \"maxCountOfGuests\": 4,\r\n        \"roomType\": \"standart\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/rooms"
+					},
+					"response": []
+				},
+				{
+					"name": "find room by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/rooms/6"
+					},
+					"response": []
+				},
+				{
+					"name": "update room",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"price\": 1800.00,\r\n        \"maxCountOfGuests\": 4,\r\n        \"roomType\": \"LUX\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/rooms/number/403"
+					},
+					"response": []
+				},
+				{
+					"name": "find room by number",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/rooms/number/401"
+					},
+					"response": []
+				},
+				{
+					"name": "delete room by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{url}}/rooms/2"
+					},
+					"response": []
+				},
+				{
+					"name": "find rooms by type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/rooms/type/lux"
+					},
+					"response": []
+				},
+				{
+					"name": "find available rooms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/rooms/type/lux"
+					},
+					"response": []
+				},
+				{
+					"name": "find rooms with price more than",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/rooms/price>/500"
+					},
+					"response": []
+				},
+				{
+					"name": "find rooms with price less than",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "find rooms by guests count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/rooms/guestsCount/3"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "room type",
+			"item": [
+				{
+					"name": "find all room types",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/roomTypes"
+					},
+					"response": []
+				},
+				{
+					"name": "add new room type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n   \"type\": \"lux\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/roomTypes"
+					},
+					"response": []
+				},
+				{
+					"name": "find room type by type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/roomTypes/type/lux"
+					},
+					"response": []
+				},
+				{
+					"name": "find room type by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/roomTypes/2"
+					},
+					"response": []
+				},
+				{
+					"name": "update room type",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n   \"type\": \"standart1\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/roomTypes/3"
+					},
+					"response": []
+				},
+				{
+					"name": "delete room type",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{url}}/roomTypes/6"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "guests",
+			"item": [
+				{
+					"name": "find all guests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/guests"
+					},
+					"response": []
+				},
+				{
+					"name": "add new guest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"number\": \"406\",\r\n        \"price\": 300.00,\r\n        \"maxCountOfGuests\": 4,\r\n        \"roomType\": \"standart\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/guests"
+					},
+					"response": []
+				},
+				{
+					"name": "update guest's info",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"firstName\": \"Andriy\",\r\n        \"lastName\": \"Fedorov\",\r\n        \"telNumber\": \"05633434\",\r\n        \"email\": \"sergserg@gmail.com\",\r\n        \"passportSerialNumber\": \"bd325643\"\r\n\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/guests/11"
+					},
+					"response": []
+				},
+				{
+					"name": "delete guest",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{url}}/guests/10"
+					},
+					"response": []
+				},
+				{
+					"name": "find guest by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/guests/10"
+					},
+					"response": []
+				},
+				{
+					"name": "find guest by reservations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/guests/10"
+					},
+					"response": []
+				},
+				{
+					"name": "find guest by email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/guests/email/"
+					},
+					"response": []
+				},
+				{
+					"name": "find guest by tel number",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/guests/telNumber/0964563457"
+					},
+					"response": []
+				},
+				{
+					"name": "find guest by passport",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/guests/passport/df340977"
+					},
+					"response": []
+				},
+				{
+					"name": "find guest by lastName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/guests/lastName/Sergeev"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "reservations",
+			"item": [
+				{
+					"name": "find all reservations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/reservations"
+					},
+					"response": []
+				},
+				{
+					"name": "add new reservation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"roomNumber\": \"102\",\r\n        \"checkInDate\": \"2023-06-12\",\r\n        \"checkOutDate\": \"2023-06-15\",\r\n        \"guests\": [1]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/reservations"
+					},
+					"response": []
+				},
+				{
+					"name": "find reservations by guest id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/reservations/guest/2"
+					},
+					"response": []
+				},
+				{
+					"name": "find reservations by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/reservations/2"
+					},
+					"response": []
+				},
+				{
+					"name": "delete reservations by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{url}}/reservations/2"
+					},
+					"response": []
+				},
+				{
+					"name": "find reservations by room number",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/reservations/guest/2"
+					},
+					"response": []
+				},
+				{
+					"name": "find current reservations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/reservations/guest/2"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

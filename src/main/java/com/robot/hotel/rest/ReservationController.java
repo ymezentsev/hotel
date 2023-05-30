@@ -1,16 +1,12 @@
 package com.robot.hotel.rest;
 
 import com.robot.hotel.dto.ReservationDto;
-import com.robot.hotel.exception.GuestsQuantityException;
-import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.service.ReservationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,57 +15,37 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @GetMapping()
-    public ResponseEntity<List<ReservationDto>> findAll() {
-        return ResponseEntity.ok(reservationService.findAll());
+    public List<ReservationDto> findAll() {
+        return reservationService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReservationDto> findById(@PathVariable Long id) {
-        return reservationService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Optional<ReservationDto> findById(@PathVariable Long id) {
+        return Optional.of(reservationService.findById(id).orElseThrow());
     }
 
     @PostMapping()
-    public ResponseEntity<Void> save(@RequestBody ReservationDto reservationsDto) {
-        try {
-            reservationService.save(reservationsDto);
-        } catch (NoSuchElementException | GuestsQuantityException | WrongDatesException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
-        }
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public void save(@RequestBody ReservationDto reservationsDto) {
+        reservationService.save(reservationsDto);
     }
 
     @GetMapping("/guest/{id}")
-    public ResponseEntity<List<ReservationDto>> findReservationsByGuestsId(@PathVariable Long id) {
-        return ResponseEntity.ok(reservationService.findReservationsByGuestsId(id));
+    public List<ReservationDto> findReservationsByGuestsId(@PathVariable Long id) {
+        return reservationService.findReservationsByGuestsId(id);
     }
 
     @GetMapping("/room/{roomNumber}")
-    public ResponseEntity<List<ReservationDto>> findReservationsByRoom(@PathVariable String roomNumber) {
-        try {
-            return ResponseEntity.ok(reservationService.findReservationsByRoom(roomNumber));
-        } catch (NoSuchElementException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    public List<ReservationDto> findReservationsByRoom(@PathVariable String roomNumber) {
+        return reservationService.findReservationsByRoom(roomNumber);
     }
 
     @GetMapping("/current")
-    public ResponseEntity<List<ReservationDto>> findCurrentReservations() {
-        return ResponseEntity.ok(reservationService.findCurrentReservations());
+    public List<ReservationDto> findCurrentReservations() {
+        return reservationService.findCurrentReservations();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        try {
-            reservationService.deleteById(id);
-        } catch (NoSuchElementException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
-        }
-        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    public void deleteById(@PathVariable Long id) {
+        reservationService.deleteById(id);
     }
 }
