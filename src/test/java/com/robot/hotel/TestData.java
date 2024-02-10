@@ -1,13 +1,13 @@
 package com.robot.hotel;
 
-import com.robot.hotel.domain.Guest;
-import com.robot.hotel.domain.Reservation;
-import com.robot.hotel.domain.RoomType;
-import com.robot.hotel.domain.Room;
-import com.robot.hotel.dto.GuestDto;
-import com.robot.hotel.dto.ReservationDto;
-import com.robot.hotel.dto.RoomTypeDto;
-import com.robot.hotel.dto.RoomDto;
+import com.robot.hotel.guest.Guest;
+import com.robot.hotel.reservation.Reservation;
+import com.robot.hotel.roomtype.RoomType;
+import com.robot.hotel.room.Room;
+import com.robot.hotel.guest.GuestDto;
+import com.robot.hotel.reservation.ReservationDto;
+import com.robot.hotel.roomtype.RoomTypeDto;
+import com.robot.hotel.room.RoomDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

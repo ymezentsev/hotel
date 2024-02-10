@@ -1,15 +1,13 @@
-package com.robot.hotel.service;
+package com.robot.hotel.reservation;
 
-import com.robot.hotel.domain.Guest;
-import com.robot.hotel.domain.Reservation;
-import com.robot.hotel.domain.Room;
-import com.robot.hotel.dto.ReservationDto;
-import com.robot.hotel.dto.RoomDto;
+import com.robot.hotel.guest.Guest;
+import com.robot.hotel.room.Room;
+import com.robot.hotel.room.RoomDto;
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.WrongDatesException;
-import com.robot.hotel.repository.GuestRepository;
-import com.robot.hotel.repository.ReservationRepository;
-import com.robot.hotel.repository.RoomRepository;
+import com.robot.hotel.guest.GuestRepository;
+import com.robot.hotel.room.RoomRepository;
+import com.robot.hotel.room.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

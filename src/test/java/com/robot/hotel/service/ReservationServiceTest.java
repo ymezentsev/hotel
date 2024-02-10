@@ -1,13 +1,15 @@
 package com.robot.hotel.service;
 
-import com.robot.hotel.domain.Room;
-import com.robot.hotel.domain.Reservation;
-import com.robot.hotel.dto.ReservationDto;
+import com.robot.hotel.room.Room;
+import com.robot.hotel.reservation.Reservation;
+import com.robot.hotel.reservation.ReservationDto;
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.WrongDatesException;
-import com.robot.hotel.repository.GuestRepository;
-import com.robot.hotel.repository.ReservationRepository;
-import com.robot.hotel.repository.RoomRepository;
+import com.robot.hotel.guest.GuestRepository;
+import com.robot.hotel.reservation.ReservationRepository;
+import com.robot.hotel.room.RoomRepository;
+import com.robot.hotel.reservation.ReservationService;
+import com.robot.hotel.room.RoomService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

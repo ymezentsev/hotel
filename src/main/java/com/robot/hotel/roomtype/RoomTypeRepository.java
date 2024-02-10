@@ -1,6 +1,5 @@
-package com.robot.hotel.repository;
+package com.robot.hotel.roomtype;
 
-import com.robot.hotel.domain.RoomType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
