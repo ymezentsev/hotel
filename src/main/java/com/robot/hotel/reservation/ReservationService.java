@@ -1,7 +1,7 @@
 package com.robot.hotel.reservation;
 
-import com.robot.hotel.guest.Guest;
-import com.robot.hotel.room.Room;
+import com.robot.hotel.guest.GuestEntity;
+import com.robot.hotel.room.RoomEntity;
 import com.robot.hotel.room.RoomDto;
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.WrongDatesException;
@@ -53,49 +53,49 @@ public class ReservationService {
         }
     }
 
-    private ReservationDto buildReservationsDto(Reservation reservation) {
-        Set<Guest> guestsSet = guestRepository.findGuestsByReservationsId(reservation.getId());
+    private ReservationDto buildReservationsDto(ReservationEntity reservationEntity) {
+        Set<GuestEntity> guestsSet = guestRepository.findGuestsByReservationsId(reservationEntity.getId());
 
         return ReservationDto.builder()
-                .id(reservation.getId())
-                .checkInDate(reservation.getCheckInDate())
-                .checkOutDate(reservation.getCheckOutDate())
-                .roomNumber(reservation.getRoom().getNumber())
+                .id(reservationEntity.getId())
+                .checkInDate(reservationEntity.getCheckInDate())
+                .checkOutDate(reservationEntity.getCheckOutDate())
+                .roomNumber(reservationEntity.getRoomEntity().getNumber())
                 .guests(guestsSet.stream()
                         .map(getGuestsString())
                         .collect(Collectors.toSet()))
                 .build();
     }
 
-    private Function<Guest, String> getGuestsString() {
+    private Function<GuestEntity, String> getGuestsString() {
         return guests -> "Id:" + guests.getId().toString()
                 + ", " + guests.getFirstName() + " " + guests.getLastName()
                 + ", " + guests.getTelNumber()
                 + ", " + guests.getEmail();
     }
 
-    public Reservation save(ReservationDto reservationsDto){
-        Reservation reservation = buildReservations(reservationsDto);
-        return reservationRepository.save(reservation);
+    public ReservationEntity save(ReservationDto reservationsDto){
+        ReservationEntity reservationEntity = buildReservations(reservationsDto);
+        return reservationRepository.save(reservationEntity);
     }
 
-    private Reservation buildReservations(ReservationDto reservationsDto){
+    private ReservationEntity buildReservations(ReservationDto reservationsDto){
         String roomNumber = reservationsDto.getRoomNumber().toLowerCase();
-        Room room = null;
+        RoomEntity roomEntity = null;
 
         if (roomRepository.findRoomsByNumber(roomNumber).isPresent()) {
-            room = roomRepository.findRoomsByNumber(roomNumber).get();
+            roomEntity = roomRepository.findRoomsByNumber(roomNumber).get();
         } else {
             throw new NoSuchElementException("Such room is not exists");
         }
 
-        Set<Guest> guestsHashSet = new HashSet<>();
+        Set<GuestEntity> guestsHashSet = new HashSet<>();
         Set<Long> idGuests = reservationsDto.getGuests().stream().map(Long::parseLong).collect(Collectors.toSet());
 
         if (idGuests.size() == 0) {
             throw new GuestsQuantityException("You must enter a guest ID");
         }
-        if (idGuests.size() > room.getMaxCountOfGuests()) {
+        if (idGuests.size() > roomEntity.getMaxCountOfGuests()) {
             throw new GuestsQuantityException("The number of guests exceeds the maximum allowed in this room");
         }
 
@@ -122,16 +122,16 @@ public class ReservationService {
         }
 
         Set<RoomDto> availableRooms = roomService.findAvailableRooms(reservationsDto.getCheckInDate().toString(), reservationsDto.getCheckOutDate().toString());
-        RoomDto roomsDto = roomService.buildRoomsDto(room);
+        RoomDto roomsDto = roomService.buildRoomsDto(roomEntity);
         if(!availableRooms.contains(roomsDto)){
             throw new WrongDatesException("This room is occupied for your dates");
         }
 
-        return Reservation.builder()
+        return ReservationEntity.builder()
                 .checkInDate(reservationsDto.getCheckInDate())
                 .checkOutDate(reservationsDto.getCheckOutDate())
-                .room(room)
-                .guests(guestsHashSet)
+                .roomEntity(roomEntity)
+                .guestEntities(guestsHashSet)
                 .build();
     }
 

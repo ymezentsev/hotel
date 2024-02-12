@@ -1,7 +1,7 @@
 package com.robot.hotel.room;
 
-import com.robot.hotel.reservation.Reservation;
-import com.robot.hotel.roomtype.RoomType;
+import com.robot.hotel.reservation.ReservationEntity;
+import com.robot.hotel.roomtype.RoomTypeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table
-public class Room {
+public class RoomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,8 +33,8 @@ public class Room {
 
     @ManyToOne
     @JoinColumn(name = "room_type_id", nullable = false)
-    private RoomType roomType;
+    private RoomTypeEntity roomTypeEntity;
 
     @OneToMany(mappedBy = "room")
-    private List<Reservation> reservations;
+    private List<ReservationEntity> reservationEntities;
 }

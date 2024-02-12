@@ -1,6 +1,6 @@
 package com.robot.hotel.service;
 
-import com.robot.hotel.room.Room;
+import com.robot.hotel.room.RoomEntity;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.roomtype.RoomTypeRepository;
@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = RoomService.class)
-class RoomServiceTest {
+class RoomEntityServiceTest {
 
     @Autowired
     private RoomService roomService;
@@ -42,20 +42,20 @@ class RoomServiceTest {
 
     @Test
     void shouldSave() {
-        when(roomRepository.save(any(Room.class))).thenReturn(getRoom1());
+        when(roomRepository.save(any(RoomEntity.class))).thenReturn(getRoom1());
         when(roomTypeRepository.findRoomTypeByType(anyString())).thenReturn(Optional.ofNullable(getRoomType1()));
         assertEquals(getRoom1(), roomService.save(getRoomDto1()));
     }
 
     @Test
     void shouldSaveWithExceptionNoSuchElement() {
-        when(roomRepository.save(any(Room.class))).thenReturn(getRoom1());
+        when(roomRepository.save(any(RoomEntity.class))).thenReturn(getRoom1());
         assertThrows(NoSuchElementException.class, () -> roomService.save(getRoomDto1()));
     }
 
     @Test
     void shouldSaveWithExceptionDuplicateObject() {
-        when(roomRepository.save(any(Room.class))).thenReturn(getRoom1());
+        when(roomRepository.save(any(RoomEntity.class))).thenReturn(getRoom1());
         when(roomRepository.findRoomsByNumber(anyString())).thenReturn(Optional.ofNullable(getRoom1()));
         assertThrows(DuplicateObjectException.class, () -> roomService.save(getRoomDto1()));
     }

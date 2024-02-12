@@ -1,6 +1,6 @@
 package com.robot.hotel.service;
 
-import com.robot.hotel.roomtype.RoomType;
+import com.robot.hotel.roomtype.RoomTypeEntity;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.roomtype.RoomTypeRepository;
 import com.robot.hotel.roomtype.RoomTypeService;
@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = RoomTypeService.class)
-class RoomTypeServiceTest {
+class RoomEntityTypeEntityServiceTest {
 
     @Autowired
     private RoomTypeService roomTypeService;
@@ -29,13 +29,13 @@ class RoomTypeServiceTest {
 
     @Test
     void shouldSave() {
-        when(roomTypeRepository.save(any(RoomType.class))).thenReturn(getRoomType1());
+        when(roomTypeRepository.save(any(RoomTypeEntity.class))).thenReturn(getRoomType1());
         assertEquals(getRoomType1(), roomTypeService.save(getRoomTypeDto1()));
     }
 
     @Test
     void shouldSaveWithException() {
-        when(roomTypeRepository.save(any(RoomType.class))).thenReturn(getRoomType1());
+        when(roomTypeRepository.save(any(RoomTypeEntity.class))).thenReturn(getRoomType1());
         when(roomTypeRepository.findRoomTypeByType(anyString())).thenReturn(Optional.ofNullable(getRoomType1()));
         assertThrows(DuplicateObjectException.class, () -> roomTypeService.save(getRoomTypeDto1()));
     }

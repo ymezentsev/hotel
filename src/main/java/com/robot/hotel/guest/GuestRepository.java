@@ -1,6 +1,5 @@
 package com.robot.hotel.guest;
 
-import com.robot.hotel.guest.Guest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,10 +8,10 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface GuestRepository extends JpaRepository<Guest, Long> {
-    Optional<Guest> findGuestsByEmail(String email);
-    Optional<Guest> findGuestsByTelNumber(String telNumber);
-    Optional<Guest> findGuestsByPassportSerialNumber(String passportSerialNumber);
-    List<Guest> findGuestsByLastName(String lastName);
-    Set<Guest> findGuestsByReservationsId(Long reservationId);
+public interface GuestRepository extends JpaRepository<GuestEntity, Long> {
+    Optional<GuestEntity> findGuestsByEmail(String email);
+    Optional<GuestEntity> findGuestsByTelNumber(String telNumber);
+    Optional<GuestEntity> findGuestsByPassportSerialNumber(String passportSerialNumber);
+    List<GuestEntity> findGuestsByLastName(String lastName);
+    Set<GuestEntity> findGuestsByReservationsId(Long reservationId);
 }
