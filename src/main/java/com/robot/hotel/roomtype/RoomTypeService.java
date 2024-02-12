@@ -1,6 +1,6 @@
 package com.robot.hotel.roomtype;
 
-import com.robot.hotel.room.Room;
+import com.robot.hotel.room.RoomEntity;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import lombok.RequiredArgsConstructor;
@@ -17,17 +17,17 @@ public class RoomTypeService {
 
     private final RoomTypeRepository roomTypeRepository;
 
-    public RoomType save(RoomTypeDto roomTypeDto) {
+    public RoomTypeEntity save(RoomTypeDto roomTypeDto) {
         if (findByType(roomTypeDto.getType()).isPresent()) {
             throw new DuplicateObjectException("Such type of room is already exists");
         } else {
-            RoomType roomType = buildRoomType(roomTypeDto);
+            RoomTypeEntity roomType = buildRoomType(roomTypeDto);
             return roomTypeRepository.save(roomType);
         }
     }
 
-    private RoomType buildRoomType(RoomTypeDto roomTypeDto) {
-        return RoomType.builder()
+    private RoomTypeEntity buildRoomType(RoomTypeDto roomTypeDto) {
+        return RoomTypeEntity.builder()
                 .type(roomTypeDto.getType().toLowerCase())
                 .build();
     }
@@ -38,12 +38,12 @@ public class RoomTypeService {
                 .collect(Collectors.toList());
     }
 
-    private static RoomTypeDto buildRoomTypeDto(RoomType roomType) {
+    private static RoomTypeDto buildRoomTypeDto(RoomTypeEntity roomType) {
         return RoomTypeDto.builder()
                 .id(roomType.getId())
                 .type(roomType.getType())
-                .rooms(roomType.getRooms().stream()
-                        .map(Room::getNumber)
+                .rooms(roomType.getRoomEntities().stream()
+                        .map(RoomEntity::getNumber)
                         .collect(Collectors.toList()))
                 .build();
     }
@@ -65,13 +65,13 @@ public class RoomTypeService {
             throw new DuplicateObjectException("Such type of room is already exists");
         }
 
-        RoomType roomType = roomTypeRepository.findById(id).get();
-        roomType.setType(roomTypeDto.getType().toLowerCase());
-        roomTypeRepository.save(roomType);
+        RoomTypeEntity roomTypeEntity = roomTypeRepository.findById(id).get();
+        roomTypeEntity.setType(roomTypeDto.getType().toLowerCase());
+        roomTypeRepository.save(roomTypeEntity);
     }
 
     public void deleteById(Long id) {
-        if (roomTypeRepository.findById(id).orElseThrow().getRooms().isEmpty()) {
+        if (roomTypeRepository.findById(id).orElseThrow().getRoomEntities().isEmpty()) {
             roomTypeRepository.deleteById(id);
         } else {
             throw new NotEmptyObjectException("There are rooms of this type at hotel. At first delete rooms.");

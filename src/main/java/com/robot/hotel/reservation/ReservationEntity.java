@@ -1,7 +1,7 @@
 package com.robot.hotel.reservation;
 
-import com.robot.hotel.room.Room;
-import com.robot.hotel.guest.Guest;
+import com.robot.hotel.room.RoomEntity;
+import com.robot.hotel.guest.GuestEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,14 +18,14 @@ import java.util.Set;
 @AllArgsConstructor
 @Table
 @Entity
-public class Reservation {
+public class ReservationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
+    private RoomEntity roomEntity;
 
     @Column(nullable = false)
     private LocalDate checkInDate;
@@ -37,5 +37,5 @@ public class Reservation {
             name = "reservations_guests",
             joinColumns = @JoinColumn(name = "reservations_id"),
             inverseJoinColumns = @JoinColumn(name = "guests_id"))
-    private Set<Guest> guests = new HashSet<>();
+    private Set<GuestEntity> guestEntities = new HashSet<>();
 }

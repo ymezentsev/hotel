@@ -1,6 +1,6 @@
 package com.robot.hotel.service;
 
-import com.robot.hotel.guest.Guest;
+import com.robot.hotel.guest.GuestEntity;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.guest.GuestService;
 import com.robot.hotel.guest.GuestRepository;
@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = GuestService.class)
-class GuestServiceTest {
+class GuestEntityServiceTest {
 
     @Autowired
     private GuestService guestService;
@@ -44,13 +44,13 @@ class GuestServiceTest {
 
     @Test
     void shouldSave() {
-        when(guestRepository.save(any(Guest.class))).thenReturn(getGuest1());
+        when(guestRepository.save(any(GuestEntity.class))).thenReturn(getGuest1());
         assertEquals(getGuest1(), guestService.save(getGuestDto1()));
     }
 
     @Test
     void shouldSaveWithExceptionDuplicateObject() {
-        when(guestRepository.save(any(Guest.class))).thenReturn(getGuest1());
+        when(guestRepository.save(any(GuestEntity.class))).thenReturn(getGuest1());
         when(guestRepository.findGuestsByTelNumber(anyString())).thenReturn(Optional.ofNullable(getGuest1()));
         assertThrows(DuplicateObjectException.class, () -> guestService.save(getGuestDto1()));
     }

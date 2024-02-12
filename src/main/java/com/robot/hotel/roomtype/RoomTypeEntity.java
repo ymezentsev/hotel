@@ -1,6 +1,6 @@
 package com.robot.hotel.roomtype;
 
-import com.robot.hotel.room.Room;
+import com.robot.hotel.room.RoomEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table
-public class RoomType {
+public class RoomTypeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +24,6 @@ public class RoomType {
     private String type;
 
     @OneToMany(mappedBy = "roomType")
-    private List<Room> rooms;
+    private List<RoomEntity> roomEntities;
 }
 

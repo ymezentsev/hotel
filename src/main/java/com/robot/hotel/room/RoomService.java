@@ -1,8 +1,8 @@
 package com.robot.hotel.room;
 
 
-import com.robot.hotel.reservation.Reservation;
-import com.robot.hotel.roomtype.RoomType;
+import com.robot.hotel.reservation.ReservationEntity;
+import com.robot.hotel.roomtype.RoomTypeEntity;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.WrongDatesException;
@@ -31,48 +31,48 @@ public class RoomService {
                 .collect(Collectors.toList());
     }
 
-    RoomDto buildRoomsDto(Room room) {
+    public RoomDto buildRoomsDto(RoomEntity roomEntity) {
         return RoomDto.builder()
-                .id(room.getId())
-                .number(room.getNumber())
-                .price(room.getPrice())
-                .maxCountOfGuests(room.getMaxCountOfGuests())
-                .roomType(room.getRoomType().getType())
-                .reservations(room.getReservations().stream()
+                .id(roomEntity.getId())
+                .number(roomEntity.getNumber())
+                .price(roomEntity.getPrice())
+                .maxCountOfGuests(roomEntity.getMaxCountOfGuests())
+                .roomType(roomEntity.getRoomTypeEntity().getType())
+                .reservations(roomEntity.getReservationEntities().stream()
                         .map(getReservationsString())
                         .collect(Collectors.toList()))
                 .build();
     }
 
-    private static Function<Reservation, String> getReservationsString() {
+    private static Function<ReservationEntity, String> getReservationsString() {
         return reservations -> "Id:" + reservations.getId().toString()
                 + ", " + reservations.getCheckInDate().toString() + " - "
                 + reservations.getCheckOutDate().toString();
     }
 
-    public Room save(RoomDto roomsDto) {
+    public RoomEntity save(RoomDto roomsDto) {
         if (findRoomsByNumber(roomsDto.getNumber()).isPresent()) {
             throw new DuplicateObjectException("Such room is already exists");
         } else {
-            Room room = buildRoom(roomsDto);
-            return roomRepository.save(room);
+            RoomEntity roomEntity = buildRoom(roomsDto);
+            return roomRepository.save(roomEntity);
         }
     }
 
-    private Room buildRoom(RoomDto roomsDto) {
+    private RoomEntity buildRoom(RoomDto roomsDto) {
         String type = roomsDto.getRoomType().toLowerCase();
-        RoomType roomType = null;
+        RoomTypeEntity roomTypeEntity = null;
 
         if (roomTypeRepository.findRoomTypeByType(type).isPresent()) {
-            roomType = roomTypeRepository.findRoomTypeByType(type).get();
+            roomTypeEntity = roomTypeRepository.findRoomTypeByType(type).get();
         } else {
             throw new NoSuchElementException("Such type of room is not exists");
         }
-        return Room.builder()
+        return RoomEntity.builder()
                 .number(roomsDto.getNumber().toLowerCase())
                 .price(roomsDto.getPrice())
                 .maxCountOfGuests(roomsDto.getMaxCountOfGuests())
-                .roomType(roomType)
+                .roomTypeEntity(roomTypeEntity)
                 .build();
     }
 
@@ -124,8 +124,8 @@ public class RoomService {
                 .stream().map(id -> findById(id).get())
                 .toList();
 
-        List<Room> roomsWithoutReservations = roomRepository.findAll()
-                .stream().filter(room -> room.getReservations().size() == 0)
+        List<RoomEntity> roomsWithoutReservations = roomRepository.findAll()
+                .stream().filter(room -> room.getReservationEntities().size() == 0)
                 .toList();
         List<RoomDto> roomsDtoWithoutReservations = roomsWithoutReservations.stream()
                 .map(this::buildRoomsDto).toList();
@@ -158,13 +158,13 @@ public class RoomService {
             roomDto.setRoomType(roomsDto.getRoomType());
         }
 
-        Room room = buildRoom(roomDto);
-        room.setId(id);
-        roomRepository.save(room);
+        RoomEntity roomEntity = buildRoom(roomDto);
+        roomEntity.setId(id);
+        roomRepository.save(roomEntity);
     }
 
     public void deleteById(Long id) {
-        if (roomRepository.findById(id).orElseThrow().getReservations().isEmpty()) {
+        if (roomRepository.findById(id).orElseThrow().getReservationEntities().isEmpty()) {
             roomRepository.deleteById(id);
         } else {
             throw new NotEmptyObjectException("There are reservations for this room. At first delete reservations.");
