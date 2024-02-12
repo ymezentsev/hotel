@@ -1,9 +1,9 @@
 package com.robot.hotel;
 
-import com.robot.hotel.guest.Guest;
-import com.robot.hotel.reservation.Reservation;
-import com.robot.hotel.roomtype.RoomType;
-import com.robot.hotel.room.Room;
+import com.robot.hotel.guest.GuestEntity;
+import com.robot.hotel.reservation.ReservationEntity;
+import com.robot.hotel.roomtype.RoomTypeEntity;
+import com.robot.hotel.room.RoomEntity;
 import com.robot.hotel.guest.GuestDto;
 import com.robot.hotel.reservation.ReservationDto;
 import com.robot.hotel.roomtype.RoomTypeDto;
@@ -26,10 +26,10 @@ public class TestData {
     public static final String ROOM_NUMBER1 = "101";
     public static final BigDecimal ROOM_PRICE = BigDecimal.valueOf(1000);
     public static final int ROOM_MAX_COUNT_OF_GUESTS = 2;
-    public static RoomType ROOM_TYPE1 = getRoomType1();
+    public static RoomTypeEntity ROOM_TYPE1 = getRoomType1();
     public static final Long ROOM_ID2 = 2L;
     public static final String ROOM_NUMBER2 = "102";
-    public static RoomType ROOM_TYPE2 = getRoomType2();
+    public static RoomTypeEntity ROOM_TYPE2 = getRoomType2();
 
 
 
@@ -48,41 +48,41 @@ public class TestData {
 
 
 
-    public static RoomType getRoomType1() {
-        return RoomType.builder()
+    public static RoomTypeEntity getRoomType1() {
+        return RoomTypeEntity.builder()
                 .id(ROOM_TYPE_ID1)
                 .type(ROOM_TYPE_TYPE1)
-                .rooms(List.of(getRoom1()))
+                .roomEntities(List.of(getRoom1()))
                 .build();
     }
 
-    public static RoomType getRoomType2() {
-        return RoomType.builder()
+    public static RoomTypeEntity getRoomType2() {
+        return RoomTypeEntity.builder()
                 .id(ROOM_TYPE_ID2)
                 .type(ROOM_TYPE_TYPE2)
-                .rooms(List.of(getRoom2()))
+                .roomEntities(List.of(getRoom2()))
                 .build();
     }
 
-    public static Room getRoom1() {
-        return Room.builder()
+    public static RoomEntity getRoom1() {
+        return RoomEntity.builder()
                 .id(ROOM_ID1)
                 .number(ROOM_NUMBER1)
                 .price(ROOM_PRICE)
                 .maxCountOfGuests(ROOM_MAX_COUNT_OF_GUESTS)
-                .roomType(ROOM_TYPE1)
-                .reservations(List.of())
+                .roomTypeEntity(ROOM_TYPE1)
+                .reservationEntities(List.of())
                 .build();
     }
 
-    public static Room getRoom2() {
-        return Room.builder()
+    public static RoomEntity getRoom2() {
+        return RoomEntity.builder()
                 .id(ROOM_ID2)
                 .number(ROOM_NUMBER2)
                 .price(ROOM_PRICE)
                 .maxCountOfGuests(ROOM_MAX_COUNT_OF_GUESTS)
-                .roomType(ROOM_TYPE2)
-                .reservations(List.of())
+                .roomTypeEntity(ROOM_TYPE2)
+                .reservationEntities(List.of())
                 .build();
     }
 
@@ -105,15 +105,15 @@ public class TestData {
                 .build();
     }
 
-    public static Guest getGuest1() {
-        return Guest.builder()
+    public static GuestEntity getGuest1() {
+        return GuestEntity.builder()
                 .id(GUEST_ID1)
                 .firstName(GUEST_FIRST_NAME)
                 .lastName(GUEST_LAST_NAME)
                 .telNumber(GUEST_TEL_NUMBER)
                 .email(GUEST_EMAIL)
                 .passportSerialNumber(GUEST_PASSPORT_SERIAL_NUMBER)
-                .reservations(Set.of(getReservation1()))
+                .reservationEntities(Set.of(getReservation1()))
                 .build();
     }
 
@@ -128,10 +128,10 @@ public class TestData {
                 .build();
     }
 
-    public static Reservation getReservation1() {
-        return Reservation.builder()
+    public static ReservationEntity getReservation1() {
+        return ReservationEntity.builder()
                 .id(RESERVATION_ID1)
-                .room(getRoom1())
+                .roomEntity(getRoom1())
                 .checkInDate(RESERVATION_CHECK_IN_DATE)
                 .checkOutDate(RESERVATION_CHECK_OUT_DATE)
                 .build();
