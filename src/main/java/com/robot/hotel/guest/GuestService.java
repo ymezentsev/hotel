@@ -1,6 +1,6 @@
 package com.robot.hotel.guest;
 
-import com.robot.hotel.reservation.Reservation;
+import com.robot.hotel.reservation.ReservationEntity;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.reservation.ReservationRepository;
@@ -32,30 +32,30 @@ public class GuestService {
                 .collect(Collectors.toList());
     }
 
-    private GuestDto buildGuestsDto(Guest guest) {
-        List<Reservation> reservationsByGuestsId = reservationRepository.findReservationsByGuestsId(guest.getId());
+    private GuestDto buildGuestsDto(GuestEntity guestEntity) {
+        List<ReservationEntity> reservationsByGuestsId = reservationRepository.findReservationsByGuestsId(guestEntity.getId());
 
         return GuestDto.builder()
-                .id(guest.getId())
-                .firstName(guest.getFirstName())
-                .lastName(guest.getLastName())
-                .telNumber(guest.getTelNumber())
-                .email(guest.getEmail())
-                .passportSerialNumber(guest.getPassportSerialNumber())
+                .id(guestEntity.getId())
+                .firstName(guestEntity.getFirstName())
+                .lastName(guestEntity.getLastName())
+                .telNumber(guestEntity.getTelNumber())
+                .email(guestEntity.getEmail())
+                .passportSerialNumber(guestEntity.getPassportSerialNumber())
                 .reservations(reservationsByGuestsId.stream()
                         .map(getReservationsString())
                         .collect(Collectors.toSet()))
                 .build();
     }
 
-    private Function<Reservation, String> getReservationsString() {
+    private Function<ReservationEntity, String> getReservationsString() {
         return reservations -> "Id:" + reservations.getId().toString()
-                + ", room:" + reservations.getRoom().getNumber()
+                + ", room:" + reservations.getRoomEntity().getNumber()
                 + ", " + reservations.getCheckInDate().toString() + " - "
                 + reservations.getCheckOutDate().toString();
     }
 
-    public Guest save(GuestDto guestsDto) {
+    public GuestEntity save(GuestDto guestsDto) {
         if (findByEmail(guestsDto.getEmail()).isPresent()) {
             throw new DuplicateObjectException("Guest with such email is already exists");
         }
@@ -66,12 +66,12 @@ public class GuestService {
             throw new DuplicateObjectException("Guest with such passport is already exists");
         }
 
-        Guest guest = buildGuest(guestsDto);
-        return guestRepository.save(guest);
+        GuestEntity guestEntity = buildGuest(guestsDto);
+        return guestRepository.save(guestEntity);
     }
 
-    private Guest buildGuest(GuestDto guestsDto) {
-        return Guest.builder()
+    private GuestEntity buildGuest(GuestDto guestsDto) {
+        return GuestEntity.builder()
                 .firstName(guestsDto.getFirstName().toLowerCase())
                 .lastName(guestsDto.getLastName().toLowerCase())
                 .telNumber(guestsDto.getTelNumber())
@@ -137,9 +137,9 @@ public class GuestService {
             guestsDto.setPassportSerialNumber(newGuestsDto.getPassportSerialNumber());
         }
 
-        Guest guest = buildGuest(guestsDto);
-        guest.setId(id);
-        guestRepository.save(guest);
+        GuestEntity guestEntity = buildGuest(guestsDto);
+        guestEntity.setId(id);
+        guestRepository.save(guestEntity);
     }
 
     public void deleteById(Long id) {

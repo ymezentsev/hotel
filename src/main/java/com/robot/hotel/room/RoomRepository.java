@@ -9,17 +9,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RoomRepository extends JpaRepository<Room, Long> {
+public interface RoomRepository extends JpaRepository<RoomEntity, Long> {
 
-    Optional<Room> findRoomsByNumber(String number);
-    List<Room> findRoomsByRoomTypeId(Long id);
+    Optional<RoomEntity> findRoomsByNumber(String number);
+    List<RoomEntity> findRoomsByRoomTypeId(Long id);
 
     @Query(nativeQuery = true, value = "select * from room where price >= ?1")
-    List<Room> findRoomsByPriceMoreThanOrEqual(BigDecimal sum);
+    List<RoomEntity> findRoomsByPriceMoreThanOrEqual(BigDecimal sum);
 
     @Query(nativeQuery = true, value = "select * from room where price <= ?1")
-    List<Room> findRoomsByPriceLessThanOrEqual(BigDecimal sum);
+    List<RoomEntity> findRoomsByPriceLessThanOrEqual(BigDecimal sum);
     @Query(nativeQuery = true, value = "select * from room where max_count_of_guests >= ?1")
-    List<Room> findRoomsByGuestsCount(int guestsCount);
+    List<RoomEntity> findRoomsByGuestsCount(int guestsCount);
 
 }

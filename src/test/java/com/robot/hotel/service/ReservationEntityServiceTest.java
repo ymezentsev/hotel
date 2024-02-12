@@ -1,7 +1,7 @@
 package com.robot.hotel.service;
 
-import com.robot.hotel.room.Room;
-import com.robot.hotel.reservation.Reservation;
+import com.robot.hotel.room.RoomEntity;
+import com.robot.hotel.reservation.ReservationEntity;
 import com.robot.hotel.reservation.ReservationDto;
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.WrongDatesException;
@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = ReservationService.class)
-class ReservationServiceTest {
+class ReservationEntityServiceTest {
 
     @Autowired
     private ReservationService reservationService;
@@ -75,7 +75,7 @@ class ReservationServiceTest {
 
     @Test
     void shouldSave() {
-        when(reservationRepository.save(any(Reservation.class))).thenReturn(getReservation1());
+        when(reservationRepository.save(any(ReservationEntity.class))).thenReturn(getReservation1());
         when(roomRepository.findRoomsByNumber(anyString())).thenReturn(Optional.ofNullable(getRoom1()));
 
         ReservationDto newReservationsDto = getReservationDto1();
@@ -83,14 +83,14 @@ class ReservationServiceTest {
 
         when(guestRepository.findById(anyLong())).thenReturn(Optional.ofNullable(getGuest1()));
         when(roomService.findAvailableRooms(anyString(), anyString())).thenReturn(Set.of(getRoomDto1()));
-        when(roomService.buildRoomsDto(any(Room.class))).thenReturn(getRoomDto1());
+        when(roomService.buildRoomsDto(any(RoomEntity.class))).thenReturn(getRoomDto1());
 
         assertEquals(getReservation1(), reservationService.save(newReservationsDto));
     }
 
     @Test
     void shouldSaveWithWrongDatesException() {
-        when(reservationRepository.save(any(Reservation.class))).thenReturn(getReservation1());
+        when(reservationRepository.save(any(ReservationEntity.class))).thenReturn(getReservation1());
         when(roomRepository.findRoomsByNumber(anyString())).thenReturn(Optional.ofNullable(getRoom1()));
 
         ReservationDto newReservationsDto = getReservationDto1();
@@ -103,13 +103,13 @@ class ReservationServiceTest {
 
     @Test
     void shouldSaveWithNoSuchElementException() {
-        when(reservationRepository.save(any(Reservation.class))).thenReturn(getReservation1());
+        when(reservationRepository.save(any(ReservationEntity.class))).thenReturn(getReservation1());
         assertThrows(NoSuchElementException.class, () -> reservationService.save(getReservationDto1()));
     }
 
     @Test
     void shouldSaveWithGuestsQuantityException() {
-        when(reservationRepository.save(any(Reservation.class))).thenReturn(getReservation1());
+        when(reservationRepository.save(any(ReservationEntity.class))).thenReturn(getReservation1());
         when(roomRepository.findRoomsByNumber(anyString())).thenReturn(Optional.ofNullable(getRoom1()));
         assertThrows(GuestsQuantityException.class, () -> reservationService.save(getReservationDto1()));
     }

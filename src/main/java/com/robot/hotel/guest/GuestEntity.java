@@ -1,7 +1,7 @@
 package com.robot.hotel.guest;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.robot.hotel.reservation.Reservation;
+import com.robot.hotel.reservation.ReservationEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table
 @Entity
-public class Guest {
+public class GuestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,5 +34,5 @@ public class Guest {
 
     @ManyToMany(mappedBy = "guests")
     @JsonIgnore
-    private Set<Reservation> reservations = new HashSet<>();
+    private Set<ReservationEntity> reservationEntities = new HashSet<>();
 }

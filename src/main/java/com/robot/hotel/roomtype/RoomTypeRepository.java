@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface RoomTypeRepository extends JpaRepository<RoomType, Long> {
-    Optional<RoomType> findRoomTypeByType(String type);
+public interface RoomTypeRepository extends JpaRepository<RoomTypeEntity, Long> {
+    Optional<RoomTypeEntity> findRoomTypeByType(String type);
 }
