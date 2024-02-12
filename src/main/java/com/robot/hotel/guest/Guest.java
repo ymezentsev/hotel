@@ -1,6 +1,7 @@
-package com.robot.hotel.domain;
+package com.robot.hotel.guest;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.robot.hotel.reservation.Reservation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.robot.hotel.rest;
+package com.robot.hotel.config;
 
 import com.robot.hotel.error.AppError;
 import com.robot.hotel.exception.DuplicateObjectException;

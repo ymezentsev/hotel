@@ -1,10 +1,11 @@
 package com.robot.hotel.service;
 
-import com.robot.hotel.domain.Room;
+import com.robot.hotel.room.Room;
 import com.robot.hotel.exception.DuplicateObjectException;
-import com.robot.hotel.repository.ReservationRepository;
-import com.robot.hotel.repository.RoomTypeRepository;
-import com.robot.hotel.repository.RoomRepository;
+import com.robot.hotel.reservation.ReservationRepository;
+import com.robot.hotel.roomtype.RoomTypeRepository;
+import com.robot.hotel.room.RoomRepository;
+import com.robot.hotel.room.RoomService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package com.robot.hotel.dto;
+package com.robot.hotel.room;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

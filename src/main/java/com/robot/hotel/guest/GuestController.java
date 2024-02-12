@@ -1,7 +1,5 @@
-package com.robot.hotel.rest;
+package com.robot.hotel.guest;
 
-import com.robot.hotel.dto.GuestDto;
-import com.robot.hotel.service.GuestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

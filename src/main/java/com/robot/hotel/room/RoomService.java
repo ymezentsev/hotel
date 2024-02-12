@@ -1,16 +1,13 @@
-package com.robot.hotel.service;
+package com.robot.hotel.room;
 
 
-import com.robot.hotel.domain.Reservation;
-import com.robot.hotel.domain.RoomType;
-import com.robot.hotel.domain.Room;
-import com.robot.hotel.dto.RoomDto;
+import com.robot.hotel.reservation.Reservation;
+import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.WrongDatesException;
-import com.robot.hotel.repository.ReservationRepository;
-import com.robot.hotel.repository.RoomTypeRepository;
-import com.robot.hotel.repository.RoomRepository;
+import com.robot.hotel.reservation.ReservationRepository;
+import com.robot.hotel.roomtype.RoomTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +31,7 @@ public class RoomService {
                 .collect(Collectors.toList());
     }
 
-    RoomDto buildRoomsDto(Room room) {
+    public RoomDto buildRoomsDto(Room room) {
         return RoomDto.builder()
                 .id(room.getId())
                 .number(room.getNumber())
