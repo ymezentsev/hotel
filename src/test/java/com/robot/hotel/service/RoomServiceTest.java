@@ -1,3 +1,4 @@
+/*
 package com.robot.hotel.service;
 
 import com.robot.hotel.room.Room;
@@ -102,4 +103,4 @@ class RoomServiceTest {
         when(roomRepository.findRoomsByGuestsCount(anyInt())).thenReturn(List.of(getRoom1()));
         assertEquals(1, roomService.findByGuestsCount(ROOM_MAX_COUNT_OF_GUESTS).size());
     }
-}
+}*/

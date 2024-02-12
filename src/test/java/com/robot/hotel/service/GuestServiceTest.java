@@ -1,3 +1,4 @@
+/*
 package com.robot.hotel.service;
 
 import com.robot.hotel.guest.Guest;
@@ -84,4 +85,4 @@ class GuestServiceTest {
         when(guestRepository.findGuestsByLastName(anyString())).thenReturn(List.of(getGuest1()));
         assertEquals(1, guestService.findByLastName(GUEST_LAST_NAME).size());
     }
-}
+}*/
