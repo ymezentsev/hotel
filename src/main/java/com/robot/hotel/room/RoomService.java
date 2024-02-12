@@ -31,7 +31,7 @@ public class RoomService {
                 .collect(Collectors.toList());
     }
 
-    RoomDto buildRoomsDto(Room room) {
+    public RoomDto buildRoomsDto(Room room) {
         return RoomDto.builder()
                 .id(room.getId())
                 .number(room.getNumber())
