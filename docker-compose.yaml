@@ -7,7 +7,6 @@ services:
       context: .
     depends_on:
       - db
-
     environment:
       - SPRING_DATASOURCE_URL=${DB_URL}
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
@@ -16,7 +15,6 @@ services:
 
   db:
     image: 'mysql:latest'
-    restart: always
     container_name: db
     environment:
       - MYSQL_DATABASE=${DB_NAME}

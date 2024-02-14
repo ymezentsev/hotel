@@ -35,8 +35,8 @@ public class Reservation {
 
     @ManyToMany()
     @JoinTable(
-            name = "reservations_guests",
-            joinColumns = @JoinColumn(name = "reservations_id"),
-            inverseJoinColumns = @JoinColumn(name = "guests_id"))
+            name = "reservation_guest",
+            joinColumns = @JoinColumn(name = "reservation_id"),
+            inverseJoinColumns = @JoinColumn(name = "guest_id"))
     private Set<Guest> guests = new HashSet<>();
 }
