@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
+@Table(name = "reservation")
 @Entity
 public class Reservation {
     @Id
@@ -29,6 +29,7 @@ public class Reservation {
 
     @Column(nullable = false)
     private LocalDate checkInDate;
+
     @Column(nullable = false)
     private LocalDate checkOutDate;
 

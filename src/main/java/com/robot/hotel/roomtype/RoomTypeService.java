@@ -35,7 +35,7 @@ public class RoomTypeService {
     public List<RoomTypeDto> findAll() {
         return roomTypeRepository.findAll().stream()
                 .map(RoomTypeService::buildRoomTypeDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private static RoomTypeDto buildRoomTypeDto(RoomType roomType) {
