@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "room_type")
 public class RoomType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
+@Table(name = "reservation")
 @Entity
 public class Reservation {
     @Id
@@ -29,13 +29,14 @@ public class Reservation {
 
     @Column(nullable = false)
     private LocalDate checkInDate;
+
     @Column(nullable = false)
     private LocalDate checkOutDate;
 
     @ManyToMany()
     @JoinTable(
-            name = "reservations_guests",
-            joinColumns = @JoinColumn(name = "reservations_id"),
-            inverseJoinColumns = @JoinColumn(name = "guests_id"))
+            name = "reservation_guest",
+            joinColumns = @JoinColumn(name = "reservation_id"),
+            inverseJoinColumns = @JoinColumn(name = "guest_id"))
     private Set<Guest> guests = new HashSet<>();
 }

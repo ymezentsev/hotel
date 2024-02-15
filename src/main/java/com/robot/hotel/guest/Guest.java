@@ -15,20 +15,25 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
+@Table(name = "guest")
 @Entity
 public class Guest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String firstName;
+
     @Column(nullable = false)
     private String lastName;
+
     @Column(unique = true, nullable = false)
     private String telNumber;
+
     @Column(unique = true)
     private String email;
+
     @Column(unique = true)
     private String passportSerialNumber;
 

@@ -7,7 +7,6 @@ services:
       context: .
     depends_on:
       - db
-
     environment:
       - SPRING_DATASOURCE_URL=${DB_URL}
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
@@ -15,8 +14,7 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
   db:
-    image: 'mysql:latest'
-    restart: always
+    image: 'mysql:8.0'
     container_name: db
     environment:
       - MYSQL_DATABASE=${DB_NAME}
