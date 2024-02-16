@@ -2,11 +2,11 @@ package com.robot.hotel.roomtype;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,8 +17,8 @@ public class RoomTypeController {
 
     @PostMapping()
     @Operation(summary = "Create new room type")
-    public void save(@RequestBody RoomTypeDto roomTypeDto) {
-        roomTypeService.save(roomTypeDto);
+    public RoomTypeDto save(@Valid @RequestBody RoomTypeRequest roomTypeRequest) {
+        return roomTypeService.save(roomTypeRequest);
     }
 
     @GetMapping()
@@ -29,20 +29,20 @@ public class RoomTypeController {
 
     @GetMapping("/type/{type}")
     @Operation(summary = "Get room type by type")
-    public Optional<RoomTypeDto> findByType(@PathVariable String type) {
-        return Optional.of(roomTypeService.findByType(type).orElseThrow());
+    public RoomTypeDto findByType(@PathVariable String type) {
+        return roomTypeService.findByType(type);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get room type by id")
-    public Optional<RoomTypeDto> findById(@PathVariable Long id) {
-        return Optional.of(roomTypeService.findById(id).orElseThrow());
+    public RoomTypeDto findById(@PathVariable Long id) {
+        return roomTypeService.findById(id);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update room type")
-    public void update(@PathVariable Long id, @RequestBody RoomTypeDto roomTypeDto) {
-        roomTypeService.update(id, roomTypeDto);
+    public void update(@PathVariable Long id, @Valid @RequestBody RoomTypeRequest roomTypeRequest) {
+        roomTypeService.update(id, roomTypeRequest);
     }
 
     @DeleteMapping("/{id}")

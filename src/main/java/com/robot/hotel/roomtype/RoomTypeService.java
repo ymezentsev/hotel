@@ -1,14 +1,13 @@
 package com.robot.hotel.roomtype;
 
-import com.robot.hotel.room.Room;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
+import com.robot.hotel.room.Room;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,25 +15,24 @@ import java.util.stream.Collectors;
 public class RoomTypeService {
 
     private final RoomTypeRepository roomTypeRepository;
+    private final RoomTypeMapper roomTypeMapper;
 
-    public RoomType save(RoomTypeDto roomTypeDto) {
-        if (findByType(roomTypeDto.getType()).isPresent()) {
-            throw new DuplicateObjectException("Such type of room is already exists");
-        } else {
-            RoomType roomType = buildRoomType(roomTypeDto);
-            return roomTypeRepository.save(roomType);
+    private static final String TYPE_IS_EXISTS = "Such type of room is already exists";
+    private static final String TYPE_IS_NOT_EXISTS = "Type of room with id %d is not exists";
+    private static final String ROOMS_OF_TYPE_ARE_EXISTS = "There are rooms of this type at hotel. At first delete rooms";
+
+    public RoomTypeDto save(RoomTypeRequest roomTypeRequest) {
+        if (Boolean.TRUE.equals(roomTypeRepository.existsByType(roomTypeRequest.getType().toLowerCase()))) {
+            throw new DuplicateObjectException(TYPE_IS_EXISTS);
         }
-    }
 
-    private RoomType buildRoomType(RoomTypeDto roomTypeDto) {
-        return RoomType.builder()
-                .type(roomTypeDto.getType().toLowerCase())
-                .build();
+        RoomType newRoomType = roomTypeMapper.buildRoomTypeFromRequest(roomTypeRequest);
+        return roomTypeMapper.buildRoomTypeDto(roomTypeRepository.save(newRoomType));
     }
 
     public List<RoomTypeDto> findAll() {
         return roomTypeRepository.findAll().stream()
-                .map(RoomTypeService::buildRoomTypeDto)
+                .map(roomTypeMapper::buildRoomTypeDto)
                 .toList();
     }
 
@@ -48,25 +46,28 @@ public class RoomTypeService {
                 .build();
     }
 
-    public Optional<RoomTypeDto> findByType(String type) {
-        return roomTypeRepository.findRoomTypeByType(type.toLowerCase()).map(RoomTypeService::buildRoomTypeDto);
+    public RoomTypeDto findByType(String type) {
+        return roomTypeMapper.buildRoomTypeDto(roomTypeRepository
+                .findByType(type.toLowerCase())
+                .orElseThrow());
     }
 
-    public Optional<RoomTypeDto> findById(Long id) {
-        return roomTypeRepository.findById(id).map(RoomTypeService::buildRoomTypeDto);
+    public RoomTypeDto findById(Long id) {
+        return roomTypeMapper.buildRoomTypeDto(roomTypeRepository
+                .findById(id)
+                .orElseThrow());
     }
 
-    public void update(Long id, RoomTypeDto roomTypeDto) {
-        if (roomTypeRepository.findById(id).isEmpty()) {
-            throw new NoSuchElementException("Type of room with id " + id + " is not exists");
+    public void update(Long id, RoomTypeRequest roomTypeRequest) {
+        RoomType roomType = roomTypeRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException(String.format(TYPE_IS_NOT_EXISTS, id))
+        );
+
+        if (Boolean.TRUE.equals(roomTypeRepository.existsByType(roomTypeRequest.getType().toLowerCase()))) {
+            throw new DuplicateObjectException(TYPE_IS_EXISTS);
         }
 
-        if (findByType(roomTypeDto.getType()).isPresent()) {
-            throw new DuplicateObjectException("Such type of room is already exists");
-        }
-
-        RoomType roomType = roomTypeRepository.findById(id).get();
-        roomType.setType(roomTypeDto.getType().toLowerCase());
+        roomType.setType(roomTypeRequest.getType().toLowerCase());
         roomTypeRepository.save(roomType);
     }
 
@@ -74,7 +75,7 @@ public class RoomTypeService {
         if (roomTypeRepository.findById(id).orElseThrow().getRooms().isEmpty()) {
             roomTypeRepository.deleteById(id);
         } else {
-            throw new NotEmptyObjectException("There are rooms of this type at hotel. At first delete rooms.");
+            throw new NotEmptyObjectException(ROOMS_OF_TYPE_ARE_EXISTS);
         }
     }
 }

@@ -63,8 +63,8 @@ public class RoomService {
         String type = roomsDto.getRoomType().toLowerCase();
         RoomType roomType = null;
 
-        if (roomTypeRepository.findRoomTypeByType(type).isPresent()) {
-            roomType = roomTypeRepository.findRoomTypeByType(type).get();
+        if (roomTypeRepository.findByType(type).isPresent()) {
+            roomType = roomTypeRepository.findByType(type).get();
         } else {
             throw new NoSuchElementException("Such type of room is not exists");
         }
@@ -85,7 +85,7 @@ public class RoomService {
     }
 
     public List<RoomDto> findByType(String type) {
-        Long id = roomTypeRepository.findRoomTypeByType(type).orElseThrow().getId();
+        Long id = roomTypeRepository.findByType(type).orElseThrow().getId();
         if (id == null) {
             throw new NoSuchElementException("Room type is not exists");
         }
