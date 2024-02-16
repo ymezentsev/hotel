@@ -2,18 +2,15 @@ package com.robot.hotel.roomtype;
 
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
-import com.robot.hotel.room.Room;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class RoomTypeService {
-
     private final RoomTypeRepository roomTypeRepository;
     private final RoomTypeMapper roomTypeMapper;
 
@@ -25,7 +22,6 @@ public class RoomTypeService {
         if (Boolean.TRUE.equals(roomTypeRepository.existsByType(roomTypeRequest.getType().toLowerCase()))) {
             throw new DuplicateObjectException(TYPE_IS_EXISTS);
         }
-
         RoomType newRoomType = roomTypeMapper.buildRoomTypeFromRequest(roomTypeRequest);
         return roomTypeMapper.buildRoomTypeDto(roomTypeRepository.save(newRoomType));
     }
@@ -34,16 +30,6 @@ public class RoomTypeService {
         return roomTypeRepository.findAll().stream()
                 .map(roomTypeMapper::buildRoomTypeDto)
                 .toList();
-    }
-
-    private static RoomTypeDto buildRoomTypeDto(RoomType roomType) {
-        return RoomTypeDto.builder()
-                .id(roomType.getId())
-                .type(roomType.getType())
-                .rooms(roomType.getRooms().stream()
-                        .map(Room::getNumber)
-                        .collect(Collectors.toList()))
-                .build();
     }
 
     public RoomTypeDto findByType(String type) {
