@@ -23,7 +23,7 @@ public class RoomType {
     @Column(unique = true, nullable = false)
     private String type;
 
-    @OneToMany(mappedBy = "roomType")
+    @OneToMany(mappedBy = "roomType", fetch = FetchType.EAGER)
     private List<Room> rooms;
 }
 

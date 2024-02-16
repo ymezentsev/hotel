@@ -1,5 +1,6 @@
 package com.robot.hotel.roomtype;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Dto for RoomType")
 public class RoomTypeDto {
     private Long id;
     private String type;
