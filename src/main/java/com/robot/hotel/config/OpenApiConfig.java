@@ -1,18 +1,30 @@
 package com.robot.hotel.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
-@Configuration
+
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Hotel API",
+                description = "Hotel room accounting system",
+                version = "2.0.1",
+                contact = @Contact(
+                        name = "GitHub",
+                        url = "https://github.com/ymezentsev/hotel"
+                )
+        )
+)
+
+@SecurityScheme(
+        name = "JWT",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer"
+)
+
 public class OpenApiConfig {
-
-    @Bean
-    public OpenAPI usersMicroserviceOpenAPI() {
-        return new OpenAPI()
-                .info(new Info().title("Your API Title")
-                        .description("Your API Description")
-                        .version("1.0"));
-    }
 }
