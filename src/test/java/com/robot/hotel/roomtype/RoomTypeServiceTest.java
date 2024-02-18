@@ -30,6 +30,9 @@ class RoomTypeServiceTest {
     @Autowired
     private DBInitializer dbInitializer;
 
+    @Autowired
+    private RoomTypeRepository roomTypeRepository;
+
     @BeforeEach
     void setUp() {
         dbInitializer.populateDB();
@@ -135,10 +138,8 @@ class RoomTypeServiceTest {
     }
 
     private Long getIdByType(String type) {
-        return roomTypeService.findAll().stream()
-                .filter(roomTypeDto -> roomTypeDto.getType().equals(type))
-                .map(RoomTypeDto::getId)
-                .findFirst()
-                .orElseThrow();
+        return roomTypeRepository.findByType(type)
+                .orElseThrow()
+                .getId();
     }
 }
