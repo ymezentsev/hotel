@@ -22,8 +22,9 @@ import java.util.NoSuchElementException;
 @Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, List<String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        List<String> errors = ex.getBindingResult()
+    public ResponseEntity<Map<String, List<String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error(e.getMessage(), e);
+        List<String> errors = e.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(FieldError::getDefaultMessage)
@@ -37,34 +38,33 @@ public class GlobalExceptionHandler {
         return errorResponse;
     }
 
-
-    @ExceptionHandler
+    @ExceptionHandler(DuplicateObjectException.class)
     public ResponseEntity<AppError> catchDuplicateObjectException(DuplicateObjectException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new AppError(HttpStatus.NOT_IMPLEMENTED.value(), e.getMessage()), HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(new AppError(HttpStatus.CONFLICT.value(), e.getMessage()), HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<AppError> catchNoSuchElementException(NoSuchElementException e) {
         log.error(e.getMessage(), e);
         return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(), e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(NotEmptyObjectException.class)
     public ResponseEntity<AppError> catchNotEmptyObjectException(NotEmptyObjectException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new AppError(HttpStatus.NOT_IMPLEMENTED.value(), e.getMessage()), HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(new AppError(HttpStatus.CONFLICT.value(), e.getMessage()), HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(GuestsQuantityException.class)
     public ResponseEntity<AppError> catchGuestsQuantityException(GuestsQuantityException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new AppError(HttpStatus.NOT_IMPLEMENTED.value(), e.getMessage()), HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(WrongDatesException.class)
     public ResponseEntity<AppError> catchWrongDatesException(WrongDatesException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new AppError(HttpStatus.NOT_IMPLEMENTED.value(), e.getMessage()), HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }
