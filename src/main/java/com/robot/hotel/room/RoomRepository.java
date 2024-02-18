@@ -2,6 +2,7 @@ package com.robot.hotel.room;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -10,16 +11,18 @@ import java.util.Optional;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
+    boolean existsByNumber(String number);
 
-    Optional<Room> findRoomsByNumber(String number);
-    List<Room> findRoomsByRoomTypeId(Long id);
+    Optional<Room> findByNumber(String number);
 
-    @Query(nativeQuery = true, value = "select * from room where price >= ?1")
-    List<Room> findRoomsByPriceMoreThanOrEqual(BigDecimal sum);
+    List<Room> findByRoomTypeId(Long id);
 
-    @Query(nativeQuery = true, value = "select * from room where price <= ?1")
-    List<Room> findRoomsByPriceLessThanOrEqual(BigDecimal sum);
-    @Query(nativeQuery = true, value = "select * from room where max_count_of_guests >= ?1")
-    List<Room> findRoomsByGuestsCount(int guestsCount);
+    @Query("SELECT r FROM Room r WHERE r.price >= :price")
+    List<Room> findByPriceMoreThanOrEqual(@Param("price") BigDecimal price);
 
+    @Query("SELECT r FROM Room r WHERE r.price <= :price")
+    List<Room> findByPriceLessThanOrEqual(@Param("price") BigDecimal price);
+
+    @Query("SELECT r FROM Room r WHERE r.maxCountOfGuests >= :guestsCount")
+    List<Room> findByGuestsCount(@Param("guestsCount") int guestsCount);
 }

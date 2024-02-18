@@ -14,13 +14,13 @@ public class RoomTypeService {
     private final RoomTypeRepository roomTypeRepository;
     private final RoomTypeMapper roomTypeMapper;
 
-    private static final String TYPE_IS_EXISTS = "Such type of room is already exists";
+    private static final String TYPE_IS_ALREADY_EXISTS = "Such type of room is already exists";
     private static final String TYPE_IS_NOT_EXISTS = "Type of room with id %d is not exists";
     private static final String ROOMS_OF_SUCH_TYPE_ARE_EXISTS = "There are rooms of this type at hotel. At first delete rooms";
 
     public RoomTypeDto save(RoomTypeRequest roomTypeRequest) {
         if (Boolean.TRUE.equals(roomTypeRepository.existsByType(roomTypeRequest.getType().toLowerCase()))) {
-            throw new DuplicateObjectException(TYPE_IS_EXISTS);
+            throw new DuplicateObjectException(TYPE_IS_ALREADY_EXISTS);
         }
         RoomType newRoomType = roomTypeMapper.buildRoomTypeFromRequest(roomTypeRequest);
         return roomTypeMapper.buildRoomTypeDto(roomTypeRepository.save(newRoomType));
@@ -50,7 +50,7 @@ public class RoomTypeService {
         );
 
         if (Boolean.TRUE.equals(roomTypeRepository.existsByType(roomTypeRequest.getType().toLowerCase()))) {
-            throw new DuplicateObjectException(TYPE_IS_EXISTS);
+            throw new DuplicateObjectException(TYPE_IS_ALREADY_EXISTS);
         }
 
         roomType.setType(roomTypeRequest.getType().toLowerCase());

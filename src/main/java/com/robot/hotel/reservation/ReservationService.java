@@ -42,9 +42,9 @@ public class ReservationService {
     }
 
     public List<ReservationDto> findReservationsByRoom(String roomNumber) {
-        if (roomRepository.findRoomsByNumber(roomNumber).isPresent()) {
+        if (roomRepository.findByNumber(roomNumber).isPresent()) {
             return reservationRepository
-                    .findReservationsByRoomId(roomRepository.findRoomsByNumber(roomNumber).get()
+                    .findReservationsByRoomId(roomRepository.findByNumber(roomNumber).get()
                             .getId()).stream()
                     .map(this::buildReservationsDto)
                     .collect(Collectors.toList());
@@ -83,8 +83,8 @@ public class ReservationService {
         String roomNumber = reservationsDto.getRoomNumber().toLowerCase();
         Room room = null;
 
-        if (roomRepository.findRoomsByNumber(roomNumber).isPresent()) {
-            room = roomRepository.findRoomsByNumber(roomNumber).get();
+        if (roomRepository.findByNumber(roomNumber).isPresent()) {
+            room = roomRepository.findByNumber(roomNumber).get();
         } else {
             throw new NoSuchElementException("Such room is not exists");
         }

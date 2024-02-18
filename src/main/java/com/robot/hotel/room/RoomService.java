@@ -1,6 +1,5 @@
 package com.robot.hotel.room;
 
-
 import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.exception.DuplicateObjectException;
@@ -24,11 +23,15 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final RoomTypeRepository roomTypeRepository;
     private final ReservationRepository reservationRepository;
+    private final RoomMapper roomMapper;
+
+    private static final String NUMBER_IS_ALREADY_EXISTS = "Such number is already exists";
+    private static final String TYPE_IS_NOT_EXISTS = "Such type of room is not exists";
 
     public List<RoomDto> findAll() {
         return roomRepository.findAll().stream()
-                .map(this::buildRoomsDto)
-                .collect(Collectors.toList());
+                .map(roomMapper::buildRoomsDto)
+                .toList();
     }
 
     public RoomDto buildRoomsDto(Room room) {
@@ -50,67 +53,56 @@ public class RoomService {
                 + reservations.getCheckOutDate().toString();
     }
 
-    public Room save(RoomDto roomsDto) {
-        if (findRoomsByNumber(roomsDto.getNumber()).isPresent()) {
-            throw new DuplicateObjectException("Such room is already exists");
-        } else {
-            Room room = buildRoom(roomsDto);
-            return roomRepository.save(room);
+    public RoomDto save(RoomRequest roomRequest) {
+        if (Boolean.TRUE.equals(roomRepository.existsByNumber(roomRequest.getNumber().toLowerCase()))) {
+            throw new DuplicateObjectException(NUMBER_IS_ALREADY_EXISTS);
         }
+
+        RoomType roomType = roomTypeRepository.findByType(roomRequest.getRoomType().toLowerCase())
+                .orElseThrow(() -> new NoSuchElementException(TYPE_IS_NOT_EXISTS));
+
+        Room newRoom = roomMapper.buildRoomFromRequest(roomRequest, roomType);
+        return roomMapper.buildRoomsDto(roomRepository.save(newRoom));
     }
 
-    private Room buildRoom(RoomDto roomsDto) {
-        String type = roomsDto.getRoomType().toLowerCase();
-        RoomType roomType = null;
-
-        if (roomTypeRepository.findByType(type).isPresent()) {
-            roomType = roomTypeRepository.findByType(type).get();
-        } else {
-            throw new NoSuchElementException("Such type of room is not exists");
-        }
-        return Room.builder()
-                .number(roomsDto.getNumber().toLowerCase())
-                .price(roomsDto.getPrice())
-                .maxCountOfGuests(roomsDto.getMaxCountOfGuests())
-                .roomType(roomType)
-                .build();
+    public RoomDto findById(Long id) {
+        return roomMapper.buildRoomsDto(roomRepository
+                .findById(id)
+                .orElseThrow());
     }
 
-    public Optional<RoomDto> findById(Long id) {
-        return roomRepository.findById(id).map(this::buildRoomsDto);
-    }
-
-    public Optional<RoomDto> findRoomsByNumber(String number) {
-        return roomRepository.findRoomsByNumber(number.toLowerCase()).map(this::buildRoomsDto);
+    public RoomDto findByNumber(String number) {
+        return roomMapper.buildRoomsDto(roomRepository
+                .findByNumber(number.toLowerCase())
+                .orElseThrow());
     }
 
     public List<RoomDto> findByType(String type) {
-        Long id = roomTypeRepository.findByType(type).orElseThrow().getId();
-        if (id == null) {
-            throw new NoSuchElementException("Room type is not exists");
-        }
+        Long roomTypeId = roomTypeRepository.findByType(type.toLowerCase())
+                .orElseThrow(() -> new NoSuchElementException(TYPE_IS_NOT_EXISTS))
+                .getId();
 
-        return roomRepository.findRoomsByRoomTypeId(id).stream()
-                .map(this::buildRoomsDto)
-                .collect(Collectors.toList());
+        return roomRepository.findByRoomTypeId(roomTypeId).stream()
+                .map(roomMapper::buildRoomsDto)
+                .toList();
     }
 
-    public List<RoomDto> findByPriceMoreThanOrEqual(BigDecimal sum) {
-        return roomRepository.findRoomsByPriceMoreThanOrEqual(sum).stream()
-                .map(this::buildRoomsDto)
-                .collect(Collectors.toList());
+    public List<RoomDto> findByPriceMoreThanOrEqual(BigDecimal price) {
+        return roomRepository.findByPriceMoreThanOrEqual(price).stream()
+                .map(roomMapper::buildRoomsDto)
+                .toList();
     }
 
-    public List<RoomDto> findByPriceLessThanOrEqual(BigDecimal sum) {
-        return roomRepository.findRoomsByPriceLessThanOrEqual(sum).stream()
-                .map(this::buildRoomsDto)
-                .collect(Collectors.toList());
+    public List<RoomDto> findByPriceLessThanOrEqual(BigDecimal price) {
+        return roomRepository.findByPriceLessThanOrEqual(price).stream()
+                .map(roomMapper::buildRoomsDto)
+                .toList();
     }
 
     public List<RoomDto> findByGuestsCount(int guestCount) {
-        return roomRepository.findRoomsByGuestsCount(guestCount).stream()
-                .map(this::buildRoomsDto)
-                .collect(Collectors.toList());
+        return roomRepository.findByGuestsCount(guestCount).stream()
+                .map(roomMapper::buildRoomsDto)
+                .toList();
     }
 
     public Set<RoomDto> findAvailableRooms(String checkInString, String checkOutString) {
@@ -120,7 +112,7 @@ public class RoomService {
             throw new WrongDatesException("The check-in date can't be more or equals than check-out date");
         }
 
-        List<RoomDto> roomsDtoWithMatchDate = reservationRepository.findAvailableRooms(checkIn, checkOut)
+/*        List<RoomDto> roomsDtoWithMatchDate = reservationRepository.findAvailableRooms(checkIn, checkOut)
                 .stream().map(id -> findById(id).get())
                 .toList();
 
@@ -133,11 +125,12 @@ public class RoomService {
         Set<RoomDto> availableRoomsDto = new HashSet<>(roomsDtoWithMatchDate);
         availableRoomsDto.addAll(roomsDtoWithoutReservations);
 
-        return availableRoomsDto;
+        return availableRoomsDto;*/
+        return new HashSet<>();
     }
 
     public void update(String number, RoomDto roomsDto) {
-        Optional<RoomDto> optionalRoom = findRoomsByNumber(number.toLowerCase());
+/*        Optional<RoomDto> optionalRoom = findByNumber(number.toLowerCase());
         Long id;
         RoomDto roomDto = null;
 
@@ -160,7 +153,7 @@ public class RoomService {
 
         Room room = buildRoom(roomDto);
         room.setId(id);
-        roomRepository.save(room);
+        roomRepository.save(room);*/
     }
 
     public void deleteById(Long id) {
