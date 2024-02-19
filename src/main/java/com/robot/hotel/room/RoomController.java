@@ -61,21 +61,21 @@ public class RoomController {
     }
 
     @GetMapping("/guestsCount/{guestCount}")
-    @Operation(summary = "Get rooms with less or equal count of guests")
+    @Operation(summary = "Get rooms with more or equal count of guests")
     public List<RoomDto> findByGuestsCount(@PathVariable int guestCount) {
         return roomService.findByGuestsCount(guestCount);
     }
 
-    @GetMapping("/available/{checkIn}/{checkOut}")
-    @Operation(summary = "Get available rooms")
-    public Set<RoomDto> findAvailableRooms(@PathVariable String checkIn, @PathVariable String checkOut) {
-        return roomService.findAvailableRooms(checkIn, checkOut);
+    @GetMapping("/freeRooms")
+    @Operation(summary = "Get free rooms")
+    public Set<RoomDto> findFreeRooms(@Valid @RequestBody FreeRoomRequest freeRoomRequest) {
+        return roomService.findFreeRooms(freeRoomRequest);
     }
 
-    @PutMapping("/number/{number}")
+    @PutMapping("/{id}")
     @Operation(summary = "Update room")
-    public void update(@PathVariable String number, @RequestBody RoomDto roomsDto) {
-        roomService.update(number, roomsDto);
+    public void update(@PathVariable Long id, @Valid @RequestBody RoomRequest roomRequest) {
+        roomService.update(id, roomRequest);
     }
 
     @DeleteMapping("/{id}")

@@ -1,21 +1,16 @@
 package com.robot.hotel.room;
 
-import com.robot.hotel.reservation.Reservation;
-import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.reservation.ReservationRepository;
+import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,30 +22,15 @@ public class RoomService {
 
     private static final String NUMBER_IS_ALREADY_EXISTS = "Such number is already exists";
     private static final String TYPE_IS_NOT_EXISTS = "Such type of room is not exists";
+    private static final String WRONG_DATE = "The check out date must be after check in date";
+    private static final String ROOM_IS_NOT_EXISTS = "Room with id %d is not exists";
+    private static final String RESERVATIONS_FOR_THIS_ROOM_ARE_EXISTS =
+            "There are reservations for this room. At first delete reservations";
 
     public List<RoomDto> findAll() {
         return roomRepository.findAll().stream()
                 .map(roomMapper::buildRoomsDto)
                 .toList();
-    }
-
-    public RoomDto buildRoomsDto(Room room) {
-        return RoomDto.builder()
-                .id(room.getId())
-                .number(room.getNumber())
-                .price(room.getPrice())
-                .maxCountOfGuests(room.getMaxCountOfGuests())
-                .roomType(room.getRoomType().getType())
-                .reservations(room.getReservations().stream()
-                        .map(getReservationsString())
-                        .collect(Collectors.toList()))
-                .build();
-    }
-
-    private static Function<Reservation, String> getReservationsString() {
-        return reservations -> "Id:" + reservations.getId().toString()
-                + ", " + reservations.getCheckInDate().toString() + " - "
-                + reservations.getCheckOutDate().toString();
     }
 
     public RoomDto save(RoomRequest roomRequest) {
@@ -105,11 +85,10 @@ public class RoomService {
                 .toList();
     }
 
-    public Set<RoomDto> findAvailableRooms(String checkInString, String checkOutString) {
-        LocalDate checkIn = LocalDate.parse(checkInString);
-        LocalDate checkOut = LocalDate.parse(checkOutString);
-        if (ChronoUnit.DAYS.between(checkIn, checkOut) <= 0) {
-            throw new WrongDatesException("The check-in date can't be more or equals than check-out date");
+    public Set<RoomDto> findFreeRooms(FreeRoomRequest freeRoomRequest) {
+        if (freeRoomRequest.checkOutDate.isBefore(freeRoomRequest.checkInDate)
+                || freeRoomRequest.checkOutDate.isEqual(freeRoomRequest.checkInDate)) {
+            throw new WrongDatesException(WRONG_DATE);
         }
 
 /*        List<RoomDto> roomsDtoWithMatchDate = reservationRepository.findAvailableRooms(checkIn, checkOut)
@@ -129,38 +108,35 @@ public class RoomService {
         return new HashSet<>();
     }
 
-    public void update(String number, RoomDto roomsDto) {
-/*        Optional<RoomDto> optionalRoom = findByNumber(number.toLowerCase());
-        Long id;
-        RoomDto roomDto = null;
+    public void update(Long id, RoomRequest roomRequest) {
+        Room roomToUpdate = roomRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException(String.format(ROOM_IS_NOT_EXISTS, id))
+        );
 
-        if (optionalRoom.isEmpty()) {
-            throw new NoSuchElementException("Room number " + number + " is not exists");
-        } else {
-            roomDto = optionalRoom.get();
-            id = roomDto.getId();
-        }
-
-        if (roomsDto.getPrice() != null) {
-            roomDto.setPrice(roomsDto.getPrice());
-        }
-        if (roomsDto.getMaxCountOfGuests() != 0) {
-            roomDto.setMaxCountOfGuests(roomsDto.getMaxCountOfGuests());
-        }
-        if (!roomsDto.getRoomType().isEmpty()) {
-            roomDto.setRoomType(roomsDto.getRoomType());
+        if (Boolean.TRUE.equals(roomRepository.existsByNumber(roomRequest.getNumber().toLowerCase()))) {
+            Long idExistingRoom = roomRepository.findByNumber(roomRequest.getNumber().toLowerCase())
+                    .orElseThrow()
+                    .getId();
+            if (!Objects.equals(idExistingRoom, id)) {
+                throw new DuplicateObjectException(NUMBER_IS_ALREADY_EXISTS);
+            }
         }
 
-        Room room = buildRoom(roomDto);
-        room.setId(id);
-        roomRepository.save(room);*/
+        RoomType roomType = roomTypeRepository.findByType(roomRequest.getRoomType().toLowerCase())
+                .orElseThrow(() -> new NoSuchElementException(TYPE_IS_NOT_EXISTS));
+
+        roomToUpdate.setNumber(roomRequest.getNumber().toLowerCase());
+        roomToUpdate.setPrice(roomRequest.getPrice());
+        roomToUpdate.setMaxCountOfGuests(roomRequest.getMaxCountOfGuests());
+        roomToUpdate.setRoomType(roomType);
+        roomRepository.save(roomToUpdate);
     }
 
     public void deleteById(Long id) {
         if (roomRepository.findById(id).orElseThrow().getReservations().isEmpty()) {
             roomRepository.deleteById(id);
         } else {
-            throw new NotEmptyObjectException("There are reservations for this room. At first delete reservations.");
+            throw new NotEmptyObjectException(RESERVATIONS_FOR_THIS_ROOM_ARE_EXISTS);
         }
     }
 }
