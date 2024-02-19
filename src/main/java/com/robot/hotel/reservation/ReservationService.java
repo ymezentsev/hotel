@@ -1,13 +1,10 @@
 package com.robot.hotel.reservation;
 
 import com.robot.hotel.guest.Guest;
-import com.robot.hotel.room.Room;
-import com.robot.hotel.room.RoomDto;
+import com.robot.hotel.room.*;
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.guest.GuestRepository;
-import com.robot.hotel.room.RoomRepository;
-import com.robot.hotel.room.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +21,7 @@ public class ReservationService {
     private final RoomRepository roomRepository;
     private final GuestRepository guestRepository;
     private final RoomService roomService;
+    private final RoomMapper roomMapper;
 
     public List<ReservationDto> findAll() {
         return reservationRepository.findAll().stream()
@@ -80,7 +78,7 @@ public class ReservationService {
     }
 
     private Reservation buildReservations(ReservationDto reservationsDto){
-        String roomNumber = reservationsDto.getRoomNumber().toLowerCase();
+        /*String roomNumber = reservationsDto.getRoomNumber().toLowerCase();
         Room room = null;
 
         if (roomRepository.findByNumber(roomNumber).isPresent()) {
@@ -122,7 +120,7 @@ public class ReservationService {
         }
 
         Set<RoomDto> availableRooms = roomService.findAvailableRooms(reservationsDto.getCheckInDate().toString(), reservationsDto.getCheckOutDate().toString());
-        RoomDto roomsDto = roomService.buildRoomsDto(room);
+        RoomDto roomsDto = roomMapper.buildRoomsDto(room);
         if(!availableRooms.contains(roomsDto)){
             throw new WrongDatesException("This room is occupied for your dates");
         }
@@ -132,7 +130,8 @@ public class ReservationService {
                 .checkOutDate(reservationsDto.getCheckOutDate())
                 .room(room)
                 .guests(guestsHashSet)
-                .build();
+                .build();*/
+        return new Reservation();
     }
 
     public List<ReservationDto> findCurrentReservations() {
