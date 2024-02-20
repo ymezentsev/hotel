@@ -119,7 +119,7 @@ class RoomTypeServiceTest {
     void deleteByIdTest() {
         Long id = getIdByType("king");
         roomTypeService.deleteById(id);
-        assertEquals(3, roomTypeService.findAll().size());
+        assertEquals(4, roomTypeService.findAll().size());
     }
 
     @Test

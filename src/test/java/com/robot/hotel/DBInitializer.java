@@ -1,5 +1,7 @@
 package com.robot.hotel;
 
+import com.robot.hotel.reservation.Reservation;
+import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.room.Room;
 import com.robot.hotel.room.RoomRepository;
 import com.robot.hotel.roomtype.RoomType;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collections;
 
 @Component
@@ -18,11 +21,16 @@ public class DBInitializer {
     @Autowired
     RoomRepository roomRepository;
 
+    @Autowired
+    ReservationRepository reservationRepository;
+
     public void populateDB() {
+        reservationRepository.deleteAll();
         roomRepository.deleteAll();
         roomTypeRepository.deleteAll();
         populateRoomTypeTable();
         populateRoomTable();
+        populateReservationTable();
     }
 
     private void populateRoomTypeTable() {
@@ -66,6 +74,14 @@ public class DBInitializer {
                 .price(BigDecimal.valueOf(1000))
                 .maxCountOfGuests(2)
                 .roomType(roomTypeRepository.findByType("standart double").orElseThrow())
+                .build());
+    }
+
+    private void populateReservationTable() {
+        reservationRepository.save(Reservation.builder()
+                .room(roomRepository.findByNumber("204").orElseThrow())
+                .checkInDate(LocalDate.now())
+                .checkOutDate(LocalDate.now().plusDays(4))
                 .build());
     }
 }

@@ -16,9 +16,9 @@ public class RoomMapper {
                 .price(room.getPrice())
                 .maxCountOfGuests(room.getMaxCountOfGuests())
                 .roomType(room.getRoomType().getType())
-                .reservations(room.getReservations().stream()
+              /*  .reservations(room.getReservations().stream()
                         .map(getReservationsString())
-                        .toList())
+                        .toList())*/
                 .build();
     }
 

@@ -42,6 +42,8 @@ public class ReservationController {
         return reservationService.findCurrentReservations();
     }
 
+    //@GetMapping("/room/current")
+
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         reservationService.deleteById(id);

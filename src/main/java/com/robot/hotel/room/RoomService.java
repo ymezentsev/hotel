@@ -6,6 +6,7 @@ import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -132,6 +133,7 @@ public class RoomService {
         roomRepository.save(roomToUpdate);
     }
 
+    @Transactional
     public void deleteById(Long id) {
         if (roomRepository.findById(id).orElseThrow().getReservations().isEmpty()) {
             roomRepository.deleteById(id);
