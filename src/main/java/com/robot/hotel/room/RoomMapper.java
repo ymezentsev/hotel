@@ -31,10 +31,4 @@ public class RoomMapper {
                 //.reservations(Collections.emptyList())
                 .build();
     }
-
-    private Function<Reservation, String> getReservationsString() {
-        return reservations -> "Id:" + reservations.getId().toString()
-                + ", " + reservations.getCheckInDate().toString() + " - "
-                + reservations.getCheckOutDate().toString();
-    }
 }

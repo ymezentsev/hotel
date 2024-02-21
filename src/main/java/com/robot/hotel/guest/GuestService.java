@@ -18,22 +18,16 @@ import java.util.stream.Collectors;
 public class GuestService {
     private final GuestRepository guestRepository;
     private final ReservationRepository reservationRepository;
-
+    private final GuestMapper guestMapper;
 
     public List<GuestDto> findAll() {
         return guestRepository.findAll().stream()
-                .map(this::buildGuestsDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<GuestDto> findGuestByReservation(Long id) {
-        return guestRepository.findGuestsByReservationsId(id).stream()
-                .map(this::buildGuestsDto)
-                .collect(Collectors.toList());
+                .map(guestMapper::buildGuestsDto)
+                .toList();
     }
 
     private GuestDto buildGuestsDto(Guest guest) {
-        List<Reservation> reservationsByGuestsId = reservationRepository.findReservationsByGuestsId(guest.getId());
+        List<Reservation> reservationsByGuestsId = reservationRepository.findByGuestsId(guest.getId());
 
         return GuestDto.builder()
                 .id(guest.getId())
@@ -85,21 +79,27 @@ public class GuestService {
     }
 
     public Optional<GuestDto> findByEmail(String email) {
-        return guestRepository.findGuestsByEmail(email.toLowerCase()).map(this::buildGuestsDto);
+        return guestRepository.findByEmail(email.toLowerCase()).map(this::buildGuestsDto);
     }
 
     public Optional<GuestDto> findByTelNumber(String telNumber) {
-        return guestRepository.findGuestsByTelNumber(telNumber.toLowerCase()).map(this::buildGuestsDto);
+        return guestRepository.findByTelNumber(telNumber.toLowerCase()).map(this::buildGuestsDto);
     }
 
     public Optional<GuestDto> findByPassportSerialNumber(String passportSerialNumber) {
-        return guestRepository.findGuestsByPassportSerialNumber(passportSerialNumber.toLowerCase()).map(this::buildGuestsDto);
+        return guestRepository.findByPassportSerialNumber(passportSerialNumber.toLowerCase()).map(this::buildGuestsDto);
     }
 
     public List<GuestDto> findByLastName(String lastName) {
-        return guestRepository.findGuestsByLastName(lastName.toLowerCase()).stream()
+        return guestRepository.findByLastName(lastName.toLowerCase()).stream()
                 .map(this::buildGuestsDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<GuestDto> findGuestByReservation(Long id) {
+        return guestRepository.findByReservationsId(id).stream()
+                .map(this::buildGuestsDto)
+                .toList();
     }
 
     public void update(Long id, GuestDto newGuestsDto) {
@@ -147,7 +147,7 @@ public class GuestService {
             throw new NoSuchElementException("Such guest is not exists");
         }
 
-        if (reservationRepository.findReservationsByGuestsId(id).isEmpty()) {
+        if (reservationRepository.findByGuestsId(id).isEmpty()) {
             guestRepository.deleteById(id);
         } else {
             throw new NotEmptyObjectException("This guest has reservations. At first delete reservations.");

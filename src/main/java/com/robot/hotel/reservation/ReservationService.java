@@ -2,14 +2,11 @@ package com.robot.hotel.reservation;
 
 import com.robot.hotel.guest.Guest;
 import com.robot.hotel.room.*;
-import com.robot.hotel.exception.GuestsQuantityException;
-import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.guest.GuestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -34,7 +31,7 @@ public class ReservationService {
     }
 
     public List<ReservationDto> findReservationsByGuestsId(Long guestId) {
-        return reservationRepository.findReservationsByGuestsId(guestId).stream()
+        return reservationRepository.findByGuestsId(guestId).stream()
                 .map(this::buildReservationsDto)
                 .collect(Collectors.toList());
     }
@@ -42,7 +39,7 @@ public class ReservationService {
     public List<ReservationDto> findReservationsByRoom(String roomNumber) {
         if (roomRepository.findByNumber(roomNumber).isPresent()) {
             return reservationRepository
-                    .findReservationsByRoomId(roomRepository.findByNumber(roomNumber).get()
+                    .findByRoomId(roomRepository.findByNumber(roomNumber).get()
                             .getId()).stream()
                     .map(this::buildReservationsDto)
                     .collect(Collectors.toList());
@@ -52,7 +49,7 @@ public class ReservationService {
     }
 
     private ReservationDto buildReservationsDto(Reservation reservation) {
-        Set<Guest> guestsSet = guestRepository.findGuestsByReservationsId(reservation.getId());
+        Set<Guest> guestsSet = guestRepository.findByReservationsId(reservation.getId());
 
         return ReservationDto.builder()
                 .id(reservation.getId())
