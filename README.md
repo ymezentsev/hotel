@@ -8,7 +8,8 @@ last name/passport number, can update information about the visitor; find availa
 
 The file "database_structure.svg" represents the structure of the database.
 
-To view and test the application in Postman, you need to import the collection of requests from the "hotel.postman_collection.json" file.
+To view and test the application in Postman, you need to import the collection of requests from the "
+hotel.postman_collection.json" file.
 
 Generated OpenApi documentation avaliable (when app running) [Swagger-ui](http://localhost:8080/swagger-ui/index.html)
 and [OAS](http://localhost:8080/v3/api-docs)
