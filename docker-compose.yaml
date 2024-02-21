@@ -6,20 +6,20 @@ services:
     build:
       context: .
     depends_on:
-      - db
+      - hoteldb
     environment:
       - SPRING_DATASOURCE_URL=${DB_URL}
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
-  db:
+  hoteldb:
     image: 'mysql:8.0'
-    container_name: db
+    container_name: hoteldb
     environment:
       - MYSQL_DATABASE=${DB_NAME}
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - MYSQL_USER=${DB_USERNAME}
       - MYSQL_PASSWORD=${DB_PASSWORD}
     ports:
-      - '32678:3306'
+      - '32680:3306'
