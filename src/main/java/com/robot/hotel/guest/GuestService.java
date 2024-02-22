@@ -20,89 +20,69 @@ public class GuestService {
     private final ReservationRepository reservationRepository;
     private final GuestMapper guestMapper;
 
+    private static final String GUEST_IS_ALREADY_EXISTS = "Guest with such %s is already exists";
+
     public List<GuestDto> findAll() {
         return guestRepository.findAll().stream()
                 .map(guestMapper::buildGuestsDto)
                 .toList();
     }
 
-    private GuestDto buildGuestsDto(Guest guest) {
-        List<Reservation> reservationsByGuestsId = reservationRepository.findByGuestsId(guest.getId());
-
-        return GuestDto.builder()
-                .id(guest.getId())
-                .firstName(guest.getFirstName())
-                .lastName(guest.getLastName())
-                .telNumber(guest.getTelNumber())
-                .email(guest.getEmail())
-                .passportSerialNumber(guest.getPassportSerialNumber())
-                .reservations(reservationsByGuestsId.stream()
-                        .map(getReservationsString())
-                        .collect(Collectors.toSet()))
-                .build();
-    }
-
-    private Function<Reservation, String> getReservationsString() {
-        return reservations -> "Id:" + reservations.getId().toString()
-                + ", room:" + reservations.getRoom().getNumber()
-                + ", " + reservations.getCheckInDate().toString() + " - "
-                + reservations.getCheckOutDate().toString();
-    }
-
-    public Guest save(GuestDto guestsDto) {
-        if (findByEmail(guestsDto.getEmail()).isPresent()) {
-            throw new DuplicateObjectException("Guest with such email is already exists");
-        }
-        if (findByTelNumber(guestsDto.getTelNumber()).isPresent()) {
-            throw new DuplicateObjectException("Guest with such tel.number is already exists");
-        }
-        if (findByPassportSerialNumber(guestsDto.getPassportSerialNumber()).isPresent()) {
-            throw new DuplicateObjectException("Guest with such passport is already exists");
+    public GuestDto save(GuestRequest guestRequest) {
+        if (Boolean.TRUE.equals(guestRepository.existsByEmail(guestRequest.getEmail().toLowerCase()))) {
+            throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "email"));
         }
 
-        Guest guest = buildGuest(guestsDto);
-        return guestRepository.save(guest);
+        if (Boolean.TRUE.equals(guestRepository.existsByTelNumber(guestRequest.getTelNumber()))) {
+            throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "tel.number"));
+        }
+
+        if (Boolean.TRUE.equals(guestRepository.existsByPassportSerialNumber(
+                guestRequest.getPassportSerialNumber().toLowerCase()))) {
+            throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "passport"));
+        }
+
+        Guest newGuest = guestMapper.buildGuestFromRequest(guestRequest);
+        return guestMapper.buildGuestsDto(guestRepository.save(newGuest));
     }
 
-    private Guest buildGuest(GuestDto guestsDto) {
-        return Guest.builder()
-                .firstName(guestsDto.getFirstName().toLowerCase())
-                .lastName(guestsDto.getLastName().toLowerCase())
-                .telNumber(guestsDto.getTelNumber())
-                .email(guestsDto.getEmail().toLowerCase())
-                .passportSerialNumber(guestsDto.getPassportSerialNumber().toLowerCase())
-                .build();
+    public GuestDto findById(Long id) {
+        return guestMapper.buildGuestsDto(guestRepository
+                .findById(id)
+                .orElseThrow());
     }
 
-    public Optional<GuestDto> findById(Long id) {
-        return guestRepository.findById(id).map(this::buildGuestsDto);
+    public GuestDto findByEmail(String email) {
+        return guestMapper.buildGuestsDto(guestRepository
+                .findByEmail(email.toLowerCase())
+                .orElseThrow());
     }
 
-    public Optional<GuestDto> findByEmail(String email) {
-        return guestRepository.findByEmail(email.toLowerCase()).map(this::buildGuestsDto);
+    public GuestDto findByTelNumber(String telNumber) {
+        return guestMapper.buildGuestsDto(guestRepository
+                .findByTelNumber(telNumber)
+                .orElseThrow());
     }
 
-    public Optional<GuestDto> findByTelNumber(String telNumber) {
-        return guestRepository.findByTelNumber(telNumber.toLowerCase()).map(this::buildGuestsDto);
-    }
-
-    public Optional<GuestDto> findByPassportSerialNumber(String passportSerialNumber) {
-        return guestRepository.findByPassportSerialNumber(passportSerialNumber.toLowerCase()).map(this::buildGuestsDto);
+    public GuestDto findByPassportSerialNumber(String passportSerialNumber) {
+        return guestMapper.buildGuestsDto(guestRepository
+                .findByPassportSerialNumber(passportSerialNumber.toLowerCase())
+                .orElseThrow());
     }
 
     public List<GuestDto> findByLastName(String lastName) {
         return guestRepository.findByLastName(lastName.toLowerCase()).stream()
-                .map(this::buildGuestsDto)
-                .collect(Collectors.toList());
+                .map(guestMapper::buildGuestsDto)
+                .toList();
     }
 
     public List<GuestDto> findGuestByReservation(Long id) {
         return guestRepository.findByReservationsId(id).stream()
-                .map(this::buildGuestsDto)
+                .map(guestMapper::buildGuestsDto)
                 .toList();
     }
 
-    public void update(Long id, GuestDto newGuestsDto) {
+    /*public void update(Long id, GuestDto newGuestsDto) {
         Optional<GuestDto> optionalGuestsDto = findById(id);
         GuestDto guestsDto = null;
 
@@ -137,13 +117,13 @@ public class GuestService {
             guestsDto.setPassportSerialNumber(newGuestsDto.getPassportSerialNumber());
         }
 
-        Guest guest = buildGuest(guestsDto);
+        *//*Guest guest = buildGuest(guestsDto);
         guest.setId(id);
-        guestRepository.save(guest);
+        guestRepository.save(guest);*//*
     }
 
     public void deleteById(Long id) {
-        if(findById(id).isEmpty()){
+        if (findById(id).isEmpty()) {
             throw new NoSuchElementException("Such guest is not exists");
         }
 
@@ -152,5 +132,5 @@ public class GuestService {
         } else {
             throw new NotEmptyObjectException("This guest has reservations. At first delete reservations.");
         }
-    }
+    }*/
 }

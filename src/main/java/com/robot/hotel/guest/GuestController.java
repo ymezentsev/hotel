@@ -2,6 +2,7 @@ package com.robot.hotel.guest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,32 +25,32 @@ public class GuestController {
 
     @PostMapping()
     @Operation(summary = "Create new guest")
-    public void save(@RequestBody GuestDto guestsDto) {
-        guestService.save(guestsDto);
+    public GuestDto save(@Valid @RequestBody GuestRequest guestRequest) {
+        return guestService.save(guestRequest);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get guest by id")
-    public Optional<GuestDto> findById(@PathVariable Long id) {
-        return Optional.of(guestService.findById(id).orElseThrow());
+    public GuestDto findById(@PathVariable Long id) {
+        return guestService.findById(id);
     }
 
     @GetMapping("/email/{email}")
     @Operation(summary = "Get guest by email")
-    public Optional<GuestDto> findByEmail(@PathVariable String email) {
-        return Optional.of(guestService.findByEmail(email).orElseThrow());
+    public GuestDto findByEmail(@PathVariable String email) {
+        return guestService.findByEmail(email);
     }
 
     @GetMapping("/telNumber/{telNumber}")
     @Operation(summary = "Get guest by tel. number")
-    public Optional<GuestDto> findByTelNumber(@PathVariable String telNumber) {
-        return Optional.of(guestService.findByTelNumber(telNumber).orElseThrow());
+    public GuestDto findByTelNumber(@PathVariable String telNumber) {
+        return guestService.findByTelNumber(telNumber);
     }
 
     @GetMapping("/passport/{passportSerialNumber}")
     @Operation(summary = "Get guest by passport number")
-    public Optional<GuestDto> findByPassportSerialNumber(@PathVariable String passportSerialNumber) {
-        return Optional.of(guestService.findByPassportSerialNumber(passportSerialNumber).orElseThrow());
+    public GuestDto findByPassportSerialNumber(@PathVariable String passportSerialNumber) {
+        return guestService.findByPassportSerialNumber(passportSerialNumber);
     }
 
     @GetMapping("/lastName/{lastName}")
@@ -64,7 +65,7 @@ public class GuestController {
         return guestService.findGuestByReservation(id);
     }
 
-    @PutMapping("/{id}")
+/*    @PutMapping("/{id}")
     @Operation(summary = "Update guest")
     public void update(@PathVariable Long id, @RequestBody GuestDto guestsDto) {
         guestService.update(id, guestsDto);
@@ -74,5 +75,5 @@ public class GuestController {
     @Operation(summary = "Delete guest")
     public void deleteById(@PathVariable Long id) {
         guestService.deleteById(id);
-    }
+    }*/
 }

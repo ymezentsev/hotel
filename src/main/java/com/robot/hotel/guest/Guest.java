@@ -39,5 +39,5 @@ public class Guest {
 
     @ManyToMany(mappedBy = "guests")
     @JsonIgnore
-    private Set<Reservation> reservations = new HashSet<>();
+    private Set<Reservation> reservations;// = new HashSet<>();
 }
