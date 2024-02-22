@@ -31,13 +31,13 @@ public class GuestService {
     }
 
     public GuestDto save(GuestRequest guestRequest) {
-        String updatedTelNumber = updateTelNumber(guestRequest.getTelNumber());
+        guestRequest.setTelNumber(updateTelNumber(guestRequest.getTelNumber()));
 
         if (Boolean.TRUE.equals(guestRepository.existsByEmail(guestRequest.getEmail().toLowerCase()))) {
             throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "email"));
         }
 
-        if (Boolean.TRUE.equals(guestRepository.existsByTelNumber(updatedTelNumber))) {
+        if (Boolean.TRUE.equals(guestRepository.existsByTelNumber(guestRequest.getTelNumber()))) {
             throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "tel.number"));
         }
 
@@ -46,7 +46,6 @@ public class GuestService {
             throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "passport"));
         }
 
-        guestRequest.setTelNumber(updatedTelNumber);
         Guest newGuest = guestMapper.buildGuestFromRequest(guestRequest);
         return guestMapper.buildGuestsDto(guestRepository.save(newGuest));
     }
