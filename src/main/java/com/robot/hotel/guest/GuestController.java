@@ -43,7 +43,7 @@ public class GuestController {
 
     @GetMapping("/telNumber/{telNumber}")
     @Operation(summary = "Get guest by tel. number")
-    public GuestDto findByTelNumber(@PathVariable String telNumber) {
+    public List<GuestDto> findByTelNumber(@PathVariable String telNumber) {
         return guestService.findByTelNumber(telNumber);
     }
 

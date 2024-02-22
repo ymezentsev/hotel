@@ -7,11 +7,13 @@ import com.robot.hotel.reservation.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -29,11 +31,13 @@ public class GuestService {
     }
 
     public GuestDto save(GuestRequest guestRequest) {
+        String updatedTelNumber = updateTelNumber(guestRequest.getTelNumber());
+
         if (Boolean.TRUE.equals(guestRepository.existsByEmail(guestRequest.getEmail().toLowerCase()))) {
             throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "email"));
         }
 
-        if (Boolean.TRUE.equals(guestRepository.existsByTelNumber(guestRequest.getTelNumber()))) {
+        if (Boolean.TRUE.equals(guestRepository.existsByTelNumber(updatedTelNumber))) {
             throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "tel.number"));
         }
 
@@ -42,6 +46,7 @@ public class GuestService {
             throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "passport"));
         }
 
+        guestRequest.setTelNumber(updatedTelNumber);
         Guest newGuest = guestMapper.buildGuestFromRequest(guestRequest);
         return guestMapper.buildGuestsDto(guestRepository.save(newGuest));
     }
@@ -58,10 +63,12 @@ public class GuestService {
                 .orElseThrow());
     }
 
-    public GuestDto findByTelNumber(String telNumber) {
-        return guestMapper.buildGuestsDto(guestRepository
-                .findByTelNumber(telNumber)
-                .orElseThrow());
+    public List<GuestDto> findByTelNumber(String telNumber) {
+        String updatedTelNumber = "%" + updateTelNumber(telNumber);
+
+        return guestRepository.findByTelNumber(updatedTelNumber).stream()
+                .map(guestMapper::buildGuestsDto)
+                .toList();
     }
 
     public GuestDto findByPassportSerialNumber(String passportSerialNumber) {
@@ -133,4 +140,19 @@ public class GuestService {
             throw new NotEmptyObjectException("This guest has reservations. At first delete reservations.");
         }
     }*/
+
+    private String updateTelNumber(String telNumber) {
+        StringBuilder stringBuilder = new StringBuilder();
+        char[] chars = telNumber.toCharArray();
+        if (chars[0] == '+') {
+            stringBuilder.append(chars[0]);
+        }
+
+        for (char ch : chars) {
+            if (Character.isDigit(ch)) {
+                stringBuilder.append(ch);
+            }
+        }
+        return stringBuilder.toString();
+    }
 }
