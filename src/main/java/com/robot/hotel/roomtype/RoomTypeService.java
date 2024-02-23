@@ -58,7 +58,10 @@ public class RoomTypeService {
     }
 
     public void deleteById(Long id) {
-        if (roomTypeRepository.findById(id).orElseThrow().getRooms().isEmpty()) {
+        if (roomTypeRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException(String.format(TYPE_IS_NOT_EXISTS, id)))
+                .getRooms()
+                .isEmpty()) {
             roomTypeRepository.deleteById(id);
         } else {
             throw new NotEmptyObjectException(ROOMS_OF_SUCH_TYPE_ARE_EXISTS);

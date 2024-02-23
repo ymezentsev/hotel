@@ -114,11 +114,9 @@ public class RoomService {
                 () -> new NoSuchElementException(String.format(ROOM_IS_NOT_EXISTS, id))
         );
 
-        if (Boolean.TRUE.equals(roomRepository.existsByNumber(roomRequest.getNumber().toLowerCase()))) {
-            Long idExistingRoom = roomRepository.findByNumber(roomRequest.getNumber().toLowerCase())
-                    .orElseThrow()
-                    .getId();
-            if (!Objects.equals(idExistingRoom, id)) {
+        Optional<Room> existingRoom = roomRepository.findByNumber(roomRequest.getNumber().toLowerCase());
+        if (existingRoom.isPresent()) {
+            if (!Objects.equals(existingRoom.get().getId(), id)) {
                 throw new DuplicateObjectException(NUMBER_IS_ALREADY_EXISTS);
             }
         }
@@ -135,7 +133,10 @@ public class RoomService {
 
     @Transactional
     public void deleteById(Long id) {
-        if (roomRepository.findById(id).orElseThrow().getReservations().isEmpty()) {
+        if (roomRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException(String.format(ROOM_IS_NOT_EXISTS, id)))
+                .getReservations()
+                .isEmpty()) {
             roomRepository.deleteById(id);
         } else {
             throw new NotEmptyObjectException(RESERVATIONS_FOR_THIS_ROOM_ARE_EXISTS);
