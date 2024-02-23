@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -33,12 +34,16 @@ public class GuestMapper {
     }
 
     public Guest buildGuestFromRequest (GuestRequest guestRequest) {
+        if (Objects.isNull(guestRequest.getPassportSerialNumber())){
+            guestRequest.setPassportSerialNumber("");
+        }
+
         return Guest.builder()
-                .firstName(guestRequest.getFirstName().toLowerCase())
-                .lastName(guestRequest.getLastName().toLowerCase())
-                .telNumber(guestRequest.getTelNumber())
-                .email(guestRequest.getEmail().toLowerCase())
-                .passportSerialNumber(guestRequest.getPassportSerialNumber().toLowerCase())
+                .firstName(guestRequest.getFirstName().toLowerCase().strip())
+                .lastName(guestRequest.getLastName().toLowerCase().strip())
+                .telNumber(guestRequest.getTelNumber().strip())
+                .email(guestRequest.getEmail().toLowerCase().strip())
+                .passportSerialNumber(guestRequest.getPassportSerialNumber().toLowerCase().strip())
                 .reservations(Collections.emptySet())
                 .build();
     }

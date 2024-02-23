@@ -1,28 +1,25 @@
 package com.robot.hotel.guest;
 
-import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
-import com.robot.hotel.reservation.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
 public class GuestService {
     private final GuestRepository guestRepository;
-    private final ReservationRepository reservationRepository;
     private final GuestMapper guestMapper;
 
     private static final String GUEST_IS_ALREADY_EXISTS = "Guest with such %s is already exists";
+    private static final String GUEST_IS_NOT_EXISTS = "Guest with id %d is not exists";
+    private static final String RESERVATIONS_FOR_THIS_GUEST_ARE_EXISTS =
+            "This guest has reservations. At first delete reservations";
 
     public List<GuestDto> findAll() {
         return guestRepository.findAll().stream()
@@ -33,7 +30,7 @@ public class GuestService {
     public GuestDto save(GuestRequest guestRequest) {
         guestRequest.setTelNumber(updateTelNumber(guestRequest.getTelNumber()));
 
-        if (Boolean.TRUE.equals(guestRepository.existsByEmail(guestRequest.getEmail().toLowerCase()))) {
+        if (Boolean.TRUE.equals(guestRepository.existsByEmail(guestRequest.getEmail().toLowerCase().strip()))) {
             throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "email"));
         }
 
@@ -41,9 +38,11 @@ public class GuestService {
             throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "tel.number"));
         }
 
-        if (Boolean.TRUE.equals(guestRepository.existsByPassportSerialNumber(
-                guestRequest.getPassportSerialNumber().toLowerCase()))) {
-            throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "passport"));
+        if (Objects.nonNull(guestRequest.getPassportSerialNumber()) && !guestRequest.getPassportSerialNumber().isBlank()) {
+            if (Boolean.TRUE.equals(guestRepository.existsByPassportSerialNumber(
+                    guestRequest.getPassportSerialNumber().toLowerCase().strip()))) {
+                throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "passport"));
+            }
         }
 
         Guest newGuest = guestMapper.buildGuestFromRequest(guestRequest);
@@ -58,26 +57,24 @@ public class GuestService {
 
     public GuestDto findByEmail(String email) {
         return guestMapper.buildGuestsDto(guestRepository
-                .findByEmail(email.toLowerCase())
+                .findByEmail(email.toLowerCase().strip())
                 .orElseThrow());
     }
 
-    public List<GuestDto> findByTelNumber(String telNumber) {
-        String updatedTelNumber = "%" + updateTelNumber(telNumber);
-
-        return guestRepository.findByTelNumber(updatedTelNumber).stream()
-                .map(guestMapper::buildGuestsDto)
-                .toList();
+    public GuestDto findByTelNumber(String telNumber) {
+        return guestMapper.buildGuestsDto(guestRepository
+                .findByTelNumber(updateTelNumber(telNumber))
+                .orElseThrow());
     }
 
     public GuestDto findByPassportSerialNumber(String passportSerialNumber) {
         return guestMapper.buildGuestsDto(guestRepository
-                .findByPassportSerialNumber(passportSerialNumber.toLowerCase())
+                .findByPassportSerialNumber(passportSerialNumber.toLowerCase().strip())
                 .orElseThrow());
     }
 
     public List<GuestDto> findByLastName(String lastName) {
-        return guestRepository.findByLastName(lastName.toLowerCase()).stream()
+        return guestRepository.findByLastName(lastName.toLowerCase().strip()).stream()
                 .map(guestMapper::buildGuestsDto)
                 .toList();
     }
@@ -88,57 +85,51 @@ public class GuestService {
                 .toList();
     }
 
-    /*public void update(Long id, GuestDto newGuestsDto) {
-        Optional<GuestDto> optionalGuestsDto = findById(id);
-        GuestDto guestsDto = null;
+    public void update(Long id, GuestRequest guestRequest) {
+        Guest guestToUpdate = guestRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException(String.format(GUEST_IS_NOT_EXISTS, id))
+        );
 
-        if (optionalGuestsDto.isEmpty()) {
-            throw new NoSuchElementException("Such guest is not exists");
+        guestRequest.setTelNumber(updateTelNumber(guestRequest.getTelNumber()));
+
+        Optional<Guest> existingGuest = guestRepository.findByEmail(guestRequest.getEmail().toLowerCase().strip());
+        if (existingGuest.isPresent() && !Objects.equals(existingGuest.get().getId(), id)) {
+            throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "email"));
+        }
+
+        existingGuest = guestRepository.findByTelNumber(guestRequest.getTelNumber());
+        if (existingGuest.isPresent() && !Objects.equals(existingGuest.get().getId(), id)) {
+            throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "tel.number"));
+        }
+
+        if (Objects.nonNull(guestRequest.getPassportSerialNumber()) && !guestRequest.getPassportSerialNumber().isBlank()) {
+            existingGuest = guestRepository.findByPassportSerialNumber(
+                    guestRequest.getPassportSerialNumber().toLowerCase().strip());
+            if (existingGuest.isPresent() && !Objects.equals(existingGuest.get().getId(), id)) {
+                throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "passport"));
+            }
         } else {
-            guestsDto = optionalGuestsDto.get();
+            guestRequest.setPassportSerialNumber("");
         }
 
-        if (newGuestsDto.getFirstName() != null) {
-            guestsDto.setFirstName(newGuestsDto.getFirstName());
-        }
-        if (newGuestsDto.getLastName() != null) {
-            guestsDto.setLastName(newGuestsDto.getLastName());
-        }
-        if (newGuestsDto.getTelNumber() != null) {
-            if (findByTelNumber(newGuestsDto.getTelNumber()).isPresent()) {
-                throw new DuplicateObjectException("Guest with such tel.number is already exists");
-            }
-            guestsDto.setTelNumber(newGuestsDto.getTelNumber());
-        }
-        if (newGuestsDto.getEmail() != null) {
-            if (findByEmail(newGuestsDto.getEmail()).isPresent()) {
-                throw new DuplicateObjectException("Guest with such email is already exists");
-            }
-            guestsDto.setEmail(newGuestsDto.getEmail());
-        }
-        if (newGuestsDto.getPassportSerialNumber() != null) {
-            if (findByPassportSerialNumber(newGuestsDto.getPassportSerialNumber()).isPresent()) {
-                throw new DuplicateObjectException("Guest with such passport is already exists");
-            }
-            guestsDto.setPassportSerialNumber(newGuestsDto.getPassportSerialNumber());
-        }
-
-        *//*Guest guest = buildGuest(guestsDto);
-        guest.setId(id);
-        guestRepository.save(guest);*//*
+        guestToUpdate.setFirstName(guestRequest.getFirstName().strip());
+        guestToUpdate.setLastName(guestRequest.getLastName().strip());
+        guestToUpdate.setTelNumber(guestRequest.getTelNumber().strip());
+        guestToUpdate.setEmail(guestRequest.getEmail().strip());
+        guestToUpdate.setPassportSerialNumber(guestRequest.getPassportSerialNumber().strip());
+        guestRepository.save(guestToUpdate);
     }
 
     public void deleteById(Long id) {
-        if (findById(id).isEmpty()) {
-            throw new NoSuchElementException("Such guest is not exists");
-        }
-
-        if (reservationRepository.findByGuestsId(id).isEmpty()) {
+        if (guestRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException(String.format(GUEST_IS_NOT_EXISTS, id)))
+                .getReservations()
+                .isEmpty()) {
             guestRepository.deleteById(id);
         } else {
-            throw new NotEmptyObjectException("This guest has reservations. At first delete reservations.");
+            throw new NotEmptyObjectException(RESERVATIONS_FOR_THIS_GUEST_ARE_EXISTS);
         }
-    }*/
+    }
 
     private String updateTelNumber(String telNumber) {
         StringBuilder stringBuilder = new StringBuilder();

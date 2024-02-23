@@ -27,6 +27,7 @@ public class GuestRequest {
     @Size(max = 20, message = "Max size for tel.number is 20 characters")
     private String telNumber;
 
+    @NotBlank(message = "Email is required")
     @Email(message = "Not valid email")
     @Size(max = 50, message = "Max size for email is 50 characters")
     private String email;

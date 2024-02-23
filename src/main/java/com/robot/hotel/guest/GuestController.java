@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,7 +42,7 @@ public class GuestController {
 
     @GetMapping("/telNumber/{telNumber}")
     @Operation(summary = "Get guest by tel. number")
-    public List<GuestDto> findByTelNumber(@PathVariable String telNumber) {
+    public GuestDto findByTelNumber(@PathVariable String telNumber) {
         return guestService.findByTelNumber(telNumber);
     }
 
@@ -65,15 +64,15 @@ public class GuestController {
         return guestService.findGuestByReservation(id);
     }
 
-/*    @PutMapping("/{id}")
+    @PutMapping("/{id}")
     @Operation(summary = "Update guest")
-    public void update(@PathVariable Long id, @RequestBody GuestDto guestsDto) {
-        guestService.update(id, guestsDto);
+    public void update(@PathVariable Long id, @Valid @RequestBody GuestRequest guestRequest) {
+        guestService.update(id, guestRequest);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete guest")
     public void deleteById(@PathVariable Long id) {
         guestService.deleteById(id);
-    }*/
+    }
 }

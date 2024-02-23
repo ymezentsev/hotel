@@ -31,10 +31,10 @@ public class Guest {
     @Column(unique = true, nullable = false)
     private String telNumber;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(unique = true)
+    @Column
     private String passportSerialNumber;
 
     @ManyToMany(mappedBy = "guests")

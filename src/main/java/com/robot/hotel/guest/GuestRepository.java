@@ -1,8 +1,6 @@
 package com.robot.hotel.guest;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,8 +17,7 @@ public interface GuestRepository extends JpaRepository<Guest, Long> {
 
     Optional<Guest> findByEmail(String email);
 
-    @Query("SELECT g FROM Guest g WHERE g.telNumber like :telNumber")
-    List<Guest> findByTelNumber(@Param("telNumber") String telNumber);
+    Optional<Guest> findByTelNumber(String telNumber);
 
     Optional<Guest> findByPassportSerialNumber(String passportSerialNumber);
 
