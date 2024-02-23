@@ -19,7 +19,7 @@ public class RoomTypeService {
     private static final String ROOMS_OF_SUCH_TYPE_ARE_EXISTS = "There are rooms of this type at hotel. At first delete rooms";
 
     public RoomTypeDto save(RoomTypeRequest roomTypeRequest) {
-        if (Boolean.TRUE.equals(roomTypeRepository.existsByType(roomTypeRequest.getType().toLowerCase()))) {
+        if (Boolean.TRUE.equals(roomTypeRepository.existsByType(roomTypeRequest.getType().toLowerCase().strip()))) {
             throw new DuplicateObjectException(TYPE_IS_ALREADY_EXISTS);
         }
         RoomType newRoomType = roomTypeMapper.buildRoomTypeFromRequest(roomTypeRequest);
@@ -34,7 +34,7 @@ public class RoomTypeService {
 
     public RoomTypeDto findByType(String type) {
         return roomTypeMapper.buildRoomTypeDto(roomTypeRepository
-                .findByType(type.toLowerCase())
+                .findByType(type.toLowerCase().strip())
                 .orElseThrow());
     }
 
@@ -49,11 +49,11 @@ public class RoomTypeService {
                 () -> new NoSuchElementException(String.format(TYPE_IS_NOT_EXISTS, id))
         );
 
-        if (Boolean.TRUE.equals(roomTypeRepository.existsByType(roomTypeRequest.getType().toLowerCase()))) {
+        if (Boolean.TRUE.equals(roomTypeRepository.existsByType(roomTypeRequest.getType().toLowerCase().strip()))) {
             throw new DuplicateObjectException(TYPE_IS_ALREADY_EXISTS);
         }
 
-        roomType.setType(roomTypeRequest.getType().toLowerCase());
+        roomType.setType(roomTypeRequest.getType().toLowerCase().strip());
         roomTypeRepository.save(roomType);
     }
 

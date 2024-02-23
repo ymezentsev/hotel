@@ -19,7 +19,7 @@ public class RoomTypeMapper {
 
     public RoomType buildRoomTypeFromRequest(RoomTypeRequest roomTypeRequest) {
         return RoomType.builder()
-                .type(roomTypeRequest.getType().toLowerCase())
+                .type(roomTypeRequest.getType().toLowerCase().strip())
                 .rooms(Collections.emptyList())
                 .build();
     }
