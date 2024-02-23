@@ -115,10 +115,8 @@ public class RoomService {
         );
 
         Optional<Room> existingRoom = roomRepository.findByNumber(roomRequest.getNumber().toLowerCase());
-        if (existingRoom.isPresent()) {
-            if (!Objects.equals(existingRoom.get().getId(), id)) {
-                throw new DuplicateObjectException(NUMBER_IS_ALREADY_EXISTS);
-            }
+        if (existingRoom.isPresent() && !Objects.equals(existingRoom.get().getId(), id)) {
+            throw new DuplicateObjectException(NUMBER_IS_ALREADY_EXISTS);
         }
 
         RoomType roomType = roomTypeRepository.findByType(roomRequest.getRoomType().toLowerCase())
