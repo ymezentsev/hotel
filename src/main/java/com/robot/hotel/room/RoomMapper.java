@@ -24,7 +24,7 @@ public class RoomMapper {
 
     public Room buildRoomFromRequest(RoomRequest roomRequest, RoomType roomType) {
         return Room.builder()
-                .number(roomRequest.getNumber().toLowerCase())
+                .number(roomRequest.getNumber().toLowerCase().strip())
                 .price(roomRequest.getPrice())
                 .maxCountOfGuests(roomRequest.getMaxCountOfGuests())
                 .roomType(roomType)

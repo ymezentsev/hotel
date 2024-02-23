@@ -35,11 +35,11 @@ public class RoomService {
     }
 
     public RoomDto save(RoomRequest roomRequest) {
-        if (Boolean.TRUE.equals(roomRepository.existsByNumber(roomRequest.getNumber().toLowerCase()))) {
+        if (Boolean.TRUE.equals(roomRepository.existsByNumber(roomRequest.getNumber().toLowerCase().strip()))) {
             throw new DuplicateObjectException(NUMBER_IS_ALREADY_EXISTS);
         }
 
-        RoomType roomType = roomTypeRepository.findByType(roomRequest.getRoomType().toLowerCase())
+        RoomType roomType = roomTypeRepository.findByType(roomRequest.getRoomType().toLowerCase().strip())
                 .orElseThrow(() -> new NoSuchElementException(TYPE_IS_NOT_EXISTS));
 
         Room newRoom = roomMapper.buildRoomFromRequest(roomRequest, roomType);
@@ -54,12 +54,12 @@ public class RoomService {
 
     public RoomDto findByNumber(String number) {
         return roomMapper.buildRoomsDto(roomRepository
-                .findByNumber(number.toLowerCase())
+                .findByNumber(number.toLowerCase().strip())
                 .orElseThrow());
     }
 
     public List<RoomDto> findByType(String type) {
-        Long roomTypeId = roomTypeRepository.findByType(type.toLowerCase())
+        Long roomTypeId = roomTypeRepository.findByType(type.toLowerCase().strip())
                 .orElseThrow(() -> new NoSuchElementException(TYPE_IS_NOT_EXISTS))
                 .getId();
 
@@ -114,15 +114,15 @@ public class RoomService {
                 () -> new NoSuchElementException(String.format(ROOM_IS_NOT_EXISTS, id))
         );
 
-        Optional<Room> existingRoom = roomRepository.findByNumber(roomRequest.getNumber().toLowerCase());
+        Optional<Room> existingRoom = roomRepository.findByNumber(roomRequest.getNumber().toLowerCase().strip());
         if (existingRoom.isPresent() && !Objects.equals(existingRoom.get().getId(), id)) {
             throw new DuplicateObjectException(NUMBER_IS_ALREADY_EXISTS);
         }
 
-        RoomType roomType = roomTypeRepository.findByType(roomRequest.getRoomType().toLowerCase())
+        RoomType roomType = roomTypeRepository.findByType(roomRequest.getRoomType().toLowerCase().strip())
                 .orElseThrow(() -> new NoSuchElementException(TYPE_IS_NOT_EXISTS));
 
-        roomToUpdate.setNumber(roomRequest.getNumber().toLowerCase());
+        roomToUpdate.setNumber(roomRequest.getNumber().toLowerCase().strip());
         roomToUpdate.setPrice(roomRequest.getPrice());
         roomToUpdate.setMaxCountOfGuests(roomRequest.getMaxCountOfGuests());
         roomToUpdate.setRoomType(roomType);
