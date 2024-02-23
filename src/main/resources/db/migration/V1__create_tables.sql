@@ -17,8 +17,8 @@ create table IF NOT EXISTS guest(
     first_name varchar(50) not null,
 	last_name varchar(50) not null,
 	tel_number varchar(20) unique not null,
-    email varchar(50) unique,
-	passport_serial_number varchar(50) unique
+    email varchar(50) unique not null,
+	passport_serial_number varchar(50)
 );
 
 create table IF NOT EXISTS reservation(
