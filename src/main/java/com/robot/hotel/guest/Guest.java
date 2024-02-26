@@ -8,8 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Builder
@@ -39,5 +38,5 @@ public class Guest {
 
     @ManyToMany(mappedBy = "guests")
     @JsonIgnore
-    private Set<Reservation> reservations;// = new HashSet<>();
+    private List<Reservation> reservations;
 }

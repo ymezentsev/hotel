@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Builder
@@ -18,5 +18,5 @@ public class GuestDto {
     private String telNumber;
     private String email;
     private String passportSerialNumber;
-    private Set<String> reservations;
+    private List<String> reservations;
 }

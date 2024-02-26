@@ -49,16 +49,16 @@ public class ReservationService {
     }
 
     private ReservationDto buildReservationsDto(Reservation reservation) {
-        Set<Guest> guestsSet = guestRepository.findByReservationsId(reservation.getId());
+        //Set<Guest> guestsSet = guestRepository.findByReservationsId(reservation.getId());
 
         return ReservationDto.builder()
                 .id(reservation.getId())
                 .checkInDate(reservation.getCheckInDate())
                 .checkOutDate(reservation.getCheckOutDate())
                 .roomNumber(reservation.getRoom().getNumber())
-                .guests(guestsSet.stream()
+                /*.guests(guestsSet.stream()
                         .map(getGuestsString())
-                        .collect(Collectors.toSet()))
+                        .collect(Collectors.toSet()))*/
                 .build();
     }
 

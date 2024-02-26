@@ -2,15 +2,12 @@ package com.robot.hotel.guest;
 
 import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.reservation.ReservationRepository;
-import com.robot.hotel.room.Room;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +26,7 @@ public class GuestMapper {
                 .passportSerialNumber(guest.getPassportSerialNumber())
                 .reservations(guest.getReservations().stream()
                         .map(getReservationsString())
-                        .collect(Collectors.toSet()))
+                        .toList())
                 .build();
     }
 
@@ -44,7 +41,7 @@ public class GuestMapper {
                 .telNumber(guestRequest.getTelNumber().strip())
                 .email(guestRequest.getEmail().toLowerCase().strip())
                 .passportSerialNumber(guestRequest.getPassportSerialNumber().toLowerCase().strip())
-                .reservations(Collections.emptySet())
+                .reservations(Collections.emptyList())
                 .build();
     }
 

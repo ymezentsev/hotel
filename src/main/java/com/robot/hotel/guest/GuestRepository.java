@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public interface GuestRepository extends JpaRepository<Guest, Long> {
@@ -23,5 +22,5 @@ public interface GuestRepository extends JpaRepository<Guest, Long> {
 
     List<Guest> findByLastName(String lastName);
 
-    Set<Guest> findByReservationsId(Long reservationId);
+    List<Guest> findByReservationsId(Long reservationId);
 }

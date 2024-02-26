@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -38,5 +39,5 @@ public class Reservation {
             name = "reservation_guest",
             joinColumns = @JoinColumn(name = "reservation_id"),
             inverseJoinColumns = @JoinColumn(name = "guest_id"))
-    private Set<Guest> guests = new HashSet<>();
+    private List<Guest> guests;// = new HashSet<>();
 }
