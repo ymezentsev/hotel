@@ -31,14 +31,16 @@ public class DBInitializer {
     GuestRepository guestRepository;
 
     public void populateDB() {
-      //  reservationRepository.deleteAll();
+        deleteReservationToGuest();
+        reservationRepository.deleteAll();
         guestRepository.deleteAll();
         roomRepository.deleteAll();
         roomTypeRepository.deleteAll();
         populateRoomTypeTable();
         populateRoomTable();
-        populateReservationTable();
         populateGuestTable();
+        populateReservationTable();
+        setReservationToGuest();
     }
 
     private void populateRoomTypeTable() {
@@ -91,7 +93,6 @@ public class DBInitializer {
                 .lastName("sidorov")
                 .telNumber("0965467834")
                 .email("sidor@gmail.com")
-                .reservations(List.of(reservationRepository.findById(1L).orElseThrow()))
                 .build());
 
         guestRepository.save(Guest.builder()
@@ -100,7 +101,6 @@ public class DBInitializer {
                 .telNumber("0954375647")
                 .email("sidor_andr@gmail.com")
                 .passportSerialNumber("bb345678")
-                .reservations(List.of(reservationRepository.findById(1L).orElseThrow()))
                 .build());
 
         guestRepository.save(Guest.builder()
@@ -133,5 +133,29 @@ public class DBInitializer {
                 .checkInDate(LocalDate.now())
                 .checkOutDate(LocalDate.now().plusDays(4))
                 .build());
+    }
+
+    private void setReservationToGuest() {
+        Guest guest1 = guestRepository.findByEmail("sidor@gmail.com").orElseThrow();
+        Room room = roomRepository.findByNumber("204").orElseThrow();
+        guest1.setReservations(List.of(reservationRepository.findByRoomId(room.getId()).get(0)));
+
+        Guest guest2 = guestRepository.findByEmail("sidor_andr@gmail.com").orElseThrow();
+        guest2.setReservations(List.of(reservationRepository.findByRoomId(room.getId()).get(0)));
+
+        guestRepository.save(guest1);
+        guestRepository.save(guest2);
+    }
+
+
+    private void deleteReservationToGuest() {
+        Guest guest1 = guestRepository.findByEmail("sidor@gmail.com").orElseThrow();
+        guest1.setReservations(Collections.emptyList());
+
+        Guest guest2 = guestRepository.findByEmail("sidor_andr@gmail.com").orElseThrow();
+        guest2.setReservations(Collections.emptyList());
+
+        guestRepository.save(guest1);
+        guestRepository.save(guest2);
     }
 }

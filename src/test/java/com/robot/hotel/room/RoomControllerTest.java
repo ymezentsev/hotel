@@ -31,9 +31,6 @@ class RoomControllerTest {
     private Integer port;
 
     @Autowired
-    private RoomController roomController;
-
-    @Autowired
     private RoomRepository roomRepository;
 
     @Autowired
