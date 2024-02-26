@@ -1,5 +1,7 @@
 package com.robot.hotel;
 
+import com.robot.hotel.guest.Guest;
+import com.robot.hotel.guest.GuestRepository;
 import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.room.Room;
@@ -24,12 +26,17 @@ public class DBInitializer {
     @Autowired
     ReservationRepository reservationRepository;
 
+    @Autowired
+    GuestRepository guestRepository;
+
     public void populateDB() {
         reservationRepository.deleteAll();
+        guestRepository.deleteAll();
         roomRepository.deleteAll();
         roomTypeRepository.deleteAll();
         populateRoomTypeTable();
         populateRoomTable();
+        populateGuestTable();
         populateReservationTable();
     }
 
@@ -74,6 +81,46 @@ public class DBInitializer {
                 .price(BigDecimal.valueOf(1000))
                 .maxCountOfGuests(2)
                 .roomType(roomTypeRepository.findByType("standart double").orElseThrow())
+                .build());
+    }
+
+    private void populateGuestTable() {
+        guestRepository.save(Guest.builder()
+                .firstName("denis")
+                .lastName("sidorov")
+                .telNumber("0965467834")
+                .email("sidor@gmail.com")
+                .build());
+
+        guestRepository.save(Guest.builder()
+                .firstName("andriy")
+                .lastName("sidorov")
+                .telNumber("0954375647")
+                .email("sidor_andr@gmail.com")
+                .passportSerialNumber("bb345678")
+                .build());
+
+        guestRepository.save(Guest.builder()
+                .firstName("mark")
+                .lastName("dmitrenko")
+                .telNumber("0505463213")
+                .email("dmitr@gmail.com")
+                .passportSerialNumber("va123456")
+                .build());
+
+        guestRepository.save(Guest.builder()
+                .firstName("evgen")
+                .lastName("kozlov")
+                .telNumber("0964569034")
+                .email("kozlov@gmail.com")
+                .build());
+
+        guestRepository.save(Guest.builder()
+                .firstName("andriy")
+                .lastName("nikolaenko")
+                .telNumber("0934560912")
+                .email("nikola@gmail.com")
+                .passportSerialNumber("ba345863")
                 .build());
     }
 
