@@ -146,4 +146,8 @@ public class ReservationService {
 
         reservationRepository.deleteById(id);
     }
+
+    public List<ReservationDto> findCurrentReservationsForSpecificRoom(String roomNumber) {
+        return new ArrayList<>();
+    }
 }
