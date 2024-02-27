@@ -14,8 +14,8 @@ import java.time.LocalDate;
 @Schema(description = "Dto for get free rooms")
 public class FreeRoomRequest {
     @FutureOrPresent(message = "Check in date must be future or present")
-    LocalDate checkInDate;
+    private LocalDate checkInDate;
 
     @Future(message = "Check out date must be future")
-    LocalDate checkOutDate;
+    private LocalDate checkOutDate;
 }

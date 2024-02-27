@@ -87,8 +87,8 @@ public class RoomService {
     }
 
     public Set<RoomDto> findFreeRooms(FreeRoomRequest freeRoomRequest) {
-        if (freeRoomRequest.checkOutDate.isBefore(freeRoomRequest.checkInDate)
-                || freeRoomRequest.checkOutDate.isEqual(freeRoomRequest.checkInDate)) {
+        if (freeRoomRequest.getCheckOutDate().isBefore(freeRoomRequest.getCheckInDate())
+                || freeRoomRequest.getCheckOutDate().isEqual(freeRoomRequest.getCheckInDate())) {
             throw new WrongDatesException(WRONG_DATE);
         }
 
