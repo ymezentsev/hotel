@@ -17,6 +17,13 @@ public class RoomTypeMapper {
                 .build();
     }
 
+    public RoomType buildRoomType(RoomTypeDto roomTypeDto) {
+        return RoomType.builder()
+                .id(roomTypeDto.getId())
+                .type(roomTypeDto.getType())
+                .build();
+    }
+
     public RoomType buildRoomTypeFromRequest(RoomTypeRequest roomTypeRequest) {
         return RoomType.builder()
                 .type(roomTypeRequest.getType().toLowerCase().strip())

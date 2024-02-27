@@ -1,15 +1,11 @@
 package com.robot.hotel.room;
 
-import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.roomtype.RoomType;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.function.Function;
-
 @Service
 public class RoomMapper {
-    public RoomDto buildRoomsDto(Room room) {
+    public RoomDto buildRoomDto(Room room) {
         return RoomDto.builder()
                 .id(room.getId())
                 .number(room.getNumber())
