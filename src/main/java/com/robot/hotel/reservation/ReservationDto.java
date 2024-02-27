@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Builder
@@ -17,5 +17,5 @@ public class ReservationDto {
     private String roomNumber;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    private Set<String> guests;
+    private List<String> guests;
 }
