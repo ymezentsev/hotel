@@ -15,7 +15,7 @@ public class RoomTypeService {
     private final RoomTypeMapper roomTypeMapper;
 
     private static final String TYPE_IS_ALREADY_EXISTS = "Such type of room is already exists";
-    private static final String TYPE_IS_NOT_EXISTS = "Type of room with id %d is not exists";
+    private static final String TYPE_IS_NOT_EXISTS = "Such type of room is not exists";
     private static final String ROOMS_OF_SUCH_TYPE_ARE_EXISTS = "There are rooms of this type at hotel. At first delete rooms";
 
     public RoomTypeDto save(RoomTypeRequest roomTypeRequest) {
@@ -35,18 +35,18 @@ public class RoomTypeService {
     public RoomTypeDto findByType(String type) {
         return roomTypeMapper.buildRoomTypeDto(roomTypeRepository
                 .findByType(type.toLowerCase().strip())
-                .orElseThrow());
+                .orElseThrow(() -> new NoSuchElementException(TYPE_IS_NOT_EXISTS)));
     }
 
     public RoomTypeDto findById(Long id) {
         return roomTypeMapper.buildRoomTypeDto(roomTypeRepository
                 .findById(id)
-                .orElseThrow());
+                .orElseThrow(() -> new NoSuchElementException(TYPE_IS_NOT_EXISTS)));
     }
 
     public void update(Long id, RoomTypeRequest roomTypeRequest) {
         RoomType roomType = roomTypeRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException(String.format(TYPE_IS_NOT_EXISTS, id))
+                () -> new NoSuchElementException(TYPE_IS_NOT_EXISTS)
         );
 
         if (Boolean.TRUE.equals(roomTypeRepository.existsByType(roomTypeRequest.getType().toLowerCase().strip()))) {
@@ -59,7 +59,7 @@ public class RoomTypeService {
 
     public void deleteById(Long id) {
         if (roomTypeRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(String.format(TYPE_IS_NOT_EXISTS, id)))
+                .orElseThrow(() -> new NoSuchElementException(TYPE_IS_NOT_EXISTS))
                 .getRooms()
                 .isEmpty()) {
             roomTypeRepository.deleteById(id);
