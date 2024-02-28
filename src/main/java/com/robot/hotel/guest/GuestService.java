@@ -17,7 +17,7 @@ public class GuestService {
     private final GuestMapper guestMapper;
 
     private static final String GUEST_IS_ALREADY_EXISTS = "Guest with such %s is already exists";
-    private static final String GUEST_IS_NOT_EXISTS = "Guest with id %d is not exists";
+    private static final String GUEST_IS_NOT_EXISTS = "Such guest is not exists";
     private static final String RESERVATIONS_FOR_THIS_GUEST_ARE_EXISTS =
             "This guest has reservations. At first delete reservations";
 
@@ -52,25 +52,25 @@ public class GuestService {
     public GuestDto findById(Long id) {
         return guestMapper.buildGuestsDto(guestRepository
                 .findById(id)
-                .orElseThrow());
+                .orElseThrow(() -> new NoSuchElementException(GUEST_IS_NOT_EXISTS)));
     }
 
     public GuestDto findByEmail(String email) {
         return guestMapper.buildGuestsDto(guestRepository
                 .findByEmail(email.toLowerCase().strip())
-                .orElseThrow());
+                .orElseThrow(() -> new NoSuchElementException(GUEST_IS_NOT_EXISTS)));
     }
 
     public GuestDto findByTelNumber(String telNumber) {
         return guestMapper.buildGuestsDto(guestRepository
                 .findByTelNumber(updateTelNumber(telNumber))
-                .orElseThrow());
+                .orElseThrow(() -> new NoSuchElementException(GUEST_IS_NOT_EXISTS)));
     }
 
     public GuestDto findByPassportSerialNumber(String passportSerialNumber) {
         return guestMapper.buildGuestsDto(guestRepository
                 .findByPassportSerialNumber(passportSerialNumber.toLowerCase().strip())
-                .orElseThrow());
+                .orElseThrow(() -> new NoSuchElementException(GUEST_IS_NOT_EXISTS)));
     }
 
     public List<GuestDto> findByLastName(String lastName) {
@@ -87,7 +87,7 @@ public class GuestService {
 
     public void update(Long id, GuestRequest guestRequest) {
         Guest guestToUpdate = guestRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException(String.format(GUEST_IS_NOT_EXISTS, id))
+                () -> new NoSuchElementException(GUEST_IS_NOT_EXISTS)
         );
 
         guestRequest.setTelNumber(updateTelNumber(guestRequest.getTelNumber()));
@@ -122,7 +122,7 @@ public class GuestService {
 
     public void deleteById(Long id) {
         if (guestRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(String.format(GUEST_IS_NOT_EXISTS, id)))
+                .orElseThrow(() -> new NoSuchElementException(GUEST_IS_NOT_EXISTS))
                 .getReservations()
                 .isEmpty()) {
             guestRepository.deleteById(id);
