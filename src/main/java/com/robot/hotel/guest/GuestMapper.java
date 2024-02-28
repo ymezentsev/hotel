@@ -41,7 +41,7 @@ public class GuestMapper {
                 .telNumber(guestRequest.getTelNumber().strip())
                 .email(guestRequest.getEmail().toLowerCase().strip())
                 .passportSerialNumber(guestRequest.getPassportSerialNumber().toLowerCase().strip())
-                .reservations(Collections.emptyList())
+                // .reservations(Collections.emptyList())
                 .build();
     }
 

@@ -3,6 +3,7 @@ package com.robot.hotel.room;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.WrongDatesException;
+import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
 import com.robot.hotel.roomtype.RoomTypeService;
@@ -19,6 +20,7 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final RoomTypeService roomTypeService;
     private final RoomTypeRepository roomTypeRepository;
+    private final ReservationRepository reservationRepository;
     private final RoomMapper roomMapper;
 
     private static final String NUMBER_IS_ALREADY_EXISTS = "Such number is already exists";
@@ -90,21 +92,20 @@ public class RoomService {
             throw new WrongDatesException(CHECK_OUT_LESS_THAN_CHECK_IN_DATE);
         }
 
-/*        List<RoomDto> roomsDtoWithMatchDate = reservationRepository.findAvailableRooms(checkIn, checkOut)
-                .stream().map(id -> findById(id).get())
+        List<RoomDto> roomsDtoWithMatchDates = reservationRepository.findFreeRooms(
+                        freeRoomRequest.getCheckInDate(), freeRoomRequest.getCheckOutDate())
+                .stream()
+                .map(roomMapper::buildRoomDto)
                 .toList();
 
-        List<Room> roomsWithoutReservations = roomRepository.findAll()
-                .stream().filter(room -> room.getReservations().size() == 0)
+        List<RoomDto> roomsWithoutReservations = roomRepository.findAll().stream()
+                .filter(room -> room.getReservations().size() == 0)
+                .map(roomMapper::buildRoomDto)
                 .toList();
-        List<RoomDto> roomsDtoWithoutReservations = roomsWithoutReservations.stream()
-                .map(this::buildRoomsDto).toList();
 
-        Set<RoomDto> availableRoomsDto = new HashSet<>(roomsDtoWithMatchDate);
-        availableRoomsDto.addAll(roomsDtoWithoutReservations);
-
-        return availableRoomsDto;*/
-        return new HashSet<>();
+        Set<RoomDto> freeRoomsDto = new HashSet<>(roomsDtoWithMatchDates);
+        freeRoomsDto.addAll(roomsWithoutReservations);
+        return freeRoomsDto;
     }
 
     public void update(Long id, RoomRequest roomRequest) {
