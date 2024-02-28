@@ -2,11 +2,11 @@ package com.robot.hotel.reservation;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,8 +29,8 @@ public class ReservationController {
 
     @PostMapping()
     @Operation(summary = "Create new reservation")
-    public ReservationDto save(@RequestBody ReservationDto reservationsDto) {
-        return reservationService.save(reservationsDto);
+    public ReservationDto save(@Valid @RequestBody ReservationRequest reservationRequest) {
+        return reservationService.save(reservationRequest);
     }
 
     @GetMapping("/guest/{id}")

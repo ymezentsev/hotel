@@ -1,10 +1,7 @@
 package com.robot.hotel.reservation;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,11 +18,14 @@ public class ReservationRequest {
     @Size(max = 20, message = "Max size for room number is 20 characters")
     private String roomNumber;
 
+    @NotNull(message = "Check in date is required")
     @FutureOrPresent(message = "Check in date must be future or present")
     private LocalDate checkInDate;
 
+    @NotNull(message = "Check out date is required")
     @Future(message = "Check out date must be future")
     private LocalDate checkOutDate;
 
+    @Size(min = 1, message = "Guest id is required")
     private Set<String> guests;
 }
