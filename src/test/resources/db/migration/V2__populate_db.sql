@@ -21,7 +21,7 @@ VALUES  ('denis', 'sidorov', '0965467834', 'sidor@gmail.com', ''),
 INSERT INTO reservation (room_id, check_in_date, check_out_date)
 VALUES  (5, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 4 DAY)),
         (5, "2024-01-15", "2024-01-18"),
-        (4, DATE_ADD(CURDATE(), INTERVAL 4 DAY), DATE_ADD(CURDATE(), INTERVAL 2 DAY)),
+        (4, DATE_ADD(CURDATE(), INTERVAL 4 DAY), DATE_ADD(CURDATE(), INTERVAL 6 DAY)),
         (1, DATE_SUB(CURDATE(), INTERVAL 2 DAY), DATE_ADD(CURDATE(), INTERVAL 3 DAY));
 
 INSERT INTO reservation_guest (reservation_id, guest_id)

@@ -31,7 +31,6 @@ public class DBInitializer {
     GuestRepository guestRepository;
 
     public void populateDB() {
-        deleteReservationToGuest();
         reservationRepository.deleteAll();
         guestRepository.deleteAll();
         roomRepository.deleteAll();
@@ -40,7 +39,6 @@ public class DBInitializer {
         populateRoomTable();
         populateGuestTable();
         populateReservationTable();
-        setReservationToGuest();
     }
 
     private void populateRoomTypeTable() {
@@ -128,34 +126,37 @@ public class DBInitializer {
     }
 
     private void populateReservationTable() {
+        Guest guest1 = guestRepository.findByEmail("sidor@gmail.com").orElseThrow();
+        Guest guest2 = guestRepository.findByEmail("sidor_andr@gmail.com").orElseThrow();
+        Guest guest4 = guestRepository.findByEmail("kozlov@gmail.com").orElseThrow();
+        Guest guest5 = guestRepository.findByEmail("nikola@gmail.com").orElseThrow();
+
         reservationRepository.save(Reservation.builder()
                 .room(roomRepository.findByNumber("204").orElseThrow())
                 .checkInDate(LocalDate.now())
                 .checkOutDate(LocalDate.now().plusDays(4))
+                .guests(List.of(guest1, guest2))
                 .build());
-    }
 
-    private void setReservationToGuest() {
-        Guest guest1 = guestRepository.findByEmail("sidor@gmail.com").orElseThrow();
-        Room room = roomRepository.findByNumber("204").orElseThrow();
-        guest1.setReservations(List.of(reservationRepository.findByRoomId(room.getId()).get(0)));
+        reservationRepository.save(Reservation.builder()
+                .room(roomRepository.findByNumber("204").orElseThrow())
+                .checkInDate(LocalDate.of(2024, 1, 15))
+                .checkOutDate(LocalDate.of(2024, 1, 18))
+                .guests(List.of(guest2))
+                .build());
 
-        Guest guest2 = guestRepository.findByEmail("sidor_andr@gmail.com").orElseThrow();
-        guest2.setReservations(List.of(reservationRepository.findByRoomId(room.getId()).get(0)));
+        reservationRepository.save(Reservation.builder()
+                .room(roomRepository.findByNumber("203").orElseThrow())
+                .checkInDate(LocalDate.now().plusDays(4))
+                .checkOutDate(LocalDate.now().plusDays(6))
+                .guests(List.of(guest4, guest5))
+                .build());
 
-        guestRepository.save(guest1);
-        guestRepository.save(guest2);
-    }
-
-
-    private void deleteReservationToGuest() {
-        Guest guest1 = guestRepository.findByEmail("sidor@gmail.com").orElseThrow();
-        guest1.setReservations(Collections.emptyList());
-
-        Guest guest2 = guestRepository.findByEmail("sidor_andr@gmail.com").orElseThrow();
-        guest2.setReservations(Collections.emptyList());
-
-        guestRepository.save(guest1);
-        guestRepository.save(guest2);
+        reservationRepository.save(Reservation.builder()
+                .room(roomRepository.findByNumber("101").orElseThrow())
+                .checkInDate(LocalDate.now().minusDays(2))
+                .checkOutDate(LocalDate.now().plusDays(3))
+                .guests(List.of(guest1, guest2, guest5))
+                .build());
     }
 }
