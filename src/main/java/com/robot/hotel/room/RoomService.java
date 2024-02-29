@@ -92,19 +92,18 @@ public class RoomService {
             throw new WrongDatesException(CHECK_OUT_LESS_THAN_CHECK_IN_DATE);
         }
 
-        List<RoomDto> roomsDtoWithMatchDates = reservationRepository.findFreeRooms(
+        List<RoomDto> roomsDtoWithMatchDates = reservationRepository.findFreeRoomsWithReservations(
                         freeRoomRequest.getCheckInDate(), freeRoomRequest.getCheckOutDate())
                 .stream()
                 .map(roomMapper::buildRoomDto)
                 .toList();
 
-        List<RoomDto> roomsWithoutReservations = roomRepository.findAll().stream()
-                .filter(room -> room.getReservations().size() == 0)
+        List<RoomDto> roomsDtoWithoutReservations = roomRepository.findRoomsWithoutReservations().stream()
                 .map(roomMapper::buildRoomDto)
                 .toList();
 
         Set<RoomDto> freeRoomsDto = new HashSet<>(roomsDtoWithMatchDates);
-        freeRoomsDto.addAll(roomsWithoutReservations);
+        freeRoomsDto.addAll(roomsDtoWithoutReservations);
         return freeRoomsDto;
     }
 

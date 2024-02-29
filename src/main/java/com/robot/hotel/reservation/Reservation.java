@@ -37,5 +37,5 @@ public class Reservation {
             name = "reservation_guest",
             joinColumns = @JoinColumn(name = "reservation_id"),
             inverseJoinColumns = @JoinColumn(name = "guest_id"))
-    private List<Guest> guests;// = new HashSet<>();
+    private List<Guest> guests;
 }

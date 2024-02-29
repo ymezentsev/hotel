@@ -41,14 +41,14 @@ class ReservationRepositoryTest {
     }
 
     @Test
-    void findFreeRoomsTest() {
+    void findFreeRoomsWithReservationsTest() {
         assertAll(
                 () -> assertEquals(1, reservationRepository
-                        .findFreeRooms(LocalDate.now(), LocalDate.now().plusDays(1)).size()),
+                        .findFreeRoomsWithReservations(LocalDate.now(), LocalDate.now().plusDays(1)).size()),
                 () -> assertEquals(2, reservationRepository
-                        .findFreeRooms(LocalDate.now().plusDays(3), LocalDate.now().plusDays(4)).size()),
+                        .findFreeRoomsWithReservations(LocalDate.now().plusDays(3), LocalDate.now().plusDays(4)).size()),
                 () -> assertEquals(3, reservationRepository
-                        .findFreeRooms(LocalDate.now().plusDays(6), LocalDate.now().plusDays(7)).size())
+                        .findFreeRoomsWithReservations(LocalDate.now().plusDays(6), LocalDate.now().plusDays(7)).size())
         );
     }
 

@@ -82,4 +82,10 @@ class RoomRepositoryTest {
                 () -> assertEquals(5, roomRepository.findByGuestsCount(2).size())
         );
     }
+
+    @Test
+    @DisplayName("Find rooms without reservations")
+    void findRoomsWithoutReservationsTest() {
+        assertEquals(2, roomRepository.findRoomsWithoutReservations().size());
+    }
 }

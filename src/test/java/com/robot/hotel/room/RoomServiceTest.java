@@ -205,7 +205,7 @@ class RoomServiceTest {
     @Test
     @DisplayName("Successful delete room")
     void deleteByIdTest() {
-        Long id = getIdByNumber("101");
+        Long id = getIdByNumber("201");
         roomService.deleteById(id);
         assertEquals(4, roomService.findAll().size());
     }
