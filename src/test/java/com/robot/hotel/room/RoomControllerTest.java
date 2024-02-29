@@ -162,9 +162,9 @@ class RoomControllerTest {
                 .body(freeRoomRequest)
                 .when().get("/freeRooms")
                 .then()
-                .statusCode(200);
-        //.assertThat()
-        //.body("size()", is(1));
+                .statusCode(200)
+                .assertThat()
+                .body("size()", is(3));
     }
 
     @Test

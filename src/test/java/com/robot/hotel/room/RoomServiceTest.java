@@ -3,6 +3,7 @@ package com.robot.hotel.room;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
+import com.robot.hotel.exception.WrongDatesException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -142,8 +144,20 @@ class RoomServiceTest {
     }
 
     @Test
-    @DisplayName("Find free rooms")
+    @DisplayName("Successful find free rooms")
     void findFreeRoomsTest() {
+        FreeRoomRequest freeRoomRequest = new FreeRoomRequest(LocalDate.now(), LocalDate.now().plusDays(3));
+
+        assertEquals(3, roomService.findFreeRooms(freeRoomRequest).size());
+    }
+
+    @Test
+    @DisplayName("Fail find free rooms")
+    void findFreeRoomsThrowWrongDatesExceptionTest() {
+        FreeRoomRequest freeRoomRequest = new FreeRoomRequest(LocalDate.now(), LocalDate.now());
+
+        assertThrows(WrongDatesException.class,
+                () -> roomService.findFreeRooms(freeRoomRequest));
     }
 
     @Test
