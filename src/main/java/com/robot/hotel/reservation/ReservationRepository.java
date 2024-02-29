@@ -15,12 +15,13 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     List<Reservation> findByRoomId(Long roomId);
 
-    @Query("SELECT distinct r.room FROM Reservation r WHERE r.checkOutDate <= :checkIn or r.checkInDate >= :checkOut")
+    @Query("SELECT distinct r.room FROM Reservation r WHERE (r.checkOutDate <= :checkIn or r.checkInDate >= :checkOut)" +
+            "and r.checkOutDate > CURDATE()")
     List<Room> findFreeRooms(@Param("checkIn") LocalDate checkIn, @Param("checkOut") LocalDate checkOut);
 
-    @Query("SELECT r FROM Reservation r WHERE r.checkOutDate >= :now")
-    List<Reservation> findCurrentReservations (@Param("now") LocalDate now);
+    @Query("SELECT r FROM Reservation r WHERE r.checkOutDate >= CURDATE()")
+    List<Reservation> findCurrentReservations ();
 
-    @Query("SELECT r FROM Reservation r WHERE r.checkOutDate >= :now and r.room.id = :roomId")
-    List<Reservation> findCurrentReservationsForRoom(@Param("now") LocalDate now, @Param("roomId") Long roomId);
+    @Query("SELECT r FROM Reservation r WHERE r.checkOutDate >= CURDATE() and r.room.id = :roomId")
+    List<Reservation> findCurrentReservationsForRoom(@Param("roomId") Long roomId);
 }

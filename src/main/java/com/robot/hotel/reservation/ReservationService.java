@@ -96,7 +96,7 @@ public class ReservationService {
     }
 
     public List<ReservationDto> findCurrentReservations() {
-        return reservationRepository.findCurrentReservations(LocalDate.now())
+        return reservationRepository.findCurrentReservations()
                 .stream()
                 .map(reservationMapper::buildReservationDto)
                 .toList();
@@ -105,7 +105,7 @@ public class ReservationService {
     public List<ReservationDto> findCurrentReservationsForSpecificRoom(String roomNumber) {
         Long roomId = roomService.findByNumber(roomNumber).getId();
 
-        return reservationRepository.findCurrentReservationsForRoom(LocalDate.now(), roomId)
+        return reservationRepository.findCurrentReservationsForRoom(roomId)
                 .stream()
                 .map(reservationMapper::buildReservationDto)
                 .toList();

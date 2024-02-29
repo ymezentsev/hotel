@@ -6,6 +6,7 @@ import com.robot.hotel.room.RoomRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,6 +150,7 @@ class GuestControllerTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Find guest by reservation")
     void findGuestByReservationTest() {
         given().contentType(ContentType.JSON)

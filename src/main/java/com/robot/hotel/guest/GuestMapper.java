@@ -30,8 +30,8 @@ public class GuestMapper {
                 .build();
     }
 
-    public Guest buildGuestFromRequest (GuestRequest guestRequest) {
-        if (Objects.isNull(guestRequest.getPassportSerialNumber())){
+    public Guest buildGuestFromRequest(GuestRequest guestRequest) {
+        if (Objects.isNull(guestRequest.getPassportSerialNumber())) {
             guestRequest.setPassportSerialNumber("");
         }
 
@@ -41,7 +41,7 @@ public class GuestMapper {
                 .telNumber(guestRequest.getTelNumber().strip())
                 .email(guestRequest.getEmail().toLowerCase().strip())
                 .passportSerialNumber(guestRequest.getPassportSerialNumber().toLowerCase().strip())
-                // .reservations(Collections.emptyList())
+                .reservations(Collections.emptyList())
                 .build();
     }
 
