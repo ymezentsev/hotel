@@ -92,7 +92,7 @@ class GuestControllerTest {
     @DisplayName("Find guest by id")
     void findByIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", getIdByEmail("sidor@gmail.com"))
+                .pathParam("id", getGuestIdByEmail("sidor@gmail.com"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -168,7 +168,7 @@ class GuestControllerTest {
 
         given().contentType(ContentType.JSON)
                 .body(guestRequest)
-                .pathParam("id", getIdByEmail("kozlov@gmail.com"))
+                .pathParam("id", getGuestIdByEmail("kozlov@gmail.com"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(200);
@@ -182,7 +182,7 @@ class GuestControllerTest {
 
         given().contentType(ContentType.JSON)
                 .body(guestRequest)
-                .pathParam("id", getIdByEmail("sidor@gmail.com"))
+                .pathParam("id", getGuestIdByEmail("sidor@gmail.com"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(400)
@@ -194,13 +194,13 @@ class GuestControllerTest {
     @DisplayName("Delete guest")
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", getIdByEmail("dmitr@gmail.com"))
+                .pathParam("id", getGuestIdByEmail("dmitr@gmail.com"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);
     }
 
-    private Long getIdByEmail(String email) {
+    private Long getGuestIdByEmail(String email) {
         return guestRepository.findByEmail(email)
                 .orElseThrow()
                 .getId();
