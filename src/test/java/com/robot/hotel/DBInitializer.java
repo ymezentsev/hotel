@@ -9,14 +9,14 @@ import com.robot.hotel.room.RoomRepository;
 import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
-@Component
+@Service
 public class DBInitializer {
     @Autowired
     RoomTypeRepository roomTypeRepository;

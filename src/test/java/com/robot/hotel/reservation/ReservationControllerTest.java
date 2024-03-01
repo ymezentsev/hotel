@@ -1,8 +1,7 @@
 package com.robot.hotel.reservation;
 
 import com.robot.hotel.DBInitializer;
-import com.robot.hotel.guest.GuestRepository;
-import com.robot.hotel.room.RoomRepository;
+import com.robot.hotel.TestDBUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,13 +35,7 @@ class ReservationControllerTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    ReservationRepository reservationRepository;
-
-    @Autowired
-    RoomRepository roomRepository;
-
-    @Autowired
-    GuestRepository guestRepository;
+    TestDBUtils testDBUtils;
 
     @BeforeEach
     void setUp() {
@@ -65,7 +58,7 @@ class ReservationControllerTest {
     @DisplayName("Find reservation by id")
     void findByIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", getReservationIdByRoomNumber("203"))
+                .pathParam("id", testDBUtils.getReservationIdByRoom("203"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -76,8 +69,8 @@ class ReservationControllerTest {
     @Test
     @DisplayName("Successful create new reservation")
     void saveTest() {
-        Long guest1Id = getGuestIdByEmail("sidor@gmail.com");
-        Long guest2Id = getGuestIdByEmail("sidor_andr@gmail.com");
+        Long guest1Id = testDBUtils.getGuestIdByEmail("sidor@gmail.com");
+        Long guest2Id = testDBUtils.getGuestIdByEmail("sidor_andr@gmail.com");
 
         ReservationRequest reservationRequest = new ReservationRequest("201", LocalDate.now(),
                 LocalDate.now().plusDays(1), Set.of(guest1Id.toString(), guest2Id.toString()));
@@ -110,7 +103,7 @@ class ReservationControllerTest {
     @DisplayName("Find reservations by guest id")
     void findReservationsByGuestsIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", getGuestIdByEmail("sidor_andr@gmail.com"))
+                .pathParam("id", testDBUtils.getGuestIdByEmail("sidor_andr@gmail.com"))
                 .when().get("/guest/{id}")
                 .then()
                 .statusCode(200)
@@ -157,27 +150,9 @@ class ReservationControllerTest {
     @DisplayName("Delete reservation")
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", getReservationIdByRoomNumber("101"))
+                .pathParam("id", testDBUtils.getReservationIdByRoom("101"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);
-    }
-
-    private Long getReservationIdByRoomNumber(String roomNumber) {
-        return reservationRepository.findByRoomId(getRoomIdByNumber(roomNumber))
-                .get(0)
-                .getId();
-    }
-
-    private Long getRoomIdByNumber(String roomNumber) {
-        return roomRepository.findByNumber(roomNumber)
-                .orElseThrow()
-                .getId();
-    }
-
-    private Long getGuestIdByEmail(String email) {
-        return guestRepository.findByEmail(email)
-                .orElseThrow()
-                .getId();
     }
 }

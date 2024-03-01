@@ -1,8 +1,7 @@
 package com.robot.hotel.guest;
 
 import com.robot.hotel.DBInitializer;
-import com.robot.hotel.reservation.ReservationRepository;
-import com.robot.hotel.room.RoomRepository;
+import com.robot.hotel.TestDBUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,16 +29,10 @@ class GuestControllerTest {
     private Integer port;
 
     @Autowired
-    GuestRepository guestRepository;
-
-    @Autowired
-    RoomRepository roomRepository;
-
-    @Autowired
-    ReservationRepository reservationRepository;
-
-    @Autowired
     DBInitializer dbInitializer;
+
+    @Autowired
+    TestDBUtils testDBUtils;
 
     @BeforeEach
     void setUp() {
@@ -92,7 +85,7 @@ class GuestControllerTest {
     @DisplayName("Find guest by id")
     void findByIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", getGuestIdByEmail("sidor@gmail.com"))
+                .pathParam("id", testDBUtils.getGuestIdByEmail("sidor@gmail.com"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -152,7 +145,7 @@ class GuestControllerTest {
     @DisplayName("Find guest by reservation")
     void findGuestByReservationTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", getReservationIdByRoom("204"))
+                .pathParam("id", testDBUtils.getReservationIdByRoom("204"))
                 .when().get("/reservations/{id}")
                 .then()
                 .statusCode(200)
@@ -168,7 +161,7 @@ class GuestControllerTest {
 
         given().contentType(ContentType.JSON)
                 .body(guestRequest)
-                .pathParam("id", getGuestIdByEmail("kozlov@gmail.com"))
+                .pathParam("id", testDBUtils.getGuestIdByEmail("kozlov@gmail.com"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(200);
@@ -182,7 +175,7 @@ class GuestControllerTest {
 
         given().contentType(ContentType.JSON)
                 .body(guestRequest)
-                .pathParam("id", getGuestIdByEmail("sidor@gmail.com"))
+                .pathParam("id", testDBUtils.getGuestIdByEmail("sidor@gmail.com"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(400)
@@ -194,21 +187,9 @@ class GuestControllerTest {
     @DisplayName("Delete guest")
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", getGuestIdByEmail("dmitr@gmail.com"))
+                .pathParam("id", testDBUtils.getGuestIdByEmail("dmitr@gmail.com"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);
-    }
-
-    private Long getGuestIdByEmail(String email) {
-        return guestRepository.findByEmail(email)
-                .orElseThrow()
-                .getId();
-    }
-
-    private Long getReservationIdByRoom(String number) {
-        return reservationRepository.findByRoomId(roomRepository.findByNumber(number).orElseThrow().getId())
-                .get(0)
-                .getId();
     }
 }

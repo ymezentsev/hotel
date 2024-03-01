@@ -1,6 +1,7 @@
 package com.robot.hotel.roomtype;
 
 import com.robot.hotel.DBInitializer;
+import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +32,7 @@ class RoomTypeServiceTest {
     private DBInitializer dbInitializer;
 
     @Autowired
-    private RoomTypeRepository roomTypeRepository;
+    private TestDBUtils testDBUtils;
 
     @BeforeEach
     void setUp() {
@@ -63,7 +64,7 @@ class RoomTypeServiceTest {
     @Test
     @DisplayName("Successful find room type by type")
     void findByTypeTest() {
-        Long id = getIdByType("lux");
+        Long id = testDBUtils.getRoomTypeIdByType("lux");
         assertEquals(id, roomTypeService.findByType("lux").getId());
     }
 
@@ -77,7 +78,7 @@ class RoomTypeServiceTest {
     @Test
     @DisplayName("Successful find room type by id")
     void findByIdTest() {
-        Long id = getIdByType("lux");
+        Long id = testDBUtils.getRoomTypeIdByType("lux");
         assertEquals("lux", roomTypeService.findById(id).getType());
     }
 
@@ -91,7 +92,7 @@ class RoomTypeServiceTest {
     @Test
     @DisplayName("Successful update room type")
     void updateTest() {
-        Long id = getIdByType("lux");
+        Long id = testDBUtils.getRoomTypeIdByType("lux");
         roomTypeService.update(id, new RoomTypeRequest("new LUx"));
         assertAll(
                 () -> assertNotNull(roomTypeService.findByType("new lux")),
@@ -109,7 +110,7 @@ class RoomTypeServiceTest {
     @Test
     @DisplayName("Fail update room type (throw DuplicateObjectException)")
     void updateThrowDuplicateObjectExceptionTest() {
-        Long id = getIdByType("standart single");
+        Long id = testDBUtils.getRoomTypeIdByType("standart single");
         assertThrows(DuplicateObjectException.class,
                 () -> roomTypeService.update(id, new RoomTypeRequest("lux")));
     }
@@ -117,7 +118,7 @@ class RoomTypeServiceTest {
     @Test
     @DisplayName("Successful delete room type")
     void deleteByIdTest() {
-        Long id = getIdByType("king");
+        Long id = testDBUtils.getRoomTypeIdByType("king");
         roomTypeService.deleteById(id);
         assertEquals(3, roomTypeService.findAll().size());
     }
@@ -132,14 +133,8 @@ class RoomTypeServiceTest {
     @Test
     @DisplayName("Fail delete room type (throw NotEmptyObjectException)")
     void deleteByIdThrowNotEmptyObjectExceptionTest() {
-        Long id = getIdByType("standart single");
+        Long id = testDBUtils.getRoomTypeIdByType("standart single");
         assertThrows(NotEmptyObjectException.class,
                 () -> roomTypeService.deleteById(id));
-    }
-
-    private Long getIdByType(String type) {
-        return roomTypeRepository.findByType(type)
-                .orElseThrow()
-                .getId();
     }
 }

@@ -1,6 +1,7 @@
 package com.robot.hotel.room;
 
 import com.robot.hotel.DBInitializer;
+import com.robot.hotel.TestDBUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,10 +32,10 @@ class RoomControllerTest {
     private Integer port;
 
     @Autowired
-    private RoomRepository roomRepository;
+    DBInitializer dbInitializer;
 
     @Autowired
-    DBInitializer dbInitializer;
+    private TestDBUtils testDBUtils;
 
     @BeforeEach
     void setUp() {
@@ -85,7 +86,7 @@ class RoomControllerTest {
     @DisplayName("Find room by id")
     void findByIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", getIdByNumber("101"))
+                .pathParam("id", testDBUtils.getRoomIdByNumber("101"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -189,7 +190,7 @@ class RoomControllerTest {
 
         given().contentType(ContentType.JSON)
                 .body(roomRequest)
-                .pathParam("id", getIdByNumber("101"))
+                .pathParam("id", testDBUtils.getRoomIdByNumber("101"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(200);
@@ -202,7 +203,7 @@ class RoomControllerTest {
 
         given().contentType(ContentType.JSON)
                 .body(roomRequest)
-                .pathParam("id", getIdByNumber("101"))
+                .pathParam("id", testDBUtils.getRoomIdByNumber("101"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(400)
@@ -214,15 +215,9 @@ class RoomControllerTest {
     @DisplayName("Delete room type")
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", getIdByNumber("201"))
+                .pathParam("id", testDBUtils.getRoomIdByNumber("201"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);
-    }
-
-    private Long getIdByNumber(String number) {
-        return roomRepository.findByNumber(number)
-                .orElseThrow()
-                .getId();
     }
 }

@@ -1,6 +1,7 @@
 package com.robot.hotel.roomtype;
 
 import com.robot.hotel.DBInitializer;
+import com.robot.hotel.TestDBUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,10 +29,10 @@ class RoomTypeControllerTest {
     private Integer port;
 
     @Autowired
-    private RoomTypeRepository roomTypeRepository;
+    DBInitializer dbInitializer;
 
     @Autowired
-    DBInitializer dbInitializer;
+    TestDBUtils testDBUtils;
 
     @BeforeEach
     void setUp() {
@@ -94,7 +95,7 @@ class RoomTypeControllerTest {
     @DisplayName("Find room type by id")
     void findByIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", getIdByType("lux"))
+                .pathParam("id", testDBUtils.getRoomTypeIdByType("lux"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -109,7 +110,7 @@ class RoomTypeControllerTest {
 
         given().contentType(ContentType.JSON)
                 .body(roomTypeRequest)
-                .pathParam("id", getIdByType("lux"))
+                .pathParam("id", testDBUtils.getRoomTypeIdByType("lux"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(200);
@@ -122,7 +123,7 @@ class RoomTypeControllerTest {
 
         given().contentType(ContentType.JSON)
                 .body(roomTypeRequest)
-                .pathParam("id", getIdByType("lux"))
+                .pathParam("id", testDBUtils.getRoomTypeIdByType("lux"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(400)
@@ -134,15 +135,9 @@ class RoomTypeControllerTest {
     @DisplayName("Delete room type")
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", getIdByType("king"))
+                .pathParam("id", testDBUtils.getRoomTypeIdByType("king"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);
-    }
-
-    private Long getIdByType(String type) {
-        return roomTypeRepository.findByType(type)
-                .orElseThrow()
-                .getId();
     }
 }
