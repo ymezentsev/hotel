@@ -11,11 +11,7 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 public class ReservationMapper {
-    private final ReservationRepository reservationRepository;
-
     public ReservationDto buildReservationDto(Reservation reservation) {
-        //Set<Guest> guestsSet = guestRepository.findByReservationsId(reservation.getId());
-
         return ReservationDto.builder()
                 .id(reservation.getId())
                 .checkInDate(reservation.getCheckInDate())

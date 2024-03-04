@@ -1,6 +1,5 @@
 package com.robot.hotel.guest;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.robot.hotel.reservation.Reservation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,7 +35,6 @@ public class Guest {
     @Column
     private String passportSerialNumber;
 
-    @ManyToMany(mappedBy = "guests")
-    @JsonIgnore
+    @ManyToMany(mappedBy = "guests", fetch = FetchType.EAGER)
     private List<Reservation> reservations;
 }

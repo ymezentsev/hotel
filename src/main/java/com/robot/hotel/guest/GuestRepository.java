@@ -8,6 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface GuestRepository extends JpaRepository<Guest, Long> {
+/*    @Query("SELECT r FROM Reservation r JOIN FETCH r.guests")
+    List<Reservation> findAll();*/
     boolean existsByEmail(String email);
 
     boolean existsByTelNumber(String telNumber);

@@ -1,7 +1,6 @@
 package com.robot.hotel.guest;
 
 import com.robot.hotel.reservation.Reservation;
-import com.robot.hotel.reservation.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +11,7 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 public class GuestMapper {
-    private final ReservationRepository reservationRepository;
-
     public GuestDto buildGuestsDto(Guest guest) {
-        //List<Reservation> reservations = reservationRepository.findByGuestsId(guest.getId());
-
         return GuestDto.builder()
                 .id(guest.getId())
                 .firstName(guest.getFirstName())
@@ -46,7 +41,8 @@ public class GuestMapper {
     }
 
     private Function<Reservation, String> getReservationsString() {
-        return reservation -> "Id:" + reservation.getId().toString()
+        return reservation -> "id:" + reservation.getId().toString()
+                + ", room:" + reservation.getRoom().getNumber()
                 + ", " + reservation.getCheckInDate().toString() + " - "
                 + reservation.getCheckOutDate().toString();
     }
