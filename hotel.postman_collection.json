@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "1989236a-250f-4a35-90a5-c23f63269145",
 		"name": "hotel",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27450546"
 	},
 	"item": [
@@ -11,28 +11,68 @@
 			"item": [
 				{
 					"name": "find all rooms",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/rooms"
+						"url": {
+							"raw": "{{url}}/rooms",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"rooms"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "add new room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"url\", \"variable_value\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \"id\": 1,\r\n        \"number\": \"406\",\r\n        \"price\": 300.00,\r\n        \"maxCountOfGuests\": 4,\r\n        \"roomType\": \"standart\"\r\n    }",
+							"raw": "{\r\n    \"number\": \"505\",\r\n    \"price\": 4000.00,\r\n    \"maxCountOfGuests\": 2,\r\n    \"roomType\": \"lux\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{url}}/rooms"
+						"url": {
+							"raw": "{{url}}/rooms",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"rooms"
+							]
+						}
 					},
 					"response": []
 				},
@@ -41,7 +81,16 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/rooms/6"
+						"url": {
+							"raw": "{{url}}/rooms/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"rooms",
+								"2"
+							]
+						}
 					},
 					"response": []
 				},
@@ -52,14 +101,23 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \"price\": 1800.00,\r\n        \"maxCountOfGuests\": 4,\r\n        \"roomType\": \"LUX\"\r\n    }",
+							"raw": "    {\r\n    \"number\": \"301\",\r\n    \"price\": 1000.00,\r\n    \"maxCountOfGuests\": 4,\r\n    \"roomType\": \"lux\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{url}}/rooms/number/403"
+						"url": {
+							"raw": "{{url}}/rooms/16",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"rooms",
+								"16"
+							]
+						}
 					},
 					"response": []
 				},
@@ -68,7 +126,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/rooms/number/401"
+						"url": {
+							"raw": "{{url}}/rooms/number/301",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"rooms",
+								"number",
+								"301"
+							]
+						}
 					},
 					"response": []
 				},
@@ -77,7 +145,16 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "{{url}}/rooms/2"
+						"url": {
+							"raw": "{{url}}/rooms/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"rooms",
+								"2"
+							]
+						}
 					},
 					"response": []
 				},
@@ -86,16 +163,47 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/rooms/type/lux"
+						"url": {
+							"raw": "{{url}}/rooms/type/Lux",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"rooms",
+								"type",
+								"Lux"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "find available rooms",
+					"name": "find free rooms",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/rooms/type/lux"
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"checkInDate\": \"2024-03-02\",\r\n        \"checkOutDate\": \"2024-03-22\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/rooms/freeRooms",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"rooms",
+								"freeRooms"
+							]
+						}
 					},
 					"response": []
 				},
@@ -104,7 +212,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/rooms/price>/500"
+						"url": {
+							"raw": "{{url}}/rooms/price>/4000",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"rooms",
+								"price>",
+								"4000"
+							]
+						}
 					},
 					"response": []
 				},
@@ -112,7 +230,18 @@
 					"name": "find rooms with price less than",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{url}}/rooms/price</3000",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"rooms",
+								"price<",
+								"3000"
+							]
+						}
 					},
 					"response": []
 				},
@@ -121,7 +250,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/rooms/guestsCount/3"
+						"url": {
+							"raw": "{{url}}/rooms/guestsCount/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"rooms",
+								"guestsCount",
+								"1"
+							]
+						}
 					},
 					"response": []
 				}
@@ -132,6 +271,17 @@
 			"item": [
 				{
 					"name": "find all room types",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -147,7 +297,15 @@
 								}
 							}
 						},
-						"url": "{{url}}/roomTypes"
+						"url": {
+							"raw": "{{url}}/roomTypes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"roomTypes"
+							]
+						}
 					},
 					"response": []
 				},
@@ -158,14 +316,22 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n   \"type\": \"lux\"\r\n  }",
+							"raw": "  {\r\n   \"type\": \"luX\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{url}}/roomTypes"
+						"url": {
+							"raw": "{{url}}/roomTypes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"roomTypes"
+							]
+						}
 					},
 					"response": []
 				},
@@ -174,7 +340,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/roomTypes/type/lux"
+						"url": {
+							"raw": "{{url}}/roomTypes/type/LUx",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"roomTypes",
+								"type",
+								"LUx"
+							]
+						}
 					},
 					"response": []
 				},
@@ -183,7 +359,16 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/roomTypes/2"
+						"url": {
+							"raw": "{{url}}/roomTypes/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"roomTypes",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -194,14 +379,23 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n   \"type\": \"standart1\"\r\n  }",
+							"raw": "  {\r\n   \"type\": \"standart single\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{url}}/roomTypes/3"
+						"url": {
+							"raw": "{{url}}/roomTypes/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"roomTypes",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -210,7 +404,16 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "{{url}}/roomTypes/6"
+						"url": {
+							"raw": "{{url}}/roomTypes/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"roomTypes",
+								"2"
+							]
+						}
 					},
 					"response": []
 				}
@@ -224,7 +427,15 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/guests"
+						"url": {
+							"raw": "{{url}}/guests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"guests"
+							]
+						}
 					},
 					"response": []
 				},
@@ -235,14 +446,22 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \"number\": \"406\",\r\n        \"price\": 300.00,\r\n        \"maxCountOfGuests\": 4,\r\n        \"roomType\": \"standart\"\r\n    }",
+							"raw": "    {\r\n        \"firstName\": \"Andriy\",\r\n        \"lastName\": \"Fedorov\",\r\n        \"telNumber\": \"0973483644\",\r\n        \"email\": \"s14w2f@f.d\",\r\n        \"passportSerialNumber\": \"e234235\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{url}}/guests"
+						"url": {
+							"raw": "{{url}}/guests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"guests"
+							]
+						}
 					},
 					"response": []
 				},
@@ -253,14 +472,23 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \"firstName\": \"Andriy\",\r\n        \"lastName\": \"Fedorov\",\r\n        \"telNumber\": \"05633434\",\r\n        \"email\": \"sergserg@gmail.com\",\r\n        \"passportSerialNumber\": \"bd325643\"\r\n\r\n    }",
+							"raw": "    {\r\n        \"firstName\": \"Andriy\",\r\n        \"lastName\": \"Fedorov\",\r\n        \"telNumber\": \"0563534434\",\r\n        \"email\": \"sergserg@gmail.com\",\r\n        \"passportSerialNumber\": \"bd325643\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{url}}/guests/11"
+						"url": {
+							"raw": "{{url}}/guests/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"guests",
+								"4"
+							]
+						}
 					},
 					"response": []
 				},
@@ -269,7 +497,16 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "{{url}}/guests/10"
+						"url": {
+							"raw": "{{url}}/guests/8",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"guests",
+								"8"
+							]
+						}
 					},
 					"response": []
 				},
@@ -278,7 +515,16 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/guests/10"
+						"url": {
+							"raw": "{{url}}/guests/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"guests",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -287,7 +533,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/guests/10"
+						"url": {
+							"raw": "{{url}}/guests/reservations/12",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"guests",
+								"reservations",
+								"12"
+							]
+						}
 					},
 					"response": []
 				},
@@ -296,7 +552,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/guests/email/"
+						"url": {
+							"raw": "{{url}}/guests/email/sergse@gmail.com",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"guests",
+								"email",
+								"sergse@gmail.com"
+							]
+						}
 					},
 					"response": []
 				},
@@ -305,7 +571,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/guests/telNumber/0964563457"
+						"url": {
+							"raw": "{{url}}/guests/telNumber/64",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"guests",
+								"telNumber",
+								"64"
+							]
+						}
 					},
 					"response": []
 				},
@@ -314,7 +590,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/guests/passport/df340977"
+						"url": {
+							"raw": "{{url}}/guests/passport/bd325443",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"guests",
+								"passport",
+								"bd325443"
+							]
+						}
 					},
 					"response": []
 				},
@@ -323,7 +609,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/guests/lastName/Sergeev"
+						"url": {
+							"raw": "{{url}}/guests/lastName/sidorov",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"guests",
+								"lastName",
+								"sidorov"
+							]
+						}
 					},
 					"response": []
 				}
@@ -337,7 +633,15 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/reservations"
+						"url": {
+							"raw": "{{url}}/reservations",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reservations"
+							]
+						}
 					},
 					"response": []
 				},
@@ -348,14 +652,22 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \"roomNumber\": \"102\",\r\n        \"checkInDate\": \"2023-06-12\",\r\n        \"checkOutDate\": \"2023-06-15\",\r\n        \"guests\": [1]\r\n    }",
+							"raw": "    {\r\n        \"roomNumber\": \"204\",\r\n        \"checkInDate\": \"2024-03-03\",\r\n        \"checkOutDate\": \"2024-03-22\",\r\n        \"guests\": [1, 3, 1] \r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{url}}/reservations"
+						"url": {
+							"raw": "{{url}}/reservations",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reservations"
+							]
+						}
 					},
 					"response": []
 				},
@@ -364,7 +676,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/reservations/guest/2"
+						"url": {
+							"raw": "{{url}}/reservations/guest/11",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reservations",
+								"guest",
+								"11"
+							]
+						}
 					},
 					"response": []
 				},
@@ -373,7 +695,16 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/reservations/2"
+						"url": {
+							"raw": "{{url}}/reservations/11",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reservations",
+								"11"
+							]
+						}
 					},
 					"response": []
 				},
@@ -382,7 +713,16 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "{{url}}/reservations/2"
+						"url": {
+							"raw": "{{url}}/reservations/5",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reservations",
+								"5"
+							]
+						}
 					},
 					"response": []
 				},
@@ -391,7 +731,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/reservations/guest/2"
+						"url": {
+							"raw": "{{url}}/reservations/room/203",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reservations",
+								"room",
+								"203"
+							]
+						}
 					},
 					"response": []
 				},
@@ -400,11 +750,50 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/reservations/guest/2"
+						"url": {
+							"raw": "{{url}}/reservations/current",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reservations",
+								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find current reservations for specific room",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/reservations/current/room/2033",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reservations",
+								"current",
+								"room",
+								"2033"
+							]
+						}
 					},
 					"response": []
 				}
 			]
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:8080/"
+		},
+		{
+			"key": "url",
+			"value": ""
 		}
 	]
 }
