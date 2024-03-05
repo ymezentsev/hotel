@@ -37,7 +37,7 @@ public class RoomService {
     }
 
     public RoomDto save(RoomRequest roomRequest) {
-        if (Boolean.TRUE.equals(roomRepository.existsByNumber(roomRequest.getNumber().toLowerCase().strip()))) {
+        if (roomRepository.existsByNumber(roomRequest.getNumber().toLowerCase().strip())) {
             throw new DuplicateObjectException(NUMBER_IS_ALREADY_EXISTS);
         }
 

@@ -30,17 +30,17 @@ public class GuestService {
     public GuestDto save(GuestRequest guestRequest) {
         guestRequest.setTelNumber(updateTelNumber(guestRequest.getTelNumber()));
 
-        if (Boolean.TRUE.equals(guestRepository.existsByEmail(guestRequest.getEmail().toLowerCase().strip()))) {
+        if (guestRepository.existsByEmail(guestRequest.getEmail().toLowerCase().strip())) {
             throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "email"));
         }
 
-        if (Boolean.TRUE.equals(guestRepository.existsByTelNumber(guestRequest.getTelNumber()))) {
+        if (guestRepository.existsByTelNumber(guestRequest.getTelNumber())) {
             throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "tel.number"));
         }
 
         if (Objects.nonNull(guestRequest.getPassportSerialNumber()) && !guestRequest.getPassportSerialNumber().isBlank()) {
-            if (Boolean.TRUE.equals(guestRepository.existsByPassportSerialNumber(
-                    guestRequest.getPassportSerialNumber().toLowerCase().strip()))) {
+            if (guestRepository.existsByPassportSerialNumber(
+                    guestRequest.getPassportSerialNumber().toLowerCase().strip())) {
                 throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "passport"));
             }
         }
