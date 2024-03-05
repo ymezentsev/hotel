@@ -35,6 +35,6 @@ public class Guest {
     @Column
     private String passportSerialNumber;
 
-    @ManyToMany(mappedBy = "guests", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "guests")
     private List<Reservation> reservations;
 }

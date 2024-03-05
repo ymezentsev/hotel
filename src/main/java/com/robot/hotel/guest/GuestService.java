@@ -2,6 +2,7 @@ package com.robot.hotel.guest;
 
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class GuestService {
     private static final String RESERVATIONS_FOR_THIS_GUEST_ARE_EXISTS =
             "This guest has reservations. At first delete reservations";
 
+    @Transactional
     public List<GuestDto> findAll() {
         return guestRepository.findAll().stream()
                 .map(guestMapper::buildGuestsDto)
@@ -38,47 +40,52 @@ public class GuestService {
             throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "tel.number"));
         }
 
-        if (Objects.nonNull(guestRequest.getPassportSerialNumber()) && !guestRequest.getPassportSerialNumber().isBlank()) {
-            if (guestRepository.existsByPassportSerialNumber(
-                    guestRequest.getPassportSerialNumber().toLowerCase().strip())) {
-                throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "passport"));
-            }
+        if (Objects.nonNull(guestRequest.getPassportSerialNumber()) && !guestRequest.getPassportSerialNumber().isBlank()
+                && guestRepository.existsByPassportSerialNumber(
+                guestRequest.getPassportSerialNumber().toLowerCase().strip())) {
+            throw new DuplicateObjectException(String.format(GUEST_IS_ALREADY_EXISTS, "passport"));
         }
 
         Guest newGuest = guestMapper.buildGuestFromRequest(guestRequest);
         return guestMapper.buildGuestsDto(guestRepository.save(newGuest));
     }
 
+    @Transactional
     public GuestDto findById(Long id) {
         return guestMapper.buildGuestsDto(guestRepository
                 .findById(id)
                 .orElseThrow(() -> new NoSuchElementException(GUEST_IS_NOT_EXISTS)));
     }
 
+    @Transactional
     public GuestDto findByEmail(String email) {
         return guestMapper.buildGuestsDto(guestRepository
                 .findByEmail(email.toLowerCase().strip())
                 .orElseThrow(() -> new NoSuchElementException(GUEST_IS_NOT_EXISTS)));
     }
 
+    @Transactional
     public GuestDto findByTelNumber(String telNumber) {
         return guestMapper.buildGuestsDto(guestRepository
                 .findByTelNumber(updateTelNumber(telNumber))
                 .orElseThrow(() -> new NoSuchElementException(GUEST_IS_NOT_EXISTS)));
     }
 
+    @Transactional
     public GuestDto findByPassportSerialNumber(String passportSerialNumber) {
         return guestMapper.buildGuestsDto(guestRepository
                 .findByPassportSerialNumber(passportSerialNumber.toLowerCase().strip())
                 .orElseThrow(() -> new NoSuchElementException(GUEST_IS_NOT_EXISTS)));
     }
 
+    @Transactional
     public List<GuestDto> findByLastName(String lastName) {
         return guestRepository.findByLastName(lastName.toLowerCase().strip()).stream()
                 .map(guestMapper::buildGuestsDto)
                 .toList();
     }
 
+    @Transactional
     public List<GuestDto> findGuestByReservation(Long id) {
         return guestRepository.findByReservationsId(id).stream()
                 .map(guestMapper::buildGuestsDto)

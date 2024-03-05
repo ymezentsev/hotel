@@ -5,6 +5,7 @@ import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.guest.Guest;
 import com.robot.hotel.guest.GuestRepository;
 import com.robot.hotel.room.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,24 +34,28 @@ public class ReservationService {
     private static final String TOO_MANY_GUESTS = "The quantity of guests exceeds the maximum allowed in this room";
     private static final String OCCUPIED_ROOM = "This room is occupied for your dates";
 
+    @Transactional
     public List<ReservationDto> findAll() {
         return reservationRepository.findAll().stream()
                 .map(reservationMapper::buildReservationDto)
                 .toList();
     }
 
+    @Transactional
     public ReservationDto findById(Long id) {
         return reservationMapper.buildReservationDto(reservationRepository
                 .findById(id)
                 .orElseThrow(() -> new NoSuchElementException(RESERVATION_IS_NOT_EXISTS)));
     }
 
+    @Transactional
     public List<ReservationDto> findReservationsByGuestsId(Long guestId) {
         return reservationRepository.findByGuestsId(guestId).stream()
                 .map(reservationMapper::buildReservationDto)
                 .toList();
     }
 
+    @Transactional
     public List<ReservationDto> findReservationsByRoom(String roomNumber) {
         Long roomId = roomService.findByNumber(roomNumber).getId();
 
@@ -95,6 +100,7 @@ public class ReservationService {
         return reservationMapper.buildReservationDto(reservationRepository.save(newReservation));
     }
 
+    @Transactional
     public List<ReservationDto> findCurrentReservations() {
         return reservationRepository.findCurrentReservations()
                 .stream()
@@ -102,6 +108,7 @@ public class ReservationService {
                 .toList();
     }
 
+    @Transactional
     public List<ReservationDto> findCurrentReservationsForSpecificRoom(String roomNumber) {
         Long roomId = roomService.findByNumber(roomNumber).getId();
 

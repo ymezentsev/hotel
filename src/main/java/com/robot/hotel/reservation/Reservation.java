@@ -32,7 +32,7 @@ public class Reservation {
     @Column(nullable = false)
     private LocalDate checkOutDate;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
     @JoinTable(
             name = "reservation_guest",
             joinColumns = @JoinColumn(name = "reservation_id"),
