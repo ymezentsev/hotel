@@ -3,6 +3,7 @@ package com.robot.hotel.guest;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
+import com.robot.hotel.exception.NotEmptyObjectException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -225,7 +226,7 @@ class GuestServiceTest {
     void deleteByIdThrowNotEmptyObjectExceptionTest() {
         Long id = testDBUtils.getGuestIdByEmail("sidor@gmail.com");
 
-        assertThrows(NoSuchElementException.class,
-                () -> guestService.deleteById(100L));
+        assertThrows(NotEmptyObjectException.class,
+                () -> guestService.deleteById(id));
     }
 }
