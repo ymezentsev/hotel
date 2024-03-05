@@ -1,4 +1,4 @@
-package com.robot.hotel.guest;
+package com.robot.hotel.user;
 
 import com.robot.hotel.reservation.Reservation;
 import jakarta.persistence.*;
@@ -13,9 +13,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "guest")
+@Table(name = "users")
 @Entity
-public class Guest {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,6 +35,6 @@ public class Guest {
     @Column
     private String passportSerialNumber;
 
-    @ManyToMany(mappedBy = "guests")
+    @ManyToMany(mappedBy = "users")
     private List<Reservation> reservations;
 }

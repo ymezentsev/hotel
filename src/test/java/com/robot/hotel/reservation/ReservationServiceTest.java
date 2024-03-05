@@ -62,10 +62,10 @@ class ReservationServiceTest {
     }
 
     @Test
-    @DisplayName("Find reservations by guest id")
-    void findReservationsByGuestsIdTest() {
-        Long id = testDBUtils.getGuestIdByEmail("sidor@gmail.com");
-        assertEquals(2, reservationService.findReservationsByGuestsId(id).size());
+    @DisplayName("Find reservations by user id")
+    void findReservationsByUserIdTest() {
+        Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        assertEquals(2, reservationService.findReservationsByUserId(id).size());
     }
 
     @Test
@@ -77,13 +77,13 @@ class ReservationServiceTest {
     @Test
     @DisplayName("Successful create new reservation")
     void saveTest() {
-        Long guest1Id = testDBUtils.getGuestIdByEmail("sidor@gmail.com");
-        Long guest2Id = testDBUtils.getGuestIdByEmail("sidor_andr@gmail.com");
+        Long user1Id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long user2Id = testDBUtils.getUserIdByEmail("sidor_andr@gmail.com");
 
         ReservationRequest reservationRequest = new ReservationRequest("201",
                 LocalDate.now(),
                 LocalDate.now().plusDays(1),
-                Set.of(guest1Id.toString(), guest2Id.toString()));
+                Set.of(user1Id.toString(), user2Id.toString()));
 
         assertAll(
                 () -> assertNotNull(reservationService.save(reservationRequest).getId()),
@@ -94,13 +94,13 @@ class ReservationServiceTest {
     @Test
     @DisplayName("Fail create new reservation (throw NoSuchElementException - wrong room)")
     void saveThrowNoSuchElementExceptionWrongRoomTest() {
-        Long guest1Id = testDBUtils.getGuestIdByEmail("sidor@gmail.com");
-        Long guest2Id = testDBUtils.getGuestIdByEmail("sidor_andr@gmail.com");
+        Long user1Id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long user2Id = testDBUtils.getUserIdByEmail("sidor_andr@gmail.com");
 
         ReservationRequest reservationRequest = new ReservationRequest("104",
                 LocalDate.now(),
                 LocalDate.now().plusDays(1),
-                Set.of(guest1Id.toString(), guest2Id.toString()));
+                Set.of(user1Id.toString(), user2Id.toString()));
 
         assertThrows(NoSuchElementException.class,
                 () -> reservationService.save(reservationRequest));
@@ -109,13 +109,13 @@ class ReservationServiceTest {
     @Test
     @DisplayName("Fail create new reservation (throw WrongDatesException - wrong dates)")
     void saveThrowWrongDatesExceptionWrongDatesTest() {
-        Long guest1Id = testDBUtils.getGuestIdByEmail("sidor@gmail.com");
-        Long guest2Id = testDBUtils.getGuestIdByEmail("sidor_andr@gmail.com");
+        Long user1Id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long user2Id = testDBUtils.getUserIdByEmail("sidor_andr@gmail.com");
 
         ReservationRequest reservationRequest = new ReservationRequest("201",
                 LocalDate.now(),
-                LocalDate.now(), Set.of(guest1Id.toString(),
-                guest2Id.toString()));
+                LocalDate.now(), Set.of(user1Id.toString(),
+                user2Id.toString()));
 
         assertThrows(WrongDatesException.class,
                 () -> reservationService.save(reservationRequest));
@@ -124,13 +124,13 @@ class ReservationServiceTest {
     @Test
     @DisplayName("Fail create new reservation (throw WrongDatesException - too long reservation)")
     void saveThrowWrongDatesExceptionTooLongTest() {
-        Long guest1Id = testDBUtils.getGuestIdByEmail("sidor@gmail.com");
-        Long guest2Id = testDBUtils.getGuestIdByEmail("sidor_andr@gmail.com");
+        Long user1Id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long user2Id = testDBUtils.getUserIdByEmail("sidor_andr@gmail.com");
 
         ReservationRequest reservationRequest = new ReservationRequest("201",
                 LocalDate.now(),
                 LocalDate.now().plusDays(61),
-                Set.of(guest1Id.toString(), guest2Id.toString()));
+                Set.of(user1Id.toString(), user2Id.toString()));
 
         assertThrows(WrongDatesException.class,
                 () -> reservationService.save(reservationRequest));
@@ -139,13 +139,13 @@ class ReservationServiceTest {
     @Test
     @DisplayName("Fail create new reservation (throw WrongDatesException - too early reservation)")
     void saveThrowWrongDatesExceptionTooEarlyTest() {
-        Long guest1Id = testDBUtils.getGuestIdByEmail("sidor@gmail.com");
-        Long guest2Id = testDBUtils.getGuestIdByEmail("sidor_andr@gmail.com");
+        Long user1Id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long user2Id = testDBUtils.getUserIdByEmail("sidor_andr@gmail.com");
 
         ReservationRequest reservationRequest = new ReservationRequest("201",
                 LocalDate.now().plusDays(181),
                 LocalDate.now().plusDays(182),
-                Set.of(guest1Id.toString(), guest2Id.toString()));
+                Set.of(user1Id.toString(), user2Id.toString()));
 
         assertThrows(WrongDatesException.class,
                 () -> reservationService.save(reservationRequest));
@@ -154,21 +154,21 @@ class ReservationServiceTest {
     @Test
     @DisplayName("Fail create new reservation (throw GuestsQuantityException - too many guests)")
     void saveThrowGuestsQuantityExceptionTest() {
-        Long guest1Id = testDBUtils.getGuestIdByEmail("sidor@gmail.com");
-        Long guest2Id = testDBUtils.getGuestIdByEmail("sidor_andr@gmail.com");
-        Long guest3Id = testDBUtils.getGuestIdByEmail("dmitr@gmail.com");
+        Long user1Id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long user2Id = testDBUtils.getUserIdByEmail("sidor_andr@gmail.com");
+        Long user3Id = testDBUtils.getUserIdByEmail("dmitr@gmail.com");
 
         ReservationRequest reservationRequest = new ReservationRequest("201",
                 LocalDate.now(),
                 LocalDate.now().plusDays(5),
-                Set.of(guest1Id.toString(), guest2Id.toString(), guest3Id.toString()));
+                Set.of(user1Id.toString(), user2Id.toString(), user3Id.toString()));
 
         assertThrows(GuestsQuantityException.class,
                 () -> reservationService.save(reservationRequest));
     }
 
     @Test
-    @DisplayName("Fail create new reservation (throw NoSuchElementException - wrong guest")
+    @DisplayName("Fail create new reservation (throw NoSuchElementException - wrong user")
     void saveThrowNoSuchElementExceptionWrongGuestTest() {
         ReservationRequest reservationRequest = new ReservationRequest("201",
                 LocalDate.now(),
@@ -182,13 +182,13 @@ class ReservationServiceTest {
     @Test
     @DisplayName("Fail create new reservation (throw WrongDatesException - room occupied)")
     void saveThrowWrongDatesExceptionRoomOccupiedTest() {
-        Long guest1Id = testDBUtils.getGuestIdByEmail("sidor@gmail.com");
-        Long guest2Id = testDBUtils.getGuestIdByEmail("sidor_andr@gmail.com");
+        Long user1Id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long user2Id = testDBUtils.getUserIdByEmail("sidor_andr@gmail.com");
 
         ReservationRequest reservationRequest = new ReservationRequest("101",
                 LocalDate.now(),
                 LocalDate.now().plusDays(1),
-                Set.of(guest1Id.toString(), guest2Id.toString()));
+                Set.of(user1Id.toString(), user2Id.toString()));
 
         assertThrows(WrongDatesException.class,
                 () -> reservationService.save(reservationRequest));

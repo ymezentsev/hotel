@@ -1,4 +1,4 @@
-package com.robot.hotel.guest;
+package com.robot.hotel.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GuestDto {
+public class UserDto {
     private Long id;
     private String firstName;
     private String lastName;

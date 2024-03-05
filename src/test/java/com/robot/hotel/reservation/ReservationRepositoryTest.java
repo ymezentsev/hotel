@@ -1,5 +1,6 @@
 package com.robot.hotel.reservation;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,15 +24,17 @@ class ReservationRepositoryTest {
     ReservationRepository reservationRepository;
 
     @Test
-    void findByGuestsIdTest() {
+    @DisplayName("Find reservations by user id")
+    void findByUserIdTest() {
         assertAll(
-                () -> assertEquals(2, reservationRepository.findByGuestsId(1L).size()),
-                () -> assertEquals(3, reservationRepository.findByGuestsId(2L).size()),
-                () -> assertEquals(0, reservationRepository.findByGuestsId(3L).size())
+                () -> assertEquals(2, reservationRepository.findByUsersId(1L).size()),
+                () -> assertEquals(3, reservationRepository.findByUsersId(2L).size()),
+                () -> assertEquals(0, reservationRepository.findByUsersId(3L).size())
         );
     }
 
     @Test
+    @DisplayName("Find reservations by room id")
     void findByRoomIdTest() {
         assertAll(
                 () -> assertEquals(1, reservationRepository.findByRoomId(1L).size()),
@@ -41,6 +44,7 @@ class ReservationRepositoryTest {
     }
 
     @Test
+    @DisplayName("Find free rooms for which reservations exist")
     void findFreeRoomsWithReservationsTest() {
         assertAll(
                 () -> assertEquals(1, reservationRepository
@@ -53,11 +57,13 @@ class ReservationRepositoryTest {
     }
 
     @Test
+    @DisplayName("Find current reservations")
     void findCurrentReservationsTest() {
         assertEquals(3, reservationRepository.findCurrentReservations().size());
     }
 
     @Test
+    @DisplayName("Find current reservations for specific room")
     void findCurrentReservationsForRoomTest() {
         assertAll(
                 () -> assertEquals(1, reservationRepository

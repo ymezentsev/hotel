@@ -1,4 +1,4 @@
-package com.robot.hotel.guest;
+package com.robot.hotel.user;
 
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-class GuestControllerTest {
+class UserControllerTest {
     @Container
     @ServiceConnection
     static MySQLContainer<?> mySql = new MySQLContainer<>("mysql:8.0");
@@ -37,11 +37,11 @@ class GuestControllerTest {
     @BeforeEach
     void setUp() {
         dbInitializer.populateDB();
-        RestAssured.baseURI = "http://localhost:" + port + "/guests";
+        RestAssured.baseURI = "http://localhost:" + port + "/users";
     }
 
     @Test
-    @DisplayName("Find all guests")
+    @DisplayName("Find all users")
     void findAllTest() {
         given().contentType(ContentType.JSON)
                 .when().get()
@@ -52,13 +52,13 @@ class GuestControllerTest {
     }
 
     @Test
-    @DisplayName("Successful create new guest")
+    @DisplayName("Successful create new user")
     void saveTest() {
-        GuestRequest guestRequest = new GuestRequest("Dmitro", "Andriev",
+        UserRequest userRequest = new UserRequest("Dmitro", "Andriev",
                 "(096)456-32-74", "Andr@gmail.com", "");
 
         given().contentType(ContentType.JSON)
-                .body(guestRequest)
+                .body(userRequest)
                 .when().post()
                 .then()
                 .statusCode(200)
@@ -67,13 +67,13 @@ class GuestControllerTest {
     }
 
     @Test
-    @DisplayName("Fail create new guest (incorrect user input)")
+    @DisplayName("Fail create new user (incorrect user input)")
     void saveWithIncorrectDataTest() {
-        GuestRequest guestRequest = new GuestRequest("Dmitro", "Andriev",
+        UserRequest userRequest = new UserRequest("Dmitro", "Andriev",
                 "(096)456-32-74", "Andrgmail.com", "");
 
         given().contentType(ContentType.JSON)
-                .body(guestRequest)
+                .body(userRequest)
                 .when().post()
                 .then()
                 .statusCode(400)
@@ -82,10 +82,10 @@ class GuestControllerTest {
     }
 
     @Test
-    @DisplayName("Find guest by id")
+    @DisplayName("Find user by id")
     void findByIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", testDBUtils.getGuestIdByEmail("sidor@gmail.com"))
+                .pathParam("id", testDBUtils.getUserIdByEmail("sidor@gmail.com"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -94,7 +94,7 @@ class GuestControllerTest {
     }
 
     @Test
-    @DisplayName("Find guest by email")
+    @DisplayName("Find user by email")
     void findByEmailTest() {
         given().contentType(ContentType.JSON)
                 .pathParam("email", "sidor@gmail.com")
@@ -106,7 +106,7 @@ class GuestControllerTest {
     }
 
     @Test
-    @DisplayName("Find guest by tel.number")
+    @DisplayName("Find user by tel.number")
     void findByTelNumberTest() {
         given().contentType(ContentType.JSON)
                 .pathParam("telNumber", "0965467834")
@@ -118,7 +118,7 @@ class GuestControllerTest {
     }
 
     @Test
-    @DisplayName("Find guest by passport serial number")
+    @DisplayName("Find user by passport serial number")
     void findByPassportSerialNumberTest() {
         given().contentType(ContentType.JSON)
                 .pathParam("passportSerialNumber", "va123456")
@@ -130,7 +130,7 @@ class GuestControllerTest {
     }
 
     @Test
-    @DisplayName("Find guest by lastname")
+    @DisplayName("Find user by lastname")
     void findByLastNameTest() {
         given().contentType(ContentType.JSON)
                 .pathParam("lastName", "sidorov")
@@ -142,8 +142,8 @@ class GuestControllerTest {
     }
 
     @Test
-    @DisplayName("Find guest by reservation")
-    void findGuestByReservationTest() {
+    @DisplayName("Find users by reservation")
+    void findUsersByReservationTest() {
         given().contentType(ContentType.JSON)
                 .pathParam("id", testDBUtils.getReservationIdByRoom("204"))
                 .when().get("/reservations/{id}")
@@ -154,28 +154,28 @@ class GuestControllerTest {
     }
 
     @Test
-    @DisplayName("Successful update guest")
+    @DisplayName("Successful update user")
     void updateTest() {
-        GuestRequest guestRequest = new GuestRequest("Dmitro", "Andriev",
+        UserRequest userRequest = new UserRequest("Dmitro", "Andriev",
                 "(096)456-32-74", "Andr@gmail.com", "");
 
         given().contentType(ContentType.JSON)
-                .body(guestRequest)
-                .pathParam("id", testDBUtils.getGuestIdByEmail("kozlov@gmail.com"))
+                .body(userRequest)
+                .pathParam("id", testDBUtils.getUserIdByEmail("kozlov@gmail.com"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(200);
     }
 
     @Test
-    @DisplayName("Fail update guest (incorrect user input)")
+    @DisplayName("Fail update user (incorrect user input)")
     void updateWithIncorrectDataTest() {
-        GuestRequest guestRequest = new GuestRequest("Dmitro", "Andriev",
+        UserRequest userRequest = new UserRequest("Dmitro", "Andriev",
                 "(096)456-32-74", "Andrgmail.com", "");
 
         given().contentType(ContentType.JSON)
-                .body(guestRequest)
-                .pathParam("id", testDBUtils.getGuestIdByEmail("sidor@gmail.com"))
+                .body(userRequest)
+                .pathParam("id", testDBUtils.getUserIdByEmail("sidor@gmail.com"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(400)
@@ -184,10 +184,10 @@ class GuestControllerTest {
     }
 
     @Test
-    @DisplayName("Delete guest")
+    @DisplayName("Delete user")
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", testDBUtils.getGuestIdByEmail("dmitr@gmail.com"))
+                .pathParam("id", testDBUtils.getUserIdByEmail("dmitr@gmail.com"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);

@@ -1,6 +1,6 @@
 package com.robot.hotel;
 
-import com.robot.hotel.guest.GuestRepository;
+import com.robot.hotel.user.UserRepository;
 import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.room.RoomRepository;
 import com.robot.hotel.roomtype.RoomTypeRepository;
@@ -16,7 +16,7 @@ public class TestDBUtils {
     RoomRepository roomRepository;
 
     @Autowired
-    GuestRepository guestRepository;
+    UserRepository userRepository;
 
     @Autowired
     ReservationRepository reservationRepository;
@@ -33,8 +33,8 @@ public class TestDBUtils {
                 .getId();
     }
 
-    public Long getGuestIdByEmail(String email) {
-        return guestRepository.findByEmail(email)
+    public Long getUserIdByEmail(String email) {
+        return userRepository.findByEmail(email)
                 .orElseThrow()
                 .getId();
     }

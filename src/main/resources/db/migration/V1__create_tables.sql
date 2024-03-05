@@ -12,7 +12,7 @@ create table IF NOT EXISTS room(
     foreign key (room_type_id) references room_type (id)
 );
 
-create table IF NOT EXISTS guest(
+create table IF NOT EXISTS users(
 	id bigint primary key auto_increment,
     first_name varchar(50) not null,
 	last_name varchar(50) not null,
@@ -29,9 +29,9 @@ create table IF NOT EXISTS reservation(
 	foreign key (room_id) references room (id)
 );
 
-create table IF NOT EXISTS reservation_guest(
+create table IF NOT EXISTS reservation_user(
 	reservation_id bigint not null,
-    guest_id bigint not null,
+    user_id bigint not null,
 	foreign key (reservation_id) references reservation (id),
-    foreign key (guest_id) references guest (id)
+    foreign key (user_id) references users (id)
 );

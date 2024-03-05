@@ -2,8 +2,8 @@ package com.robot.hotel.reservation;
 
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.WrongDatesException;
-import com.robot.hotel.guest.Guest;
-import com.robot.hotel.guest.GuestRepository;
+import com.robot.hotel.user.User;
+import com.robot.hotel.user.UserRepository;
 import com.robot.hotel.room.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +22,12 @@ public class ReservationService {
     private final ReservationMapper reservationMapper;
     private final RoomService roomService;
     private final RoomRepository roomRepository;
-    private final GuestRepository guestRepository;
+    private final UserRepository userRepository;
     private final RoomMapper roomMapper;
 
     private static final String RESERVATION_IS_NOT_EXISTS = "Such reservation is not exists";
     private static final String ROOM_IS_NOT_EXISTS = "Such room is not exists";
-    private static final String GUEST_IS_NOT_EXISTS = "Such guest is not exists";
+    private static final String USER_IS_NOT_EXISTS = "Such user is not exists";
     private static final String CHECK_OUT_LESS_THAN_CHECK_IN_DATE = "The check out date must be after check in date";
     private static final String TOO_LONG_RESERVATION = "You can't reserve room for more than 60 days";
     private static final String TOO_EARLY_RESERVATION = "Reservation of rooms opens 180 days in advance";
@@ -49,8 +49,8 @@ public class ReservationService {
     }
 
     @Transactional
-    public List<ReservationDto> findReservationsByGuestsId(Long guestId) {
-        return reservationRepository.findByGuestsId(guestId).stream()
+    public List<ReservationDto> findReservationsByUserId(Long userId) {
+        return reservationRepository.findByUsersId(userId).stream()
                 .map(reservationMapper::buildReservationDto)
                 .toList();
     }
@@ -81,13 +81,13 @@ public class ReservationService {
             throw new WrongDatesException(TOO_EARLY_RESERVATION);
         }
 
-        if (reservationRequest.getGuests().size() > room.getMaxCountOfGuests()) {
+        if (reservationRequest.getUsers().size() > room.getMaxCountOfGuests()) {
             throw new GuestsQuantityException(TOO_MANY_GUESTS);
         }
 
-        List<Guest> guests = reservationRequest.getGuests().stream()
-                .map(guestId -> guestRepository.findById(Long.parseLong(guestId))
-                        .orElseThrow(() -> new NoSuchElementException(GUEST_IS_NOT_EXISTS)))
+        List<User> users = reservationRequest.getUsers().stream()
+                .map(guestId -> userRepository.findById(Long.parseLong(guestId))
+                        .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)))
                 .toList();
 
         Set<RoomDto> freeRooms = roomService.findFreeRooms(new FreeRoomRequest(
@@ -96,7 +96,7 @@ public class ReservationService {
             throw new WrongDatesException(OCCUPIED_ROOM);
         }
 
-        Reservation newReservation = reservationMapper.buildReservationFromRequest(reservationRequest, room, guests);
+        Reservation newReservation = reservationMapper.buildReservationFromRequest(reservationRequest, room, users);
         return reservationMapper.buildReservationDto(reservationRepository.save(newReservation));
     }
 

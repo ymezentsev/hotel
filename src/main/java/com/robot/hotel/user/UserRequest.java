@@ -1,4 +1,4 @@
-package com.robot.hotel.guest;
+package com.robot.hotel.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Dto for create and update guest")
-public class GuestRequest {
+@Schema(description = "Dto for create and update user")
+public class UserRequest {
     @NotBlank(message = "Firstname is required")
     @Size(max = 50, message = "Max size for firstname is 50 characters")
     private String firstName;

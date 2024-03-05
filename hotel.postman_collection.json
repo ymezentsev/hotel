@@ -420,27 +420,27 @@
 			]
 		},
 		{
-			"name": "guests",
+			"name": "users",
 			"item": [
 				{
-					"name": "find all guests",
+					"name": "find all users",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/guests",
+							"raw": "{{url}}/users",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"guests"
+								"users"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "add new guest",
+					"name": "add new user",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -454,19 +454,19 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/guests",
+							"raw": "{{url}}/users",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"guests"
+								"users"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "update guest's info",
+					"name": "update user's info",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -480,12 +480,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/guests/4",
+							"raw": "{{url}}/users/4",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"guests",
+								"users",
 								"4"
 							]
 						}
@@ -493,17 +493,17 @@
 					"response": []
 				},
 				{
-					"name": "delete guest",
+					"name": "delete user",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/guests/8",
+							"raw": "{{url}}/users/8",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"guests",
+								"users",
 								"8"
 							]
 						}
@@ -511,17 +511,17 @@
 					"response": []
 				},
 				{
-					"name": "find guest by id",
+					"name": "find user by id",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/guests/1",
+							"raw": "{{url}}/users/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"guests",
+								"users",
 								"1"
 							]
 						}
@@ -529,17 +529,17 @@
 					"response": []
 				},
 				{
-					"name": "find guest by reservations",
+					"name": "find users by reservations",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/guests/reservations/12",
+							"raw": "{{url}}/users/reservations/12",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"guests",
+								"users",
 								"reservations",
 								"12"
 							]
@@ -548,17 +548,17 @@
 					"response": []
 				},
 				{
-					"name": "find guest by email",
+					"name": "find user by email",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/guests/email/sergse@gmail.com",
+							"raw": "{{url}}/users/email/sergse@gmail.com",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"guests",
+								"users",
 								"email",
 								"sergse@gmail.com"
 							]
@@ -567,17 +567,17 @@
 					"response": []
 				},
 				{
-					"name": "find guest by tel number",
+					"name": "find user by tel number",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/guests/telNumber/64",
+							"raw": "{{url}}/users/telNumber/64",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"guests",
+								"users",
 								"telNumber",
 								"64"
 							]
@@ -586,17 +586,17 @@
 					"response": []
 				},
 				{
-					"name": "find guest by passport",
+					"name": "find user by passport",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/guests/passport/bd325443",
+							"raw": "{{url}}/users/passport/bd325443",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"guests",
+								"users",
 								"passport",
 								"bd325443"
 							]
@@ -605,17 +605,17 @@
 					"response": []
 				},
 				{
-					"name": "find guest by lastName",
+					"name": "find user by lastName",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/guests/lastName/sidorov",
+							"raw": "{{url}}/users/lastName/sidorov",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"guests",
+								"users",
 								"lastName",
 								"sidorov"
 							]
@@ -652,7 +652,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \"roomNumber\": \"204\",\r\n        \"checkInDate\": \"2024-03-03\",\r\n        \"checkOutDate\": \"2024-03-22\",\r\n        \"guests\": [1, 3, 1] \r\n    }",
+							"raw": "    {\r\n        \"roomNumber\": \"204\",\r\n        \"checkInDate\": \"2024-03-03\",\r\n        \"checkOutDate\": \"2024-03-22\",\r\n        \"users\": [1, 3, 1] \r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -672,7 +672,7 @@
 					"response": []
 				},
 				{
-					"name": "find reservations by guest id",
+					"name": "find reservations by user id",
 					"request": {
 						"method": "GET",
 						"header": [],

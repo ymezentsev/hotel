@@ -33,10 +33,10 @@ public class ReservationController {
         return reservationService.save(reservationRequest);
     }
 
-    @GetMapping("/guest/{id}")
-    @Operation(summary = "Get reservations by guest id")
-    public List<ReservationDto> findReservationsByGuestsId(@PathVariable Long id) {
-        return reservationService.findReservationsByGuestsId(id);
+    @GetMapping("/user/{id}")
+    @Operation(summary = "Get reservations by user id")
+    public List<ReservationDto> findReservationsByUserId(@PathVariable Long id) {
+        return reservationService.findReservationsByUserId(id);
     }
 
     @GetMapping("/room/{roomNumber}")

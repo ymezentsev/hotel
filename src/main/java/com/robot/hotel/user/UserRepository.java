@@ -1,4 +1,4 @@
-package com.robot.hotel.guest;
+package com.robot.hotel.user;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface GuestRepository extends JpaRepository<Guest, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
 
     boolean existsByTelNumber(String telNumber);
@@ -17,24 +17,24 @@ public interface GuestRepository extends JpaRepository<Guest, Long> {
 
     @Override
     @EntityGraph(attributePaths = {"reservations"})
-    List<Guest> findAll();
+    List<User> findAll();
 
     @Override
     @EntityGraph(attributePaths = {"reservations"})
-    Optional<Guest> findById(Long id);
+    Optional<User> findById(Long id);
 
     @EntityGraph(attributePaths = {"reservations"})
-    Optional<Guest> findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
     @EntityGraph(attributePaths = {"reservations"})
-    Optional<Guest> findByTelNumber(String telNumber);
+    Optional<User> findByTelNumber(String telNumber);
 
     @EntityGraph(attributePaths = {"reservations"})
-    Optional<Guest> findByPassportSerialNumber(String passportSerialNumber);
+    Optional<User> findByPassportSerialNumber(String passportSerialNumber);
 
     @EntityGraph(attributePaths = {"reservations"})
-    List<Guest> findByLastName(String lastName);
+    List<User> findByLastName(String lastName);
 
     @EntityGraph(attributePaths = {"reservations"})
-    List<Guest> findByReservationsId(Long reservationId);
+    List<User> findByReservationsId(Long reservationId);
 }

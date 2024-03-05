@@ -69,11 +69,11 @@ class ReservationControllerTest {
     @Test
     @DisplayName("Successful create new reservation")
     void saveTest() {
-        Long guest1Id = testDBUtils.getGuestIdByEmail("sidor@gmail.com");
-        Long guest2Id = testDBUtils.getGuestIdByEmail("sidor_andr@gmail.com");
+        Long user1Id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long user2Id = testDBUtils.getUserIdByEmail("sidor_andr@gmail.com");
 
         ReservationRequest reservationRequest = new ReservationRequest("201", LocalDate.now(),
-                LocalDate.now().plusDays(1), Set.of(guest1Id.toString(), guest2Id.toString()));
+                LocalDate.now().plusDays(1), Set.of(user1Id.toString(), user2Id.toString()));
 
         given().contentType(ContentType.JSON)
                 .body(reservationRequest)
@@ -100,11 +100,11 @@ class ReservationControllerTest {
     }
 
     @Test
-    @DisplayName("Find reservations by guest id")
-    void findReservationsByGuestsIdTest() {
+    @DisplayName("Find reservations by user id")
+    void findReservationsByUserIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", testDBUtils.getGuestIdByEmail("sidor_andr@gmail.com"))
-                .when().get("/guest/{id}")
+                .pathParam("id", testDBUtils.getUserIdByEmail("sidor_andr@gmail.com"))
+                .when().get("/user/{id}")
                 .then()
                 .statusCode(200)
                 .assertThat()

@@ -17,5 +17,5 @@ public class ReservationDto {
     private String roomNumber;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    private List<String> guests;
+    private List<String> users;
 }
