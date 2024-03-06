@@ -123,7 +123,7 @@ public class UserService {
         userToUpdate.setLastName(userRequest.getLastName().strip());
         userToUpdate.setTelNumber(userRequest.getTelNumber().strip());
         userToUpdate.setEmail(userRequest.getEmail().strip());
-        userToUpdate.setPassportSerialNumber(userRequest.getPassportSerialNumber().strip());
+       // userToUpdate.setPassportSerialNumber(userRequest.getPassportSerialNumber().strip());
         userRepository.save(userToUpdate);
     }
 

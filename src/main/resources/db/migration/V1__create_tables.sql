@@ -31,9 +31,9 @@ create table IF NOT EXISTS users(
 	last_name varchar(50) not null,
 	tel_number varchar(20) unique not null,
     email varchar(50) unique not null,
-    password VARCHAR(100) NOT NULL,
-    role VARCHAR(20) NOT NULL DEFAULT 'USER',
-	passport_id bigint not null,
+    password VARCHAR(100) not null,
+    role VARCHAR(20) not null default 'USER',
+	passport_id bigint,
 	foreign key (passport_id) references passport (id)
 );
 

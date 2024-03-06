@@ -1,5 +1,6 @@
 package com.robot.hotel.user;
 
+import com.robot.hotel.passport.Passport;
 import com.robot.hotel.reservation.Reservation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,8 +33,16 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column
-    private String passportSerialNumber;
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
+
+    @OneToOne
+    @JoinColumn(name = "passport_id")
+    private Passport passport;
 
     @ManyToMany(mappedBy = "users")
     private List<Reservation> reservations;

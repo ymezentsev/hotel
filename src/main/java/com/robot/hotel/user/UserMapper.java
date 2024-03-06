@@ -18,7 +18,7 @@ public class UserMapper {
                 .lastName(user.getLastName())
                 .telNumber(user.getTelNumber())
                 .email(user.getEmail())
-                .passportSerialNumber(user.getPassportSerialNumber())
+                //.passportSerialNumber(user.getPassportSerialNumber())
                 .reservations(user.getReservations().stream()
                         .map(getReservationsString())
                         .toList())
@@ -35,7 +35,7 @@ public class UserMapper {
                 .lastName(userRequest.getLastName().toLowerCase().strip())
                 .telNumber(userRequest.getTelNumber().strip())
                 .email(userRequest.getEmail().toLowerCase().strip())
-                .passportSerialNumber(userRequest.getPassportSerialNumber().toLowerCase().strip())
+               // .passportSerialNumber(userRequest.getPassportSerialNumber().toLowerCase().strip())
                 .reservations(Collections.emptyList())
                 .build();
     }
