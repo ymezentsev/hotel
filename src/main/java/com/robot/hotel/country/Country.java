@@ -19,7 +19,7 @@ public class Country {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String country;
+    private String name;
 
     @OneToMany(mappedBy = "country")
     private List<Passport> passports;

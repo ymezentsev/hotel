@@ -1,6 +1,7 @@
 package com.robot.hotel.passport;
 
 import com.robot.hotel.country.Country;
+import com.robot.hotel.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,4 +28,7 @@ public class Passport {
 
     @Column
     private LocalDate issueDate;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy="passport")
+    private User user;
 }
