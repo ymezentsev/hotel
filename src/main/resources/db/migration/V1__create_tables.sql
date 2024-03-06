@@ -1,3 +1,16 @@
+create table IF NOT EXISTS country(
+	id bigint primary key auto_increment,
+    country varchar(20) unique not null
+);
+
+create table IF NOT EXISTS passport(
+	id bigint primary key auto_increment,
+    serialNumber varchar(20) unique not null,
+    country_id bigint not null,
+    issue_date date,
+    foreign key (country_id) references country (id)
+);
+
 create table IF NOT EXISTS room_type(
 	id bigint primary key auto_increment,
     type varchar(20) unique not null
@@ -18,7 +31,10 @@ create table IF NOT EXISTS users(
 	last_name varchar(50) not null,
 	tel_number varchar(20) unique not null,
     email varchar(50) unique not null,
-	passport_serial_number varchar(50)
+    password VARCHAR(100) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'USER',
+	passport_id bigint not null,
+	foreign key (passport_id) references passport (id)
 );
 
 create table IF NOT EXISTS reservation(
