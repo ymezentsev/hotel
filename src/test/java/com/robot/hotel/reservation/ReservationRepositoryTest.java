@@ -1,7 +1,9 @@
 package com.robot.hotel.reservation;
 
+import com.robot.hotel.ContainerConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.testcontainers.containers.MySQLContainer;
@@ -12,12 +14,14 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
+@AutoConfigureDataJpa
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = ContainerConfiguration.class)
 class ReservationRepositoryTest {
-    @Container
+/*    @Container
     @ServiceConnection
-    static MySQLContainer<?> mySql = new MySQLContainer<>("mysql:8.0");
+    static MySQLContainer<?> mySql = new MySQLContainer<>("mysql:8.0");*/
 
     @Autowired
     ReservationRepository reservationRepository;

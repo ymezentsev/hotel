@@ -1,5 +1,6 @@
 package com.robot.hotel.reservation;
 
+import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
 import io.restassured.RestAssured;
@@ -21,12 +22,13 @@ import java.util.Set;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,  classes = ContainerConfiguration.class)
 class ReservationControllerTest {
-    @Container
+/*    @Container
     @ServiceConnection
-    static MySQLContainer<?> mySql = new MySQLContainer<>("mysql:8.0");
+    static MySQLContainer<?> mySql = new MySQLContainer<>("mysql:8.0");*/
 
     @LocalServerPort
     private Integer port;
