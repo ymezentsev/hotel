@@ -1,6 +1,7 @@
 package com.robot.hotel.country;
 
 import com.robot.hotel.passport.Passport;
+import com.robot.hotel.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,12 +16,17 @@ import java.util.List;
 @AllArgsConstructor
 public class Country {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String code;
 
     @Column(unique = true, nullable = false)
     private String name;
 
+    @Column(unique = true, nullable = false)
+    private String telCode;
+
     @OneToMany(mappedBy = "country")
     private List<Passport> passports;
+
+    @OneToMany(mappedBy = "country")
+    private List<User> users;
 }

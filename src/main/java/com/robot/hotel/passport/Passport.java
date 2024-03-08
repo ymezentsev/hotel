@@ -23,7 +23,7 @@ public class Passport {
     private String serialNumber;
 
     @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
+    @JoinColumn(name = "country_code", nullable = false)
     private Country country;
 
     @Column

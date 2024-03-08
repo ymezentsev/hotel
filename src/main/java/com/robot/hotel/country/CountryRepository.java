@@ -2,5 +2,5 @@ package com.robot.hotel.country;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CountryRepository extends JpaRepository<Country, Long> {
+public interface CountryRepository extends JpaRepository<Country, String> {
 }

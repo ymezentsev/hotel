@@ -1,5 +1,6 @@
 package com.robot.hotel.user;
 
+import com.robot.hotel.country.Country;
 import com.robot.hotel.passport.Passport;
 import com.robot.hotel.reservation.Reservation;
 import jakarta.persistence.*;
@@ -26,6 +27,10 @@ public class User {
 
     @Column(nullable = false)
     private String lastName;
+
+    @ManyToOne
+    @JoinColumn(name = "tel_country_code", nullable = false)
+    private Country country;
 
     @Column(unique = true, nullable = false)
     private String telNumber;
