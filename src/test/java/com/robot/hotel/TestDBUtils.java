@@ -1,9 +1,9 @@
 package com.robot.hotel;
 
-import com.robot.hotel.user.UserRepository;
 import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.room.RoomRepository;
 import com.robot.hotel.roomtype.RoomTypeRepository;
+import com.robot.hotel.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

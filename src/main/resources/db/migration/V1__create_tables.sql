@@ -6,7 +6,7 @@ create table IF NOT EXISTS country(
 
 create table IF NOT EXISTS passport(
 	id bigint primary key auto_increment,
-    serialNumber varchar(20) unique not null,
+    serial_number varchar(20) unique not null,
     country_code varchar(3) not null,
     issue_date date,
     foreign key (country_code) references country (code)
