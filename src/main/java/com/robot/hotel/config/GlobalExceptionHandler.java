@@ -1,10 +1,7 @@
 package com.robot.hotel.config;
 
 import com.robot.hotel.error.AppError;
-import com.robot.hotel.exception.DuplicateObjectException;
-import com.robot.hotel.exception.GuestsQuantityException;
-import com.robot.hotel.exception.NotEmptyObjectException;
-import com.robot.hotel.exception.WrongDatesException;
+import com.robot.hotel.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,6 +61,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(WrongDatesException.class)
     public ResponseEntity<AppError> catchWrongDatesException(WrongDatesException e) {
+        log.error(e.getMessage(), e);
+        return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotEnoughInformationException.class)
+    public ResponseEntity<AppError> catchNotEnoughInformationException(NotEnoughInformationException e) {
         log.error(e.getMessage(), e);
         return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }

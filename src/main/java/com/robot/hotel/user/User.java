@@ -45,7 +45,7 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "passport_id")
     private Passport passport;
 

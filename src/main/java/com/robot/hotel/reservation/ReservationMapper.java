@@ -35,7 +35,7 @@ public class ReservationMapper {
     private Function<User, String> getUserString() {
         return user -> "id:" + user.getId().toString()
                 + ", " + user.getFirstName() + " " + user.getLastName()
-                + ", " + user.getTelNumber()
+                + ", " + user.getCountry().getTelCode() + user.getTelNumber()
                 + ", " + user.getEmail();
     }
 }

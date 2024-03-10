@@ -1,5 +1,6 @@
 package com.robot.hotel.user;
 
+import com.robot.hotel.passport.PassportDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,10 +14,18 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDto {
     private Long id;
+
     private String firstName;
+
     private String lastName;
+
     private String telNumber;
+
     private String email;
-    private String passportSerialNumber;
+
+    private String role;
+
+    private PassportDto passport;
+
     private List<String> reservations;
 }

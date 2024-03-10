@@ -1,5 +1,6 @@
 package com.robot.hotel.room;
 
+import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
@@ -10,9 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
@@ -21,13 +19,9 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = ContainerConfiguration.class)
 class RoomServiceTest {
-    @Container
-    @ServiceConnection
-    static MySQLContainer<?> mySql = new MySQLContainer<>("mysql:8.0");
-
     @Autowired
     RoomService roomService;
 

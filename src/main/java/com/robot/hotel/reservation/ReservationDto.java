@@ -14,8 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 public class ReservationDto {
     private Long id;
+
     private String roomNumber;
+
     private LocalDate checkInDate;
+
     private LocalDate checkOutDate;
+
     private List<String> users;
 }

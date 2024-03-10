@@ -2,6 +2,8 @@ package com.robot.hotel.user;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,11 +32,21 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByTelNumber(String telNumber);
 
     @EntityGraph(attributePaths = {"reservations"})
-    Optional<User> findByPassportSerialNumber(String passportSerialNumber);
+    @Query("SELECT u FROM User u JOIN u.country c " +
+            "WHERE CONCAT(c.telCode, u.telNumber) = :telNumber")
+    Optional<User> findByFullTelNumber(@Param("telNumber") String telNumber);
+
+    @EntityGraph(attributePaths = {"reservations"})
+    @Query("SELECT u FROM User u JOIN u.passport p " +
+            "WHERE p.serialNumber = :passportSerialNumber")
+    Optional<User> findByPassportSerialNumber(@Param("passportSerialNumber") String passportSerialNumber);
 
     @EntityGraph(attributePaths = {"reservations"})
     List<User> findByLastName(String lastName);
 
     @EntityGraph(attributePaths = {"reservations"})
     List<User> findByReservationsId(Long reservationId);
+
+    @EntityGraph(attributePaths = {"reservations"})
+    List<User> findByRole(Role role);
 }

@@ -1,13 +1,17 @@
 package com.robot.hotel;
 
-import com.robot.hotel.user.User;
-import com.robot.hotel.user.UserRepository;
+import com.robot.hotel.country.CountryRepository;
+import com.robot.hotel.passport.Passport;
+import com.robot.hotel.passport.PassportRepository;
 import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.room.Room;
 import com.robot.hotel.room.RoomRepository;
 import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
+import com.robot.hotel.user.Role;
+import com.robot.hotel.user.User;
+import com.robot.hotel.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,14 +34,22 @@ public class DBInitializer {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    CountryRepository countryRepository;
+
+    @Autowired
+    PassportRepository passportRepository;
+
     public void populateDB() {
         reservationRepository.deleteAll();
         userRepository.deleteAll();
+        // passportRepository.deleteAll();
         roomRepository.deleteAll();
         roomTypeRepository.deleteAll();
         populateRoomTypeTable();
         populateRoomTable();
-        populateUsersTable();
+        //  populatePassportTable();
+        populateUserTable();
         populateReservationTable();
     }
 
@@ -85,43 +97,96 @@ public class DBInitializer {
                 .build());
     }
 
-    private void populateUsersTable() {
+    private void populatePassportTable() {
+        passportRepository.save(Passport.builder()
+                .serialNumber("bb345678")
+                .country(countryRepository.findById("UKR").orElseThrow())
+                .issueDate(LocalDate.of(2020, 1, 15))
+                .build());
+
+        passportRepository.save(Passport.builder()
+                .serialNumber("va123456")
+                .country(countryRepository.findById("UKR").orElseThrow())
+                .issueDate(LocalDate.of(2021, 3, 23))
+                .build());
+
+        passportRepository.save(Passport.builder()
+                .serialNumber("ba345863")
+                .country(countryRepository.findById("UKR").orElseThrow())
+                .issueDate(LocalDate.of(2021, 2, 12))
+                .build());
+    }
+
+    private void populateUserTable() {
+        Passport passport1 = Passport.builder()
+                .serialNumber("bb345678")
+                .country(countryRepository.findById("UKR").orElseThrow())
+                .issueDate(LocalDate.of(2020, 1, 15))
+                .build();
+
+        Passport passport2 = Passport.builder()
+                .serialNumber("va123456")
+                .country(countryRepository.findById("UKR").orElseThrow())
+                .issueDate(LocalDate.of(2021, 3, 23))
+                .build();
+
+        Passport passport3 = Passport.builder()
+                .serialNumber("ba345863")
+                .country(countryRepository.findById("UKR").orElseThrow())
+                .issueDate(LocalDate.of(2021, 2, 12))
+                .build();
+
         userRepository.save(User.builder()
                 .firstName("denis")
                 .lastName("sidorov")
+                .country(countryRepository.findById("UKR").orElseThrow())
                 .telNumber("0965467834")
                 .email("sidor@gmail.com")
+                .password("123")
+                .role(Role.USER)
                 .build());
 
         userRepository.save(User.builder()
                 .firstName("andriy")
                 .lastName("sidorov")
+                .country(countryRepository.findById("UKR").orElseThrow())
                 .telNumber("0954375647")
                 .email("sidor_andr@gmail.com")
-                .passportSerialNumber("bb345678")
+                .password("123")
+                .role(Role.USER)
+                .passport(passport1)
                 .build());
 
         userRepository.save(User.builder()
                 .firstName("mark")
                 .lastName("dmitrenko")
+                .country(countryRepository.findById("UKR").orElseThrow())
                 .telNumber("0505463213")
                 .email("dmitr@gmail.com")
-                .passportSerialNumber("va123456")
+                .password("123")
+                .role(Role.USER)
+                .passport(passport2)
                 .build());
 
         userRepository.save(User.builder()
                 .firstName("evgen")
                 .lastName("kozlov")
+                .country(countryRepository.findById("UKR").orElseThrow())
                 .telNumber("0964569034")
                 .email("kozlov@gmail.com")
+                .password("123")
+                .role(Role.USER)
                 .build());
 
         userRepository.save(User.builder()
                 .firstName("andriy")
                 .lastName("nikolaenko")
+                .country(countryRepository.findById("UKR").orElseThrow())
                 .telNumber("0934560912")
                 .email("nikola@gmail.com")
-                .passportSerialNumber("ba345863")
+                .password("123")
+                .role(Role.USER)
+                .passport(passport3)
                 .build());
     }
 

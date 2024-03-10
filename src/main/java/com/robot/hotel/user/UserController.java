@@ -28,7 +28,7 @@ public class UserController {
         return userService.save(userRequest);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     @Operation(summary = "Get user by id")
     public UserDto findById(@PathVariable Long id) {
         return userService.findById(id);
@@ -62,6 +62,12 @@ public class UserController {
     @Operation(summary = "Get users by reservation")
     public List<UserDto> findUsersByReservation(@PathVariable Long id) {
         return userService.findUsersByReservation(id);
+    }
+
+    @GetMapping("/role/{role}")
+    @Operation(summary = "Get users by role")
+    public List<UserDto> findUsersByRole(@PathVariable String role) {
+        return userService.findUsersByRole(role);
     }
 
     @PutMapping("/{id}")
