@@ -1,41 +1,37 @@
 package com.robot.hotel.reservation;
 
 import com.robot.hotel.ContainerConfiguration;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @AutoConfigureDataJpa
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = ContainerConfiguration.class)
 class ReservationRepositoryTest {
-/*    @Container
-    @ServiceConnection
-    static MySQLContainer<?> mySql = new MySQLContainer<>("mysql:8.0");*/
-
     @Autowired
     ReservationRepository reservationRepository;
 
     @Test
-    void findByGuestsIdTest() {
+    @DisplayName("Find reservations by user id")
+    void findByUserIdTest() {
         assertAll(
-                () -> assertEquals(2, reservationRepository.findByGuestsId(1L).size()),
-                () -> assertEquals(3, reservationRepository.findByGuestsId(2L).size()),
-                () -> assertEquals(0, reservationRepository.findByGuestsId(3L).size())
+                () -> assertEquals(2, reservationRepository.findByUsersId(2L).size()),
+                () -> assertEquals(3, reservationRepository.findByUsersId(3L).size()),
+                () -> assertEquals(0, reservationRepository.findByUsersId(4L).size())
         );
     }
 
     @Test
+    @DisplayName("Find reservations by room id")
     void findByRoomIdTest() {
         assertAll(
                 () -> assertEquals(1, reservationRepository.findByRoomId(1L).size()),
@@ -45,6 +41,7 @@ class ReservationRepositoryTest {
     }
 
     @Test
+    @DisplayName("Find free rooms for which reservations exist")
     void findFreeRoomsWithReservationsTest() {
         assertAll(
                 () -> assertEquals(1, reservationRepository
@@ -57,11 +54,13 @@ class ReservationRepositoryTest {
     }
 
     @Test
+    @DisplayName("Find current reservations")
     void findCurrentReservationsTest() {
         assertEquals(3, reservationRepository.findCurrentReservations().size());
     }
 
     @Test
+    @DisplayName("Find current reservations for specific room")
     void findCurrentReservationsForRoomTest() {
         assertAll(
                 () -> assertEquals(1, reservationRepository
