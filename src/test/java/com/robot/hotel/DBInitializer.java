@@ -106,7 +106,7 @@ public class DBInitializer {
 
         Passport passport3 = Passport.builder()
                 .serialNumber("ba345863")
-                .country(countryRepository.findById("UKR").orElseThrow())
+                .country(countryRepository.findById("ITA").orElseThrow())
                 .issueDate(LocalDate.of(2021, 2, 12))
                 .build();
 
@@ -149,13 +149,13 @@ public class DBInitializer {
                 .telNumber("0964569034")
                 .email("kozlov@gmail.com")
                 .password("123")
-                .role(Role.USER)
+                .role(Role.MANAGER)
                 .build());
 
         userRepository.save(User.builder()
                 .firstName("andriy")
                 .lastName("nikolaenko")
-                .country(countryRepository.findById("UKR").orElseThrow())
+                .country(countryRepository.findById("ITA").orElseThrow())
                 .telNumber("0934560912")
                 .email("nikola@gmail.com")
                 .password("123")
@@ -165,37 +165,37 @@ public class DBInitializer {
     }
 
     private void populateReservationTable() {
-        User user1 = userRepository.findByEmail("sidor@gmail.com").orElseThrow();
-        User user2 = userRepository.findByEmail("sidor_andr@gmail.com").orElseThrow();
-        User user4 = userRepository.findByEmail("kozlov@gmail.com").orElseThrow();
-        User user5 = userRepository.findByEmail("nikola@gmail.com").orElseThrow();
+        User user2 = userRepository.findByEmail("sidor@gmail.com").orElseThrow();
+        User user3 = userRepository.findByEmail("sidor_andr@gmail.com").orElseThrow();
+        User user5 = userRepository.findByEmail("kozlov@gmail.com").orElseThrow();
+        User user6 = userRepository.findByEmail("nikola@gmail.com").orElseThrow();
 
         reservationRepository.save(Reservation.builder()
                 .room(roomRepository.findByNumber("204").orElseThrow())
                 .checkInDate(LocalDate.now())
                 .checkOutDate(LocalDate.now().plusDays(4))
-                .users(List.of(user1, user2))
+                .users(List.of(user2, user3))
                 .build());
 
         reservationRepository.save(Reservation.builder()
                 .room(roomRepository.findByNumber("204").orElseThrow())
                 .checkInDate(LocalDate.of(2024, 1, 15))
                 .checkOutDate(LocalDate.of(2024, 1, 18))
-                .users(List.of(user2))
+                .users(List.of(user3))
                 .build());
 
         reservationRepository.save(Reservation.builder()
                 .room(roomRepository.findByNumber("203").orElseThrow())
                 .checkInDate(LocalDate.now().plusDays(4))
                 .checkOutDate(LocalDate.now().plusDays(6))
-                .users(List.of(user4, user5))
+                .users(List.of(user5, user6))
                 .build());
 
         reservationRepository.save(Reservation.builder()
                 .room(roomRepository.findByNumber("101").orElseThrow())
                 .checkInDate(LocalDate.now().minusDays(2))
                 .checkOutDate(LocalDate.now().plusDays(3))
-                .users(List.of(user1, user2, user5))
+                .users(List.of(user2, user3, user6))
                 .build());
     }
 }

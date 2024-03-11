@@ -1,0 +1,2 @@
+INSERT INTO users (first_name, last_name, tel_country_code, tel_number, email, password, role, passport_id)
+VALUES  ('admin', 'admin', 'UKR', '0991111111', 'admin@gmail.com', 'User1User1', 'ADMIN', NULL);
