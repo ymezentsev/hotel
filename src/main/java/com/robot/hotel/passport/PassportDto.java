@@ -1,4 +1,4 @@
-package com.robot.hotel.roomtype;
+package com.robot.hotel.passport;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -6,17 +6,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Dto for RoomType")
-public class RoomTypeDto {
+@Schema(description = "Dto for Passport")
+public class PassportDto {
+
     private Long id;
 
-    private String type;
+    private String serialNumber;
 
-    private List<String> rooms;
+    private String country;
+
+    private LocalDate issueDate;
 }

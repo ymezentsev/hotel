@@ -13,8 +13,12 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class RoomDto {
     private Long id;
+
     private String number;
+
     private BigDecimal price;
+
     private int maxCountOfGuests;
+
     private String roomType;
 }

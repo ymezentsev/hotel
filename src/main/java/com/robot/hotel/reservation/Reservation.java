@@ -1,6 +1,6 @@
 package com.robot.hotel.reservation;
 
-import com.robot.hotel.guest.Guest;
+import com.robot.hotel.user.User;
 import com.robot.hotel.room.Room;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,8 +34,8 @@ public class Reservation {
 
     @ManyToMany()
     @JoinTable(
-            name = "reservation_guest",
+            name = "reservation_user",
             joinColumns = @JoinColumn(name = "reservation_id"),
-            inverseJoinColumns = @JoinColumn(name = "guest_id"))
-    private List<Guest> guests;
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users;
 }

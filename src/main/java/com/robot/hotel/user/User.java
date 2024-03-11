@@ -1,5 +1,7 @@
-package com.robot.hotel.guest;
+package com.robot.hotel.user;
 
+import com.robot.hotel.country.Country;
+import com.robot.hotel.passport.Passport;
 import com.robot.hotel.reservation.Reservation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,9 +15,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "guest")
+@Table(name = "users")
 @Entity
-public class Guest {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,15 +28,27 @@ public class Guest {
     @Column(nullable = false)
     private String lastName;
 
+    @ManyToOne
+    @JoinColumn(name = "tel_country_code", nullable = false)
+    private Country country;
+
     @Column(unique = true, nullable = false)
     private String telNumber;
 
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column
-    private String passportSerialNumber;
+    @Column(nullable = false)
+    private String password;
 
-    @ManyToMany(mappedBy = "guests")
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "passport_id")
+    private Passport passport;
+
+    @ManyToMany(mappedBy = "users")
     private List<Reservation> reservations;
 }

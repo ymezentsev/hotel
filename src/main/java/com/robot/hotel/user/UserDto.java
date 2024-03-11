@@ -1,5 +1,7 @@
-package com.robot.hotel.guest;
+package com.robot.hotel.user;
 
+import com.robot.hotel.passport.PassportDto;
+import com.robot.hotel.reservation.ReservationDtoWithoutUserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,12 +13,20 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GuestDto {
+public class UserDto {
     private Long id;
+
     private String firstName;
+
     private String lastName;
+
     private String telNumber;
+
     private String email;
-    private String passportSerialNumber;
-    private List<String> reservations;
+
+    private String role;
+
+    private PassportDto passport;
+
+    private List<ReservationDtoWithoutUserInfo> reservations;
 }
