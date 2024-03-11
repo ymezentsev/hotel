@@ -157,7 +157,8 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setEmail(userRequest.getEmail().toLowerCase());
         userToUpdate.setPassword(userRequest.getPassword());
 
-        if (passport != null && !userToUpdate.getPassport().getSerialNumber().equals(passport.getSerialNumber())) {
+        if (passport != null && userToUpdate.getPassport() != null &&
+                !userToUpdate.getPassport().getSerialNumber().equals(passport.getSerialNumber())) {
             userToUpdate.setPassport(passport);
         }
         userRepository.save(userToUpdate);

@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = ContainerConfiguration.class)
 class RoomRepositoryTest {
     @Autowired
-    private RoomRepository roomRepository;
+    RoomRepository roomRepository;
 
     @Test
     @DisplayName("Check by number if room exists")

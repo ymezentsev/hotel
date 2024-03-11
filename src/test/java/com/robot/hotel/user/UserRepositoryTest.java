@@ -31,9 +31,9 @@ class UserRepositoryTest {
     @DisplayName("Check by tel.number if user exists")
     void existsByTelNumberTest() {
         assertAll(
-                () -> assertTrue(userRepository.existsByTelNumber("0965467834")),
-                () -> assertTrue(userRepository.existsByTelNumber("0954375647")),
-                () -> assertFalse(userRepository.existsByTelNumber("+0934375647"))
+                () -> assertTrue(userRepository.existsByTelNumber("965467834")),
+                () -> assertTrue(userRepository.existsByTelNumber("954375647")),
+                () -> assertFalse(userRepository.existsByTelNumber("+934375647"))
         );
     }
 
@@ -61,11 +61,21 @@ class UserRepositoryTest {
     @DisplayName("Find user by tel.number")
     void findByTelNumberTest() {
         assertAll(
-                () -> assertTrue(userRepository.findByTelNumber("0965467834").isPresent()),
-                () -> assertTrue(userRepository.findByTelNumber("0954375647").isPresent()),
-                () -> assertTrue(userRepository.findByTelNumber("+0934375647").isEmpty())
+                () -> assertTrue(userRepository.findByTelNumber("965467834").isPresent()),
+                () -> assertTrue(userRepository.findByTelNumber("954375647").isPresent()),
+                () -> assertTrue(userRepository.findByTelNumber("+934375647").isEmpty())
         );
-   }
+    }
+
+    @Test
+    @DisplayName("Find user by full tel.number")
+    void findByTelFullNumberTest() {
+        assertAll(
+                () -> assertTrue(userRepository.findByFullTelNumber("+380965467834").isPresent()),
+                () -> assertTrue(userRepository.findByFullTelNumber("+390934560912").isPresent()),
+                () -> assertTrue(userRepository.findByFullTelNumber("+10934375647").isEmpty())
+        );
+    }
 
     @Test
     @DisplayName("Find user by passport serial number")
@@ -92,7 +102,17 @@ class UserRepositoryTest {
     void findByReservationsIdTest() {
         assertAll(
                 () -> assertEquals(2, userRepository.findByReservationsId(1L).size()),
-                () -> assertEquals(0, userRepository.findByReservationsId(10L).size())
+                () -> assertEquals(0, userRepository.findByReservationsId(100L).size())
+        );
+    }
+
+    @Test
+    @DisplayName("Find users by role")
+    void findByRoleTest() {
+        assertAll(
+                () -> assertEquals(4, userRepository.findByRole(Role.USER).size()),
+                () -> assertEquals(1, userRepository.findByRole(Role.MANAGER).size()),
+                () -> assertEquals(1, userRepository.findByRole(Role.ADMIN).size())
         );
     }
 }

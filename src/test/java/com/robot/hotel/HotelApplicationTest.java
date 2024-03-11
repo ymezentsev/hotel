@@ -13,7 +13,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = ContainerConfiguration.class)
 class HotelApplicationTest {
     @Autowired
-    private RoomTypeController controller;
+    RoomTypeController controller;
 
     @Test
     @DisplayName("Load app's context")

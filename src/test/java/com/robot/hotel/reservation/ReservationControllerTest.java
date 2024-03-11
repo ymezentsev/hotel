@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,  classes = ContainerConfiguration.class)
 class ReservationControllerTest {
     @LocalServerPort
-    private Integer port;
+    Integer port;
 
     @Autowired
     DBInitializer dbInitializer;

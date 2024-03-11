@@ -17,10 +17,10 @@ VALUES  ('bb345678', 'UKR', "2020-01-15"),
         ('ba345863', 'ITA', "2021-02-12");
 
 INSERT INTO users (first_name, last_name, tel_country_code, tel_number, email, password, role, passport_id)
-VALUES  ('denis', 'sidorov', 'UKR', '0965467834', 'sidor@gmail.com', '123', 'USER', NULL),
-        ('andriy', 'sidorov', 'UKR', '0954375647', 'sidor_andr@gmail.com', '123', 'USER', 1),
-        ('mark', 'dmitrenko', 'UKR', '0505463213', 'dmitr@gmail.com', '123', 'USER', 2),
-        ('evgen', 'kozlov', 'UKR', '0964569034', 'kozlov@gmail.com', '123', 'MANAGER', NULL),
+VALUES  ('denis', 'sidorov', 'UKR', '965467834', 'sidor@gmail.com', '123', 'USER', NULL),
+        ('andriy', 'sidorov', 'UKR', '954375647', 'sidor_andr@gmail.com', '123', 'USER', 1),
+        ('mark', 'dmitrenko', 'UKR', '505463213', 'dmitr@gmail.com', '123', 'USER', 2),
+        ('evgen', 'kozlov', 'UKR', '964569034', 'kozlov@gmail.com', '123', 'MANAGER', NULL),
         ('andriy', 'nikolaenko', 'ITA', '0934560912', 'nikola@gmail.com', '123', 'USER', 3);
 
 INSERT INTO reservation (room_id, check_in_date, check_out_date)

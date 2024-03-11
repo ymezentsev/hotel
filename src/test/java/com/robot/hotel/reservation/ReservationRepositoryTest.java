@@ -24,9 +24,9 @@ class ReservationRepositoryTest {
     @DisplayName("Find reservations by user id")
     void findByUserIdTest() {
         assertAll(
-                () -> assertEquals(2, reservationRepository.findByUsersId(1L).size()),
-                () -> assertEquals(3, reservationRepository.findByUsersId(2L).size()),
-                () -> assertEquals(0, reservationRepository.findByUsersId(3L).size())
+                () -> assertEquals(2, reservationRepository.findByUsersId(2L).size()),
+                () -> assertEquals(3, reservationRepository.findByUsersId(3L).size()),
+                () -> assertEquals(0, reservationRepository.findByUsersId(4L).size())
         );
     }
 

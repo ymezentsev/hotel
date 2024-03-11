@@ -69,6 +69,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    @Transactional
     public ReservationDto save(ReservationRequest reservationRequest) {
         Room room = roomRepository.findByNumber(reservationRequest.getRoomNumber().toLowerCase().strip())
                 .orElseThrow(() -> new NoSuchElementException(ROOM_IS_NOT_EXISTS));

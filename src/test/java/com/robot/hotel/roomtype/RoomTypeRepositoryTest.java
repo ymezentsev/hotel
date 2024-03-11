@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = ContainerConfiguration.class)
 class RoomTypeRepositoryTest {
     @Autowired
-    private RoomTypeRepository roomTypeRepository;
+    RoomTypeRepository roomTypeRepository;
 
     @Test
     @DisplayName("Find room type by type")

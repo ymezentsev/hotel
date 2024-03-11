@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.time.LocalDate;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
@@ -20,7 +22,7 @@ import static org.hamcrest.Matchers.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,  classes = ContainerConfiguration.class)
 class UserControllerTest {
     @LocalServerPort
-    private Integer port;
+    Integer port;
 
     @Autowired
     DBInitializer dbInitializer;
@@ -42,14 +44,15 @@ class UserControllerTest {
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("size()", is(5));
+                .body("size()", is(6));
     }
 
     @Test
     @DisplayName("Successful create new user")
     void saveTest() {
-        UserRequest userRequest = new UserRequest("Dmitro", "Andriev",
-                "(096)456-32-74", "Andr@gmail.com", "");
+        UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
+                "0953453434", "semenov@gmail.com", "Password1",
+                "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
                 .body(userRequest)
@@ -63,8 +66,9 @@ class UserControllerTest {
     @Test
     @DisplayName("Fail create new user (incorrect user input)")
     void saveWithIncorrectDataTest() {
-        UserRequest userRequest = new UserRequest("Dmitro", "Andriev",
-                "(096)456-32-74", "Andrgmail.com", "");
+        UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
+                "0953453434", "semenovgmail.com", "Password1",
+                "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
                 .body(userRequest)
@@ -103,7 +107,7 @@ class UserControllerTest {
     @DisplayName("Find user by tel.number")
     void findByTelNumberTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("telNumber", "0965467834")
+                .pathParam("telNumber", "+380965467834")
                 .when().get("/telNumber/{telNumber}")
                 .then()
                 .statusCode(200)
@@ -148,10 +152,23 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("Find users by role")
+    void findUsersByRoleTest() {
+        given().contentType(ContentType.JSON)
+                .pathParam("role", "USER")
+                .when().get("/role/{role}")
+                .then()
+                .statusCode(200)
+                .assertThat()
+                .body("size()", is(4));
+    }
+
+    @Test
     @DisplayName("Successful update user")
     void updateTest() {
-        UserRequest userRequest = new UserRequest("Dmitro", "Andriev",
-                "(096)456-32-74", "Andr@gmail.com", "");
+        UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
+                "0953453434", "semenov@gmail.com", "Password1",
+                "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
                 .body(userRequest)
@@ -164,8 +181,9 @@ class UserControllerTest {
     @Test
     @DisplayName("Fail update user (incorrect user input)")
     void updateWithIncorrectDataTest() {
-        UserRequest userRequest = new UserRequest("Dmitro", "Andriev",
-                "(096)456-32-74", "Andrgmail.com", "");
+        UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
+                "0953453434", "semenovgmail.com", "Password1",
+                "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
                 .body(userRequest)
