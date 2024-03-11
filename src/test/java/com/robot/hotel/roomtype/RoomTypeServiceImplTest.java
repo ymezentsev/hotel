@@ -18,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = ContainerConfiguration.class)
-class RoomTypeServiceTest {
+class RoomTypeServiceImplTest {
     @Autowired
-    private RoomTypeService roomTypeService;
+    private RoomTypeServiceImpl roomTypeService;
 
     @Autowired
     private DBInitializer dbInitializer;

@@ -15,6 +15,8 @@ import java.util.List;
 @Schema(description = "Dto for RoomType")
 public class RoomTypeDto {
     private Long id;
+
     private String type;
+
     private List<String> rooms;
 }

@@ -20,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = ContainerConfiguration.class)
-class ReservationServiceTest {
+class ReservationServiceImplTest {
     @Autowired
-    ReservationService reservationService;
+    ReservationServiceImpl reservationService;
 
     @Autowired
     private DBInitializer dbInitializer;
