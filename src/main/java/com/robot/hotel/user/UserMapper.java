@@ -3,32 +3,17 @@ package com.robot.hotel.user;
 import com.robot.hotel.country.Country;
 import com.robot.hotel.passport.Passport;
 import com.robot.hotel.passport.PassportMapper;
-import com.robot.hotel.reservation.Reservation;
+import com.robot.hotel.reservation.ReservationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
 public class UserMapper {
     private final PassportMapper passportMapper;
-
-    public UserDto buildUserDto(User user) {
-        return UserDto.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .telNumber(user.getCountry().getTelCode() + user.getTelNumber())
-                .email(user.getEmail())
-                .role(user.getRole().name())
-                .passport(passportMapper.buildPassportDto(user.getPassport()))
-                .reservations(user.getReservations().stream()
-                        .map(getReservationsString())
-                        .toList())
-                .build();
-    }
+    private final ReservationMapper reservationMapper;
 
     public User buildUserFromRequest(UserRequest userRequest, Country country, Passport passport) {
         return User.builder()
@@ -44,10 +29,29 @@ public class UserMapper {
                 .build();
     }
 
-    private Function<Reservation, String> getReservationsString() {
-        return reservation -> "id:" + reservation.getId().toString()
-                + ", room:" + reservation.getRoom().getNumber()
-                + ", " + reservation.getCheckInDate().toString() + " - "
-                + reservation.getCheckOutDate().toString();
+    public UserDto buildUserDto(User user) {
+        return UserDto.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .telNumber(user.getCountry().getTelCode() + user.getTelNumber())
+                .email(user.getEmail())
+                .role(user.getRole().name())
+                .passport(passportMapper.buildPassportDto(user.getPassport()))
+                .reservations(user.getReservations().stream()
+                        .map(reservationMapper::buildReservationDtoWithoutUserInfo)
+                        .toList())
+                .build();
+    }
+
+    public UserDtoWithoutReservation buildUserDtoWithoutReservation(User user) {
+        return UserDtoWithoutReservation.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .telNumber(user.getCountry().getTelCode() + user.getTelNumber())
+                .email(user.getEmail())
+                .passport(passportMapper.buildPassportDto(user.getPassport()))
+                .build();
     }
 }

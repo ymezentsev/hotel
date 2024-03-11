@@ -1,19 +1,16 @@
 package com.robot.hotel.user;
 
 import com.robot.hotel.passport.PassportDto;
-import com.robot.hotel.reservation.ReservationDtoWithoutUserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserDtoWithoutReservation {
     private Long id;
 
     private String firstName;
@@ -24,9 +21,5 @@ public class UserDto {
 
     private String email;
 
-    private String role;
-
     private PassportDto passport;
-
-    private List<ReservationDtoWithoutUserInfo> reservations;
 }

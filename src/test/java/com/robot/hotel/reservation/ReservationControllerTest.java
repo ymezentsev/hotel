@@ -63,11 +63,8 @@ class ReservationControllerTest {
     @Test
     @DisplayName("Successful create new reservation")
     void saveTest() {
-        Long user1Id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
-        Long user2Id = testDBUtils.getUserIdByEmail("sidor_andr@gmail.com");
-
         ReservationRequest reservationRequest = new ReservationRequest("201", LocalDate.now(),
-                LocalDate.now().plusDays(1), Set.of(user1Id.toString(), user2Id.toString()));
+                LocalDate.now().plusDays(1), Set.of("sidor@gmail.com", "sidor_andr@gmail.com"));
 
         given().contentType(ContentType.JSON)
                 .body(reservationRequest)

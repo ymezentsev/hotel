@@ -26,6 +26,6 @@ public class ReservationRequest {
     @Future(message = "Check out date must be future")
     private LocalDate checkOutDate;
 
-    @Size(min = 1, message = "User id is required")
-    private Set<String> users;
+    @Size(min = 1, message = "User email is required")
+    private Set<String> userEmails;
 }

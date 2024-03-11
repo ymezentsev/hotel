@@ -87,12 +87,12 @@ public class ReservationServiceImpl implements ReservationService {
             throw new WrongDatesException(TOO_EARLY_RESERVATION);
         }
 
-        if (reservationRequest.getUsers().size() > room.getMaxCountOfGuests()) {
+        if (reservationRequest.getUserEmails().size() > room.getMaxCountOfGuests()) {
             throw new GuestsQuantityException(TOO_MANY_GUESTS);
         }
 
-        List<User> users = reservationRequest.getUsers().stream()
-                .map(guestId -> userRepository.findById(Long.parseLong(guestId))
+        List<User> users = reservationRequest.getUserEmails().stream()
+                .map(email -> userRepository.findByEmail(email)
                         .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)))
                 .toList();
 
