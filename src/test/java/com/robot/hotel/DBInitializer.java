@@ -2,7 +2,6 @@ package com.robot.hotel;
 
 import com.robot.hotel.country.CountryRepository;
 import com.robot.hotel.passport.Passport;
-import com.robot.hotel.passport.PassportRepository;
 import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.room.Room;
@@ -37,18 +36,13 @@ public class DBInitializer {
     @Autowired
     CountryRepository countryRepository;
 
-    @Autowired
-    PassportRepository passportRepository;
-
     public void populateDB() {
         reservationRepository.deleteAll();
         userRepository.deleteAll();
-        // passportRepository.deleteAll();
         roomRepository.deleteAll();
         roomTypeRepository.deleteAll();
         populateRoomTypeTable();
         populateRoomTable();
-        //  populatePassportTable();
         populateUserTable();
         populateReservationTable();
     }
@@ -94,26 +88,6 @@ public class DBInitializer {
                 .price(BigDecimal.valueOf(1000))
                 .maxCountOfGuests(2)
                 .roomType(roomTypeRepository.findByType("standart double").orElseThrow())
-                .build());
-    }
-
-    private void populatePassportTable() {
-        passportRepository.save(Passport.builder()
-                .serialNumber("bb345678")
-                .country(countryRepository.findById("UKR").orElseThrow())
-                .issueDate(LocalDate.of(2020, 1, 15))
-                .build());
-
-        passportRepository.save(Passport.builder()
-                .serialNumber("va123456")
-                .country(countryRepository.findById("UKR").orElseThrow())
-                .issueDate(LocalDate.of(2021, 3, 23))
-                .build());
-
-        passportRepository.save(Passport.builder()
-                .serialNumber("ba345863")
-                .country(countryRepository.findById("UKR").orElseThrow())
-                .issueDate(LocalDate.of(2021, 2, 12))
                 .build());
     }
 

@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = ContainerConfiguration.class)
 class ReservationServiceImplTest {
     @Autowired
-    ReservationServiceImpl reservationService;
+    ReservationService reservationService;
 
     @Autowired
     private DBInitializer dbInitializer;

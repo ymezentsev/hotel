@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = ContainerConfiguration.class)
 class UserServiceImplTest {
     @Autowired
-    UserServiceImpl userService;
+    UserService userService;
 
     @Autowired
     private DBInitializer dbInitializer;
