@@ -1,7 +1,7 @@
 package com.robot.hotel;
 
-import com.robot.hotel.country.CountryRepository;
-import com.robot.hotel.passport.Passport;
+import com.robot.hotel.user.country.CountryRepository;
+import com.robot.hotel.user.passport.Passport;
 import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.room.Room;

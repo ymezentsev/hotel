@@ -1,4 +1,4 @@
-package com.robot.hotel.passport;
+package com.robot.hotel.user.passport;
 
 import org.springframework.stereotype.Service;
 

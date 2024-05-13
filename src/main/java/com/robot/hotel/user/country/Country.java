@@ -1,6 +1,6 @@
-package com.robot.hotel.country;
+package com.robot.hotel.user.country;
 
-import com.robot.hotel.passport.Passport;
+import com.robot.hotel.user.passport.Passport;
 import com.robot.hotel.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

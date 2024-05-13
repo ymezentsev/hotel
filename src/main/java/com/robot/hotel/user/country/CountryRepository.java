@@ -1,4 +1,4 @@
-package com.robot.hotel.country;
+package com.robot.hotel.user.country;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

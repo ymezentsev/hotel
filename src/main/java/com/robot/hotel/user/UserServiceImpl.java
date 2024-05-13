@@ -1,12 +1,12 @@
 package com.robot.hotel.user;
 
-import com.robot.hotel.country.Country;
-import com.robot.hotel.country.CountryRepository;
+import com.robot.hotel.user.country.Country;
+import com.robot.hotel.user.country.CountryRepository;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.NotEnoughInformationException;
-import com.robot.hotel.passport.Passport;
-import com.robot.hotel.passport.PassportRepository;
+import com.robot.hotel.user.passport.Passport;
+import com.robot.hotel.user.passport.PassportRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

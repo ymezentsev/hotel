@@ -1,4 +1,4 @@
-package com.robot.hotel.passport;
+package com.robot.hotel.user.passport;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
