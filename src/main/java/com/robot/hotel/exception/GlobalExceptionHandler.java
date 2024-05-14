@@ -1,7 +1,6 @@
-package com.robot.hotel.config;
+package com.robot.hotel.exception;
 
 import com.robot.hotel.error.AppError;
-import com.robot.hotel.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

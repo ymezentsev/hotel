@@ -30,7 +30,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         RoomType newRoomType = roomTypeMapper.buildRoomTypeFromRequest(roomTypeRequest);
 
         RoomTypeDto newRoomTypeDto = roomTypeMapper.buildRoomTypeDto(roomTypeRepository.save(newRoomType));
-        log.info(String.format(SUCCESSFUL_ACTION_WITH_ROOM_TYPE, "created"), newRoomTypeDto.getId());
+        log.info(String.format(SUCCESSFUL_ACTION_WITH_ROOM_TYPE, "created"), newRoomTypeDto.id());
         return newRoomTypeDto;
     }
 

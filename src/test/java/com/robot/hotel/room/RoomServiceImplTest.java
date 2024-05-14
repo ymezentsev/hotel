@@ -45,7 +45,7 @@ class RoomServiceImplTest {
     void saveTest() {
         RoomRequest roomRequest = new RoomRequest("105", BigDecimal.valueOf(1000), 3, "lux");
         assertAll(
-                () -> assertNotNull(roomService.save(roomRequest).getId()),
+                () -> assertNotNull(roomService.save(roomRequest).id()),
                 () -> assertEquals(6, roomService.findAll().size())
         );
     }
@@ -70,7 +70,7 @@ class RoomServiceImplTest {
     @DisplayName("Successful find room by id")
     void findByIdTest() {
         Long id = testDBUtils.getRoomIdByNumber("101");
-        assertEquals(4, roomService.findById(id).getMaxCountOfGuests());
+        assertEquals(4, roomService.findById(id).maxCountOfGuests());
     }
 
     @Test
@@ -83,7 +83,7 @@ class RoomServiceImplTest {
     @Test
     @DisplayName("Successful find room by number")
     void findByNumberTest() {
-        assertEquals(4, roomService.findByNumber("101").getMaxCountOfGuests());
+        assertEquals(4, roomService.findByNumber("101").maxCountOfGuests());
     }
 
     @Test
@@ -161,7 +161,7 @@ class RoomServiceImplTest {
 
         roomService.update(id, roomRequest);
         assertAll(
-                () -> assertEquals("105", roomService.findById(id).getNumber()),
+                () -> assertEquals("105", roomService.findById(id).number()),
                 () -> assertEquals(5, roomService.findAll().size())
         );
    }

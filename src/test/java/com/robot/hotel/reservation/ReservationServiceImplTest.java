@@ -43,7 +43,7 @@ class ReservationServiceImplTest {
     @DisplayName("Successful find reservation by id")
     void findByIdTest() {
         Long id = testDBUtils.getReservationIdByRoom("203");
-        assertEquals(LocalDate.now().plusDays(4), reservationService.findById(id).getCheckInDate());
+        assertEquals(LocalDate.now().plusDays(4), reservationService.findById(id).checkInDate());
     }
 
     @Test
@@ -75,7 +75,7 @@ class ReservationServiceImplTest {
                 Set.of("sidor@gmail.com", "sidor_andr@gmail.com"));
 
         assertAll(
-                () -> assertNotNull(reservationService.save(reservationRequest).getId()),
+                () -> assertNotNull(reservationService.save(reservationRequest).id()),
                 () -> assertEquals(5, reservationService.findAll().size())
         );
     }

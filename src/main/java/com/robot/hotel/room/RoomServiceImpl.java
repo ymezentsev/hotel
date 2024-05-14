@@ -66,7 +66,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomDto> findByType(String type) {
-        Long roomTypeId = roomTypeService.findByType(type).getId();
+        Long roomTypeId = roomTypeService.findByType(type).id();
 
         return roomRepository.findByRoomTypeId(roomTypeId).stream()
                 .map(roomMapper::buildRoomDto)

@@ -35,7 +35,7 @@ class RoomTypeServiceImplTest {
     @DisplayName("Successful create new room type")
     void saveTest() {
         assertAll(
-                () -> assertNotNull(roomTypeService.save(new RoomTypeRequest("new lux")).getId()),
+                () -> assertNotNull(roomTypeService.save(new RoomTypeRequest("new lux")).id()),
                 () -> assertEquals(5, roomTypeService.findAll().size())
         );
     }
@@ -57,7 +57,7 @@ class RoomTypeServiceImplTest {
     @DisplayName("Successful find room type by type")
     void findByTypeTest() {
         Long id = testDBUtils.getRoomTypeIdByType("lux");
-        assertEquals(id, roomTypeService.findByType("lux").getId());
+        assertEquals(id, roomTypeService.findByType("lux").id());
     }
 
     @Test
@@ -71,7 +71,7 @@ class RoomTypeServiceImplTest {
     @DisplayName("Successful find room type by id")
     void findByIdTest() {
         Long id = testDBUtils.getRoomTypeIdByType("lux");
-        assertEquals("lux", roomTypeService.findById(id).getType());
+        assertEquals("lux", roomTypeService.findById(id).type());
     }
 
     @Test

@@ -46,7 +46,7 @@ class UserServiceImplTest {
                 "0953453434", "semenov@gmail.com", "Password1",
                 "df123456", "usa", LocalDate.of(2018, 3, 8));
         assertAll(
-                () -> assertNotNull(userService.save(userRequest).getId()),
+                () -> assertNotNull(userService.save(userRequest).id()),
                 () -> assertEquals(7, userService.findAll().size())
         );
     }
@@ -58,7 +58,7 @@ class UserServiceImplTest {
                 "0953453434", "semenov@gmail.com", "Password1",
                 null, null, null);
         assertAll(
-                () -> assertNotNull(userService.save(userRequest).getId()),
+                () -> assertNotNull(userService.save(userRequest).id()),
                 () -> assertEquals(7, userService.findAll().size())
         );
     }
@@ -127,7 +127,7 @@ class UserServiceImplTest {
     @DisplayName("Successful find user by id")
     void findByIdTest() {
         Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
-        assertEquals("+380965467834", userService.findById(id).getTelNumber());
+        assertEquals("+380965467834", userService.findById(id).telNumber());
     }
 
     @Test
@@ -140,7 +140,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful find user by email")
     void findByEmailTest() {
-        assertEquals("+380965467834", userService.findByEmail("sidor@gmail.com").getTelNumber());
+        assertEquals("+380965467834", userService.findByEmail("sidor@gmail.com").telNumber());
     }
 
     @Test
@@ -153,7 +153,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful find user by tel.number")
     void findByTelNumberTest() {
-        assertEquals("sidor@gmail.com", userService.findByTelNumber("965467834").getEmail());
+        assertEquals("sidor@gmail.com", userService.findByTelNumber("965467834").email());
     }
 
     @Test
@@ -166,7 +166,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful find user by full tel.number")
     void findByFullTelNumberTest() {
-        assertEquals("sidor@gmail.com", userService.findByTelNumber("+380965467834").getEmail());
+        assertEquals("sidor@gmail.com", userService.findByTelNumber("+380965467834").email());
     }
 
     @Test
@@ -179,7 +179,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful find user by passport serial number")
     void findByPassportSerialNumberTest() {
-        assertEquals("sidor_andr@gmail.com", userService.findByPassportSerialNumber("bb345678").getEmail());
+        assertEquals("sidor_andr@gmail.com", userService.findByPassportSerialNumber("bb345678").email());
     }
 
     @Test
@@ -225,7 +225,7 @@ class UserServiceImplTest {
 
         userService.update(id, userRequest);
         assertAll(
-                () -> assertEquals("dmitro", userService.findById(id).getFirstName()),
+                () -> assertEquals("dmitro", userService.findById(id).firstName()),
                 () -> assertEquals(6, userService.findAll().size())
         );
     }

@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 )
 
 @SecurityScheme(
-        name = "JWT",
+        name = "Bearer Authentication",
         type = SecuritySchemeType.HTTP,
         bearerFormat = "JWT",
         scheme = "bearer"

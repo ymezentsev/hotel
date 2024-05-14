@@ -61,7 +61,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional
     public List<ReservationDto> findReservationsByRoom(String roomNumber) {
-        Long roomId = roomService.findByNumber(roomNumber).getId();
+        Long roomId = roomService.findByNumber(roomNumber).id();
 
         return reservationRepository.findByRoomId(roomId).stream()
                 .map(reservationMapper::buildReservationDto)
@@ -118,7 +118,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional
     public List<ReservationDto> findCurrentReservationsForSpecificRoom(String roomNumber) {
-        Long roomId = roomService.findByNumber(roomNumber).getId();
+        Long roomId = roomService.findByNumber(roomNumber).id();
 
         return reservationRepository.findCurrentReservationsForRoom(roomId)
                 .stream()
