@@ -1,5 +1,8 @@
 package com.robot.hotel.room;
 
+import com.robot.hotel.room.dto.FreeRoomRequest;
+import com.robot.hotel.room.dto.RoomDto;
+import com.robot.hotel.room.dto.RoomRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

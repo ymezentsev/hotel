@@ -3,6 +3,8 @@ package com.robot.hotel.reservation;
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.room.*;
+import com.robot.hotel.room.dto.FreeRoomRequest;
+import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.user.User;
 import com.robot.hotel.user.UserRepository;
 import jakarta.transaction.Transactional;

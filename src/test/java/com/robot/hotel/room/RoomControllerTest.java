@@ -3,6 +3,8 @@ package com.robot.hotel.room;
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
+import com.robot.hotel.room.dto.FreeRoomRequest;
+import com.robot.hotel.room.dto.RoomRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;

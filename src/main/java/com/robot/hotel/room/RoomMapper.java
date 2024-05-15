@@ -1,5 +1,7 @@
 package com.robot.hotel.room;
 
+import com.robot.hotel.room.dto.RoomDto;
+import com.robot.hotel.room.dto.RoomRequest;
 import com.robot.hotel.roomtype.RoomType;
 import org.springframework.stereotype.Service;
 

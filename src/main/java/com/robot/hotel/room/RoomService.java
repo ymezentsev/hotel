@@ -1,5 +1,9 @@
 package com.robot.hotel.room;
 
+import com.robot.hotel.room.dto.FreeRoomRequest;
+import com.robot.hotel.room.dto.RoomDto;
+import com.robot.hotel.room.dto.RoomRequest;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
