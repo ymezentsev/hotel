@@ -1,5 +1,7 @@
 package com.robot.hotel.roomtype;
 
+import com.robot.hotel.roomtype.dto.RoomTypeDto;
+import com.robot.hotel.roomtype.dto.RoomTypeRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

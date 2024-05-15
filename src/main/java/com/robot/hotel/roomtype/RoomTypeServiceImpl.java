@@ -2,6 +2,8 @@ package com.robot.hotel.roomtype;
 
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
+import com.robot.hotel.roomtype.dto.RoomTypeDto;
+import com.robot.hotel.roomtype.dto.RoomTypeRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

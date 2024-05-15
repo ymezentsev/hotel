@@ -5,6 +5,7 @@ import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
+import com.robot.hotel.roomtype.dto.RoomTypeRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

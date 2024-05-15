@@ -1,5 +1,8 @@
 package com.robot.hotel.roomtype;
 
+import com.robot.hotel.roomtype.dto.RoomTypeDto;
+import com.robot.hotel.roomtype.dto.RoomTypeRequest;
+
 import java.util.List;
 
 public interface RoomTypeService {
