@@ -27,9 +27,10 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         if (roomTypeRepository.existsByType(roomTypeRequest.getType().toLowerCase().strip())) {
             throw new DuplicateObjectException(TYPE_IS_ALREADY_EXISTS);
         }
-        RoomType newRoomType = roomTypeMapper.buildRoomTypeFromRequest(roomTypeRequest);
+        RoomType newRoomType = new RoomType();
+        newRoomType.setType(roomTypeRequest.getType().toLowerCase().strip());
 
-        RoomTypeDto newRoomTypeDto = roomTypeMapper.buildRoomTypeDto(roomTypeRepository.save(newRoomType));
+        RoomTypeDto newRoomTypeDto = roomTypeMapper.toDto(roomTypeRepository.save(newRoomType));
         log.info(String.format(SUCCESSFUL_ACTION_WITH_ROOM_TYPE, "created"), newRoomTypeDto.id());
         return newRoomTypeDto;
     }
@@ -37,20 +38,20 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     @Override
     public List<RoomTypeDto> findAll() {
         return roomTypeRepository.findAll().stream()
-                .map(roomTypeMapper::buildRoomTypeDto)
+                .map(roomTypeMapper::toDto)
                 .toList();
     }
 
     @Override
     public RoomTypeDto findByType(String type) {
-        return roomTypeMapper.buildRoomTypeDto(roomTypeRepository
+        return roomTypeMapper.toDto(roomTypeRepository
                 .findByType(type.toLowerCase().strip())
                 .orElseThrow(() -> new NoSuchElementException(TYPE_IS_NOT_EXISTS)));
     }
 
     @Override
     public RoomTypeDto findById(Long id) {
-        return roomTypeMapper.buildRoomTypeDto(roomTypeRepository
+        return roomTypeMapper.toDto(roomTypeRepository
                 .findById(id)
                 .orElseThrow(() -> new NoSuchElementException(TYPE_IS_NOT_EXISTS)));
     }
