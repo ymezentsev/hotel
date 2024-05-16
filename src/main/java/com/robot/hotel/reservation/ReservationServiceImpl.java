@@ -100,7 +100,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         Set<RoomDto> freeRooms = roomService.findFreeRooms(new FreeRoomRequest(
                 reservationRequest.getCheckInDate(), reservationRequest.getCheckOutDate()));
-        if (!freeRooms.contains(roomMapper.buildRoomDto(room))) {
+        if (!freeRooms.contains(roomMapper.toDto(room))) {
             throw new WrongDatesException(OCCUPIED_ROOM);
         }
 

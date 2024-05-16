@@ -10,7 +10,6 @@ import com.robot.hotel.room.dto.RoomRequest;
 import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
 import com.robot.hotel.roomtype.RoomTypeService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +35,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<RoomDto> findAll() {
         return roomRepository.findAll().stream()
-                .map(roomMapper::buildRoomDto)
+                .map(roomMapper::toDto)
                 .toList();
     }
 
@@ -49,20 +48,25 @@ public class RoomServiceImpl implements RoomService {
         RoomType roomType = roomTypeRepository.findByType(roomRequest.getRoomType().toLowerCase().strip())
                 .orElseThrow(() -> new NoSuchElementException(TYPE_IS_NOT_EXISTS));
 
-        Room newRoom = roomMapper.buildRoomFromRequest(roomRequest, roomType);
-        return roomMapper.buildRoomDto(roomRepository.save(newRoom));
+        Room newRoom = Room.builder()
+                .number(roomRequest.getNumber().toLowerCase().strip())
+                .price(roomRequest.getPrice())
+                .maxCountOfGuests(roomRequest.getMaxCountOfGuests())
+                .roomType(roomType)
+                .build();
+        return roomMapper.toDto(roomRepository.save(newRoom));
     }
 
     @Override
     public RoomDto findById(Long id) {
-        return roomMapper.buildRoomDto(roomRepository
+        return roomMapper.toDto(roomRepository
                 .findById(id)
                 .orElseThrow(() -> new NoSuchElementException(ROOM_IS_NOT_EXISTS)));
     }
 
     @Override
     public RoomDto findByNumber(String number) {
-        return roomMapper.buildRoomDto(roomRepository
+        return roomMapper.toDto(roomRepository
                 .findByNumber(number.toLowerCase().strip())
                 .orElseThrow(() -> new NoSuchElementException(ROOM_IS_NOT_EXISTS)));
     }
@@ -72,28 +76,28 @@ public class RoomServiceImpl implements RoomService {
         Long roomTypeId = roomTypeService.findByType(type).id();
 
         return roomRepository.findByRoomTypeId(roomTypeId).stream()
-                .map(roomMapper::buildRoomDto)
+                .map(roomMapper::toDto)
                 .toList();
     }
 
     @Override
     public List<RoomDto> findByPriceMoreThanOrEqual(BigDecimal price) {
         return roomRepository.findByPriceMoreThanOrEqual(price).stream()
-                .map(roomMapper::buildRoomDto)
+                .map(roomMapper::toDto)
                 .toList();
     }
 
     @Override
     public List<RoomDto> findByPriceLessThanOrEqual(BigDecimal price) {
         return roomRepository.findByPriceLessThanOrEqual(price).stream()
-                .map(roomMapper::buildRoomDto)
+                .map(roomMapper::toDto)
                 .toList();
     }
 
     @Override
     public List<RoomDto> findByGuestsCount(int guestCount) {
         return roomRepository.findByGuestsCount(guestCount).stream()
-                .map(roomMapper::buildRoomDto)
+                .map(roomMapper::toDto)
                 .toList();
     }
 
@@ -107,11 +111,11 @@ public class RoomServiceImpl implements RoomService {
         List<RoomDto> roomsDtoWithMatchDates = reservationRepository.findFreeRoomsWithReservations(
                         freeRoomRequest.getCheckInDate(), freeRoomRequest.getCheckOutDate())
                 .stream()
-                .map(roomMapper::buildRoomDto)
+                .map(roomMapper::toDto)
                 .toList();
 
         List<RoomDto> roomsDtoWithoutReservations = roomRepository.findRoomsWithoutReservations().stream()
-                .map(roomMapper::buildRoomDto)
+                .map(roomMapper::toDto)
                 .toList();
 
         Set<RoomDto> freeRoomsDto = new HashSet<>(roomsDtoWithMatchDates);
@@ -141,7 +145,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    @Transactional
     public void deleteById(Long id) {
         if (roomRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(ROOM_IS_NOT_EXISTS))
