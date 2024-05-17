@@ -1,5 +1,8 @@
 package com.robot.hotel.reservation;
 
+import com.robot.hotel.reservation.dto.ReservationDto;
+import com.robot.hotel.reservation.dto.ReservationRequest;
+
 import java.util.List;
 
 public interface ReservationService {

@@ -1,4 +1,4 @@
-package com.robot.hotel.reservation;
+package com.robot.hotel.reservation.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;

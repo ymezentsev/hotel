@@ -2,6 +2,8 @@ package com.robot.hotel.reservation;
 
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.WrongDatesException;
+import com.robot.hotel.reservation.dto.ReservationDto;
+import com.robot.hotel.reservation.dto.ReservationRequest;
 import com.robot.hotel.room.*;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;

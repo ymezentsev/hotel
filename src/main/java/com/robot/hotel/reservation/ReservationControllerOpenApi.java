@@ -1,5 +1,7 @@
 package com.robot.hotel.reservation;
 
+import com.robot.hotel.reservation.dto.ReservationDto;
+import com.robot.hotel.reservation.dto.ReservationRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

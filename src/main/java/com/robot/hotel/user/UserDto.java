@@ -1,6 +1,6 @@
 package com.robot.hotel.user;
 
-import com.robot.hotel.reservation.ReservationDtoWithoutUserInfo;
+import com.robot.hotel.reservation.dto.ReservationDtoWithoutUserInfo;
 import com.robot.hotel.user.passport.PassportDto;
 import lombok.Builder;
 

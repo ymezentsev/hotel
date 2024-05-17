@@ -1,5 +1,7 @@
 package com.robot.hotel.reservation;
 
+import com.robot.hotel.reservation.dto.ReservationDto;
+import com.robot.hotel.reservation.dto.ReservationRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -1,5 +1,8 @@
 package com.robot.hotel.reservation;
 
+import com.robot.hotel.reservation.dto.ReservationDto;
+import com.robot.hotel.reservation.dto.ReservationDtoWithoutUserInfo;
+import com.robot.hotel.reservation.dto.ReservationRequest;
 import com.robot.hotel.room.Room;
 import com.robot.hotel.user.User;
 import com.robot.hotel.user.UserMapper;

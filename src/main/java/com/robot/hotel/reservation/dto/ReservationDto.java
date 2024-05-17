@@ -1,4 +1,4 @@
-package com.robot.hotel.reservation;
+package com.robot.hotel.reservation.dto;
 
 import com.robot.hotel.user.UserDtoWithoutReservation;
 import lombok.Builder;
