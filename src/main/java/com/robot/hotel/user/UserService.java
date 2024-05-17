@@ -1,5 +1,8 @@
 package com.robot.hotel.user;
 
+import com.robot.hotel.user.dto.UserDto;
+import com.robot.hotel.user.dto.UserRequest;
+
 import java.util.List;
 
 public interface UserService {

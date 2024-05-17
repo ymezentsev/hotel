@@ -1,4 +1,4 @@
-package com.robot.hotel.user;
+package com.robot.hotel.user.dto;
 
 import com.robot.hotel.reservation.dto.ReservationDtoWithoutUserInfo;
 import com.robot.hotel.user.passport.PassportDto;

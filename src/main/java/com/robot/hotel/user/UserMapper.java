@@ -1,6 +1,9 @@
 package com.robot.hotel.user;
 
 import com.robot.hotel.user.country.Country;
+import com.robot.hotel.user.dto.UserDto;
+import com.robot.hotel.user.dto.UserDtoWithoutReservation;
+import com.robot.hotel.user.dto.UserRequest;
 import com.robot.hotel.user.passport.Passport;
 import com.robot.hotel.user.passport.PassportMapper;
 import com.robot.hotel.reservation.ReservationMapper;

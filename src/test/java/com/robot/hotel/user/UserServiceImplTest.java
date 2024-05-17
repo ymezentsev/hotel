@@ -6,6 +6,7 @@ import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.NotEnoughInformationException;
+import com.robot.hotel.user.dto.UserRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

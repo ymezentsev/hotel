@@ -5,6 +5,8 @@ import com.robot.hotel.user.country.CountryRepository;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.NotEnoughInformationException;
+import com.robot.hotel.user.dto.UserDto;
+import com.robot.hotel.user.dto.UserRequest;
 import com.robot.hotel.user.passport.Passport;
 import com.robot.hotel.user.passport.PassportRepository;
 import jakarta.transaction.Transactional;

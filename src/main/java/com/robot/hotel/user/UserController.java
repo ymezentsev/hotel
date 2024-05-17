@@ -1,5 +1,7 @@
 package com.robot.hotel.user;
 
+import com.robot.hotel.user.dto.UserDto;
+import com.robot.hotel.user.dto.UserRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
