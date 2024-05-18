@@ -103,11 +103,11 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Find user by tel.number")
-    void findByTelNumberTest() {
+    @DisplayName("Find user by phone number")
+    void findByPhoneNumberTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("telNumber", "+380965467834")
-                .when().get("/telNumber/{telNumber}")
+                .pathParam("phoneNumber", "+380965467834")
+                .when().get("/phoneNumber/{phoneNumber}")
                 .then()
                 .statusCode(200)
                 .assertThat()

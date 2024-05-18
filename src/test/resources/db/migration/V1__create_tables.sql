@@ -1,7 +1,7 @@
 create table IF NOT EXISTS country(
-	code varchar(3) primary key,
-    name varchar(60) unique not null,
-    tel_code varchar(5) not null
+	country_code varchar(3) primary key,
+    country_name varchar(60) unique not null,
+    phone_code varchar(5) not null
 );
 
 create table IF NOT EXISTS passport(
@@ -9,7 +9,7 @@ create table IF NOT EXISTS passport(
     serial_number varchar(12) unique not null,
     country_code varchar(3) not null,
     issue_date date not null,
-    foreign key (country_code) references country (code)
+    foreign key (country_code) references country (country_code)
 );
 
 create table IF NOT EXISTS room_type(
@@ -30,14 +30,14 @@ create table IF NOT EXISTS users(
 	id bigint primary key auto_increment,
     first_name varchar(20) not null,
 	last_name varchar(20) not null,
-	tel_country_code varchar(3) not null,
-	tel_number varchar(12) unique not null,
+	phone_country_code varchar(3) not null,
+	phone_number varchar(12) unique not null,
     email varchar(50) unique not null,
     password VARCHAR(100) not null,
     role VARCHAR(10) not null default 'USER',
 	passport_id bigint,
 	foreign key (passport_id) references passport (id),
-	foreign key (tel_country_code) references country (code)
+	foreign key (phone_country_code) references country (country_code)
 );
 
 create table IF NOT EXISTS reservation(

@@ -26,12 +26,12 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("Check by tel.number if user exists")
-    void existsByTelNumberTest() {
+    @DisplayName("Check by phone number if user exists")
+    void existsByPhoneNumberTest() {
         assertAll(
-                () -> assertTrue(userRepository.existsByTelNumber("965467834")),
-                () -> assertTrue(userRepository.existsByTelNumber("954375647")),
-                () -> assertFalse(userRepository.existsByTelNumber("+934375647"))
+                () -> assertTrue(userRepository.existsByPhoneNumber("965467834")),
+                () -> assertTrue(userRepository.existsByPhoneNumber("954375647")),
+                () -> assertFalse(userRepository.existsByPhoneNumber("+934375647"))
         );
     }
 
@@ -56,22 +56,22 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("Find user by tel.number")
-    void findByTelNumberTest() {
+    @DisplayName("Find user by phone number")
+    void findByPhoneNumberTest() {
         assertAll(
-                () -> assertTrue(userRepository.findByTelNumber("965467834").isPresent()),
-                () -> assertTrue(userRepository.findByTelNumber("954375647").isPresent()),
-                () -> assertTrue(userRepository.findByTelNumber("+934375647").isEmpty())
+                () -> assertTrue(userRepository.findByPhoneNumber("965467834").isPresent()),
+                () -> assertTrue(userRepository.findByPhoneNumber("954375647").isPresent()),
+                () -> assertTrue(userRepository.findByPhoneNumber("+934375647").isEmpty())
         );
     }
 
     @Test
-    @DisplayName("Find user by full tel.number")
-    void findByTelFullNumberTest() {
+    @DisplayName("Find user by full phone number")
+    void findByPhoneFullNumberTest() {
         assertAll(
-                () -> assertTrue(userRepository.findByFullTelNumber("+380965467834").isPresent()),
-                () -> assertTrue(userRepository.findByFullTelNumber("+390934560912").isPresent()),
-                () -> assertTrue(userRepository.findByFullTelNumber("+10934375647").isEmpty())
+                () -> assertTrue(userRepository.findByFullPhoneNumber("+380965467834").isPresent()),
+                () -> assertTrue(userRepository.findByFullPhoneNumber("+390934560912").isPresent()),
+                () -> assertTrue(userRepository.findByFullPhoneNumber("+10934375647").isEmpty())
         );
     }
 

@@ -65,8 +65,8 @@ class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("Fail create new user (throw NoSuchElementException - wrong tel.code)")
-    void saveThrowNoSuchElementExceptionWrongTelCodeTest() {
+    @DisplayName("Fail create new user (throw NoSuchElementException - wrong phone code)")
+    void saveThrowNoSuchElementExceptionWrongPhoneCodeTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+999",
                 "0953453434", "semenov@gmail.com", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
@@ -95,8 +95,8 @@ class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("Fail create new user (throw DuplicateObjectException - wrong tel. number)")
-    void saveThrowDuplicateObjectExceptionWrongTelTest() {
+    @DisplayName("Fail create new user (throw DuplicateObjectException - wrong phone number)")
+    void saveThrowDuplicateObjectExceptionWrongPhoneTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
                 "965467834", "semenov@gmail.com", "Password1",
                 "df123456", "USA", LocalDate.of(2018, 3, 8));
@@ -128,7 +128,7 @@ class UserServiceImplTest {
     @DisplayName("Successful find user by id")
     void findByIdTest() {
         Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
-        assertEquals("+380965467834", userService.findById(id).telNumber());
+        assertEquals("+380965467834", userService.findById(id).phoneNumber());
     }
 
     @Test
@@ -141,7 +141,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful find user by email")
     void findByEmailTest() {
-        assertEquals("+380965467834", userService.findByEmail("sidor@gmail.com").telNumber());
+        assertEquals("+380965467834", userService.findByEmail("sidor@gmail.com").phoneNumber());
     }
 
     @Test
@@ -152,29 +152,29 @@ class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("Successful find user by tel.number")
-    void findByTelNumberTest() {
-        assertEquals("sidor@gmail.com", userService.findByTelNumber("965467834").email());
+    @DisplayName("Successful find user by phone number")
+    void findByPhoneNumberTest() {
+        assertEquals("sidor@gmail.com", userService.findByPhoneNumber("965467834").email());
     }
 
     @Test
-    @DisplayName("Fail find user by tel.number")
-    void findByTelNumberThrowNoSuchElementExceptionTest() {
+    @DisplayName("Fail find user by phone number")
+    void findByPhoneNumberThrowNoSuchElementExceptionTest() {
         assertThrows(NoSuchElementException.class,
-                () -> userService.findByTelNumber("0937564235"));
+                () -> userService.findByPhoneNumber("0937564235"));
     }
 
     @Test
-    @DisplayName("Successful find user by full tel.number")
-    void findByFullTelNumberTest() {
-        assertEquals("sidor@gmail.com", userService.findByTelNumber("+380965467834").email());
+    @DisplayName("Successful find user by full phone number")
+    void findByFullPhoneNumberTest() {
+        assertEquals("sidor@gmail.com", userService.findByPhoneNumber("+380965467834").email());
     }
 
     @Test
-    @DisplayName("Fail find user by full tel.number")
-    void findByFullTelNumberThrowNoSuchElementExceptionTest() {
+    @DisplayName("Fail find user by full phone number")
+    void findByFullPhoneNumberThrowNoSuchElementExceptionTest() {
         assertThrows(NoSuchElementException.class,
-                () -> userService.findByTelNumber("+3800937564235"));
+                () -> userService.findByPhoneNumber("+3800937564235"));
     }
 
     @Test
@@ -243,8 +243,8 @@ class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("Fail update user (throw NoSuchElementException - wrong tel.code)")
-    void updateThrowNoSuchElementExceptionWrongTelCodeTest() {
+    @DisplayName("Fail update user (throw NoSuchElementException - wrong phone code)")
+    void updateThrowNoSuchElementExceptionWrongPhoneCodeTest() {
         Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+999",
                 "0953453434", "semenov@gmail.com", "Password1",
@@ -277,8 +277,8 @@ class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("Fail update user (throw DuplicateObjectException - wrong tel. number)")
-    void updateThrowDuplicateObjectExceptionWrongTelTest() {
+    @DisplayName("Fail update user (throw DuplicateObjectException - wrong phone number)")
+    void updateThrowDuplicateObjectExceptionWrongPhoneTest() {
         Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
                 "505463213", "semenov@gmail.com", "Password1",
