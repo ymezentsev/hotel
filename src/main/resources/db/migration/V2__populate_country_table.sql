@@ -1,4 +1,4 @@
-INSERT INTO country (code, name, tel_code)
+INSERT INTO country (country_code, country_name, phone_code)
 VALUES
 ('AFG', 'Afghanistan', '+93'),
 ('ALB', 'Albania', '+355'),
