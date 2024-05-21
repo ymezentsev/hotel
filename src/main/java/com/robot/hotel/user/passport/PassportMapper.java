@@ -1,19 +1,14 @@
 package com.robot.hotel.user.passport;
 
-import org.springframework.stereotype.Service;
+import com.robot.hotel.config.MapperConfig;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
-@Service
-public class PassportMapper {
-    public PassportDto buildPassportDto(Passport passport) {
-        if(passport == null){
-            return null;
-        }
-
-        return PassportDto.builder()
-                .id(passport.getId())
-                .serialNumber(passport.getSerialNumber())
-                .country(passport.getCountry().getName())
-                .issueDate(passport.getIssueDate())
-                .build();
-    }
+@Mapper(config = MapperConfig.class)
+public interface PassportMapper {
+    @Mappings({
+            @Mapping(target = "country", source = "country.countryName")
+            })
+    PassportDto toDto(Passport passport);
 }
