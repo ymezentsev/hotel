@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface CountryRepository extends JpaRepository<Country, String> {
-    List<Country> findByTelCode (String telCode);
+    List<Country> findByPhoneCode(String phoneCode);
 }

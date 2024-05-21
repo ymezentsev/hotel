@@ -16,13 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 public class Country {
     @Id
-    private String code;
+    private String countryCode;
 
     @Column(unique = true, nullable = false)
-    private String name;
+    private String countryName;
 
     @Column(unique = true, nullable = false)
-    private String telCode;
+    private String phoneCode;
 
     @OneToMany(mappedBy = "country")
     private List<Passport> passports;
