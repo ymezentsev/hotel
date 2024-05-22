@@ -42,14 +42,14 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     public List<ReservationDto> findAll() {
         return reservationRepository.findAll().stream()
-                .map(reservationMapper::buildReservationDto)
+                .map(reservationMapper::toDto)
                 .toList();
     }
 
     @Override
     @Transactional
     public ReservationDto findById(Long id) {
-        return reservationMapper.buildReservationDto(reservationRepository
+        return reservationMapper.toDto(reservationRepository
                 .findById(id)
                 .orElseThrow(() -> new NoSuchElementException(RESERVATION_IS_NOT_EXISTS)));
     }
@@ -58,7 +58,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     public List<ReservationDto> findReservationsByUserId(Long userId) {
         return reservationRepository.findByUsersId(userId).stream()
-                .map(reservationMapper::buildReservationDto)
+                .map(reservationMapper::toDto)
                 .toList();
     }
 
@@ -68,7 +68,7 @@ public class ReservationServiceImpl implements ReservationService {
         Long roomId = roomService.findByNumber(roomNumber).id();
 
         return reservationRepository.findByRoomId(roomId).stream()
-                .map(reservationMapper::buildReservationDto)
+                .map(reservationMapper::toDto)
                 .toList();
     }
 
@@ -106,8 +106,13 @@ public class ReservationServiceImpl implements ReservationService {
             throw new WrongDatesException(OCCUPIED_ROOM);
         }
 
-        Reservation newReservation = reservationMapper.buildReservationFromRequest(reservationRequest, room, users);
-        return reservationMapper.buildReservationDto(reservationRepository.save(newReservation));
+        Reservation newReservation = Reservation.builder()
+                .room(room)
+                .checkInDate(reservationRequest.getCheckInDate())
+                .checkOutDate(reservationRequest.getCheckOutDate())
+                .users(users)
+                .build();
+        return reservationMapper.toDto(reservationRepository.save(newReservation));
     }
 
     @Override
@@ -115,7 +120,7 @@ public class ReservationServiceImpl implements ReservationService {
     public List<ReservationDto> findCurrentReservations() {
         return reservationRepository.findCurrentReservations()
                 .stream()
-                .map(reservationMapper::buildReservationDto)
+                .map(reservationMapper::toDto)
                 .toList();
     }
 
@@ -126,7 +131,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         return reservationRepository.findCurrentReservationsForRoom(roomId)
                 .stream()
-                .map(reservationMapper::buildReservationDto)
+                .map(reservationMapper::toDto)
                 .toList();
     }
 

@@ -1,13 +1,14 @@
 package com.robot.hotel.reservation.dto;
 
+import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.user.dto.UserDtoWithoutReservation;
-import lombok.Builder;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Builder
-public record ReservationDto(Long id, String roomNumber,
+@Schema(description = "Dto for Reservation")
+public record ReservationDto(Long id, RoomDto room,
                              LocalDate checkInDate, LocalDate checkOutDate,
                              List<UserDtoWithoutReservation> users) {
 }
