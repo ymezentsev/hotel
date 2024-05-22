@@ -23,15 +23,15 @@ public class UserRequest {
     @Pattern(regexp = "[A-zА-яҐЄІЇґєії']{2,20}", message = "Lastname should contains only letters")
     private String lastName;
 
-    @NotBlank(message = "Tel.code is required")
-    @Pattern(regexp = "^(\\+)\\d{1,4}", message = "Not valid tel.code, it must starts with '+' and contains only digits")
-    @Size(min = 2, max = 5, message = "Tel.code's length must be from 2 to 5 characters long")
-    private String telCode;
+    @NotBlank(message = "Phone code is required")
+    @Pattern(regexp = "^(\\+)\\d{1,4}", message = "Not valid phone code, it must starts with '+' and contains only digits")
+    @Size(min = 2, max = 5, message = "Phone code's length must be from 2 to 5 characters long")
+    private String phoneCode;
 
-    @NotBlank(message = "Tel.number is required")
-    @Pattern(regexp = "\\d{8,12}", message = "Not valid tel.number, it must contains only digits")
-    @Size(min = 8, max = 12, message = "Tel.number's length must be from 8 to 12 characters long")
-    private String telNumber;
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "\\d{8,12}", message = "Not valid phone number, it must contains only digits")
+    @Size(min = 8, max = 12, message = "Phone number's length must be from 8 to 12 characters long")
+    private String phoneNumber;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Not valid email")

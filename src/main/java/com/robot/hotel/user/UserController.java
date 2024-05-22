@@ -34,9 +34,9 @@ public class UserController implements UserControllerOpenApi {
         return userService.findByEmail(email);
     }
 
-    @GetMapping("/telNumber/{telNumber}")
-    public UserDto findByTelNumber(@PathVariable String telNumber) {
-        return userService.findByTelNumber(telNumber);
+    @GetMapping("/phoneNumber/{phoneNumber}")
+    public UserDto findByPhoneNumber(@PathVariable String phoneNumber) {
+        return userService.findByPhoneNumber(phoneNumber);
     }
 
     @GetMapping("/passport/{passportSerialNumber}")

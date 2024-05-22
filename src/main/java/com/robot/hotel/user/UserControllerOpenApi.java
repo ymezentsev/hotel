@@ -80,7 +80,7 @@ public interface UserControllerOpenApi {
                     responseCode = "404",
                     description = "Such user is not exists")
     })
-    UserDto findByTelNumber(@PathVariable String telNumber);
+    UserDto findByPhoneNumber(@PathVariable String phoneNumber);
 
     @Operation(summary = "Get user by passport number")
     @ApiResponses(value = {

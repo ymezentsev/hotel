@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
 
-    boolean existsByTelNumber(String telNumber);
+    boolean existsByPhoneNumber(String phoneNumber);
 
     boolean existsByPassportSerialNumber(String passportSerialNumber);
 
@@ -29,12 +29,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     @EntityGraph(attributePaths = {"reservations"})
-    Optional<User> findByTelNumber(String telNumber);
+    Optional<User> findByPhoneNumber(String phoneNumber);
 
     @EntityGraph(attributePaths = {"reservations"})
     @Query("SELECT u FROM User u JOIN u.country c " +
-            "WHERE CONCAT(c.telCode, u.telNumber) = :telNumber")
-    Optional<User> findByFullTelNumber(@Param("telNumber") String telNumber);
+            "WHERE CONCAT(c.phoneCode, u.phoneNumber) = :phoneNumber")
+    Optional<User> findByFullPhoneNumber(@Param("phoneNumber") String phoneNumber);
 
     @EntityGraph(attributePaths = {"reservations"})
     @Query("SELECT u FROM User u JOIN u.passport p " +

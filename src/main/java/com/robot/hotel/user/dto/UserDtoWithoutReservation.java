@@ -1,9 +1,9 @@
 package com.robot.hotel.user.dto;
 
 import com.robot.hotel.user.passport.PassportDto;
-import lombok.Builder;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@Builder
+@Schema(description = "Dto for User without Reservation")
 public record UserDtoWithoutReservation(Long id, String firstName, String lastName,
-                                        String telNumber, String email, PassportDto passport) {
+                                        String phoneNumber, String email, PassportDto passport) {
 }

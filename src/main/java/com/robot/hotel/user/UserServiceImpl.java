@@ -13,10 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private static final String USER_IS_NOT_EXISTS = "Such user is not exists";
     private static final String RESERVATIONS_FOR_THIS_USER_ARE_EXISTS =
             "This user has reservations. At first delete reservations";
-    private static final String TEL_CODE_IS_NOT_EXISTS = "Such tel. code is not exists";
+    private static final String TEL_CODE_IS_NOT_EXISTS = "Such phone code is not exists";
     private static final String COUNTRY_IS_NOT_EXISTS = "Such country is not exists";
     private static final String NOT_ENOUGH_INFORMATION = "There is not enough information to save your passport";
     private static final String ROLE_IS_NOT_EXISTS = "Such role is not exists";
@@ -39,16 +36,16 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public List<UserDto> findAll() {
         return userRepository.findAll().stream()
-                .map(userMapper::buildUserDto)
+                .map(userMapper::toDto)
                 .toList();
     }
 
     @Override
     public UserDto save(UserRequest userRequest) {
-        Country country = getCountryFromTelCode(userRequest.getTelCode());
+        Country country = getCountryFromTelCode(userRequest.getPhoneCode());
 
-        if (userRepository.existsByTelNumber(userRequest.getTelNumber())) {
-            throw new DuplicateObjectException(String.format(USER_IS_ALREADY_EXISTS, "tel.number"));
+        if (userRepository.existsByPhoneNumber(userRequest.getPhoneNumber())) {
+            throw new DuplicateObjectException(String.format(USER_IS_ALREADY_EXISTS, "phone number"));
         }
 
         if (userRepository.existsByEmail(userRequest.getEmail().toLowerCase())) {
@@ -57,14 +54,24 @@ public class UserServiceImpl implements UserService {
 
         Passport passport = getPassportFromUserRequest(userRequest, null);
 
-        User newUser = userMapper.buildUserFromRequest(userRequest, country, passport);
-        return userMapper.buildUserDto(userRepository.save(newUser));
+        User newUser = User.builder()
+                .firstName(userRequest.getFirstName().toLowerCase())
+                .lastName(userRequest.getLastName().toLowerCase())
+                .country(country)
+                .phoneNumber(userRequest.getPhoneNumber())
+                .email(userRequest.getEmail().toLowerCase())
+                .password(userRequest.getPassword())
+                .role(Role.USER)
+                .passport(passport)
+                .reservations(Collections.emptyList())
+                .build();
+        return userMapper.toDto(userRepository.save(newUser));
     }
 
     @Override
     @Transactional
     public UserDto findById(Long id) {
-        return userMapper.buildUserDto(userRepository
+        return userMapper.toDto(userRepository
                 .findById(id)
                 .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)));
     }
@@ -72,21 +79,21 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto findByEmail(String email) {
-        return userMapper.buildUserDto(userRepository
+        return userMapper.toDto(userRepository
                 .findByEmail(email.toLowerCase().strip())
                 .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)));
     }
 
     @Override
     @Transactional
-    public UserDto findByTelNumber(String telNumber) {
-        if (telNumber.startsWith("+")) {
-            return userMapper.buildUserDto(userRepository
-                    .findByFullTelNumber(telNumber)
+    public UserDto findByPhoneNumber(String phoneNumber) {
+        if (phoneNumber.startsWith("+")) {
+            return userMapper.toDto(userRepository
+                    .findByFullPhoneNumber(phoneNumber)
                     .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)));
         } else {
-            return userMapper.buildUserDto(userRepository
-                    .findByTelNumber(telNumber)
+            return userMapper.toDto(userRepository
+                    .findByPhoneNumber(phoneNumber)
                     .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)));
         }
     }
@@ -94,7 +101,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto findByPassportSerialNumber(String passportSerialNumber) {
-        return userMapper.buildUserDto(userRepository
+        return userMapper.toDto(userRepository
                 .findByPassportSerialNumber(passportSerialNumber.toLowerCase().strip())
                 .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)));
     }
@@ -103,7 +110,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public List<UserDto> findByLastName(String lastName) {
         return userRepository.findByLastName(lastName.toLowerCase().strip()).stream()
-                .map(userMapper::buildUserDto)
+                .map(userMapper::toDto)
                 .toList();
     }
 
@@ -111,7 +118,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public List<UserDto> findUsersByReservation(Long id) {
         return userRepository.findByReservationsId(id).stream()
-                .map(userMapper::buildUserDto)
+                .map(userMapper::toDto)
                 .toList();
     }
 
@@ -128,7 +135,7 @@ public class UserServiceImpl implements UserService {
         }
 
         return userRepository.findByRole(Role.valueOf(role)).stream()
-                .map(userMapper::buildUserDto)
+                .map(userMapper::toDto)
                 .toList();
     }
 
@@ -138,16 +145,16 @@ public class UserServiceImpl implements UserService {
                 () -> new NoSuchElementException(USER_IS_NOT_EXISTS)
         );
 
-        Country country = getCountryFromTelCode(userRequest.getTelCode());
+        Country country = getCountryFromTelCode(userRequest.getPhoneCode());
 
         Optional<User> existingUser = userRepository.findByEmail(userRequest.getEmail().toLowerCase());
         if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
             throw new DuplicateObjectException(String.format(USER_IS_ALREADY_EXISTS, "email"));
         }
 
-        existingUser = userRepository.findByTelNumber(userRequest.getTelNumber());
+        existingUser = userRepository.findByPhoneNumber(userRequest.getPhoneNumber());
         if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
-            throw new DuplicateObjectException(String.format(USER_IS_ALREADY_EXISTS, "tel.number"));
+            throw new DuplicateObjectException(String.format(USER_IS_ALREADY_EXISTS, "phone number"));
         }
 
         Passport passport = getPassportFromUserRequest(userRequest, userId);
@@ -155,7 +162,7 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setFirstName(userRequest.getFirstName().toLowerCase());
         userToUpdate.setLastName(userRequest.getLastName().toLowerCase());
         userToUpdate.setCountry(country);
-        userToUpdate.setTelNumber(userRequest.getTelNumber());
+        userToUpdate.setPhoneNumber(userRequest.getPhoneNumber());
         userToUpdate.setEmail(userRequest.getEmail().toLowerCase());
         userToUpdate.setPassword(userRequest.getPassword());
 
@@ -179,7 +186,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private Country getCountryFromTelCode(String telCode) {
-        List<Country> countries = countryRepository.findByTelCode(telCode);
+        List<Country> countries = countryRepository.findByPhoneCode(telCode);
         if (countries.isEmpty()) {
             throw new NoSuchElementException(TEL_CODE_IS_NOT_EXISTS);
         }

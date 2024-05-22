@@ -29,11 +29,11 @@ public class User {
     private String lastName;
 
     @ManyToOne
-    @JoinColumn(name = "tel_country_code", nullable = false)
+    @JoinColumn(name = "phone_country_code", nullable = false)
     private Country country;
 
     @Column(unique = true, nullable = false)
-    private String telNumber;
+    private String phoneNumber;
 
     @Column(unique = true, nullable = false)
     private String email;

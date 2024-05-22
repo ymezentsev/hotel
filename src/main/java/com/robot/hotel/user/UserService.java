@@ -14,7 +14,7 @@ public interface UserService {
 
     UserDto findByEmail(String email);
 
-    UserDto findByTelNumber(String telNumber);
+    UserDto findByPhoneNumber(String phoneNumber);
 
     UserDto findByPassportSerialNumber(String passportSerialNumber);
 
