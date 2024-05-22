@@ -9,6 +9,6 @@ import org.mapstruct.Mappings;
 public interface PassportMapper {
     @Mappings({
             @Mapping(target = "country", source = "country.countryName")
-            })
+    })
     PassportDto toDto(Passport passport);
 }
