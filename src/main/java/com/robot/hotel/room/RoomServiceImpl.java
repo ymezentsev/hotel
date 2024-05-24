@@ -11,11 +11,13 @@ import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
 import com.robot.hotel.roomtype.RoomTypeService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
@@ -31,6 +33,7 @@ public class RoomServiceImpl implements RoomService {
     private static final String TYPE_IS_NOT_EXISTS = "Such type of room is not exists";
     private static final String RESERVATIONS_FOR_THIS_ROOM_ARE_EXISTS =
             "There are reservations for this room. At first delete reservations";
+    private static final String SUCCESSFUL_ACTION_WITH_ROOM = "Successful %s room with id: {}";
 
     @Override
     public List<RoomDto> findAll() {
@@ -41,6 +44,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomDto save(RoomRequest roomRequest) {
+        log.info("Saving room with number: {}", roomRequest.getNumber().toLowerCase().strip());
+
         if (roomRepository.existsByNumber(roomRequest.getNumber().toLowerCase().strip())) {
             throw new DuplicateObjectException(NUMBER_IS_ALREADY_EXISTS);
         }
@@ -54,7 +59,10 @@ public class RoomServiceImpl implements RoomService {
                 .maxCountOfGuests(roomRequest.getMaxCountOfGuests())
                 .roomType(roomType)
                 .build();
-        return roomMapper.toDto(roomRepository.save(newRoom));
+
+        Room savedRoom = roomRepository.save(newRoom);
+        log.info(String.format(SUCCESSFUL_ACTION_WITH_ROOM, "created"), savedRoom.getId());
+        return roomMapper.toDto(savedRoom);
     }
 
     @Override
@@ -125,6 +133,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void update(Long id, RoomRequest roomRequest) {
+        log.info("Updating room with id: {}", id);
+
         Room roomToUpdate = roomRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException(ROOM_IS_NOT_EXISTS)
         );
@@ -142,15 +152,20 @@ public class RoomServiceImpl implements RoomService {
         roomToUpdate.setMaxCountOfGuests(roomRequest.getMaxCountOfGuests());
         roomToUpdate.setRoomType(roomType);
         roomRepository.save(roomToUpdate);
+
+        log.info(String.format(SUCCESSFUL_ACTION_WITH_ROOM, "updated"), id);
     }
 
     @Override
     public void deleteById(Long id) {
+        log.info("Deleting room with id: {}", id);
+
         if (roomRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(ROOM_IS_NOT_EXISTS))
                 .getReservations()
                 .isEmpty()) {
             roomRepository.deleteById(id);
+            log.info(String.format(SUCCESSFUL_ACTION_WITH_ROOM, "deleted"), id);
         } else {
             throw new NotEmptyObjectException(RESERVATIONS_FOR_THIS_ROOM_ARE_EXISTS);
         }
