@@ -134,7 +134,6 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void update(Long id, RoomRequest roomRequest) {
         log.info("Updating room with id: {}", id);
-
         Room roomToUpdate = roomRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException(ROOM_IS_NOT_EXISTS)
         );

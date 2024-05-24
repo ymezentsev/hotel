@@ -26,15 +26,17 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 
     @Override
     public RoomTypeDto save(RoomTypeRequest roomTypeRequest) {
+        log.info("Saving room type with type: {}", roomTypeRequest.getType().toLowerCase().strip());
+
         if (roomTypeRepository.existsByType(roomTypeRequest.getType().toLowerCase().strip())) {
             throw new DuplicateObjectException(TYPE_IS_ALREADY_EXISTS);
         }
         RoomType newRoomType = new RoomType();
         newRoomType.setType(roomTypeRequest.getType().toLowerCase().strip());
 
-        RoomTypeDto newRoomTypeDto = roomTypeMapper.toDto(roomTypeRepository.save(newRoomType));
-        log.info(String.format(SUCCESSFUL_ACTION_WITH_ROOM_TYPE, "created"), newRoomTypeDto.id());
-        return newRoomTypeDto;
+        RoomType savedRoomType = roomTypeRepository.save(newRoomType);
+        log.info(String.format(SUCCESSFUL_ACTION_WITH_ROOM_TYPE, "created"), savedRoomType.getId());
+        return roomTypeMapper.toDto(savedRoomType);
     }
 
     @Override
@@ -60,6 +62,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 
     @Override
     public void update(Long id, RoomTypeRequest roomTypeRequest) {
+        log.info("Updating room type with id: {}", id);
         RoomType roomType = roomTypeRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException(TYPE_IS_NOT_EXISTS));
 
@@ -74,6 +77,8 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 
     @Override
     public void deleteById(Long id) {
+        log.info("Deleting room type with id: {}", id);
+
         if (roomTypeRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(TYPE_IS_NOT_EXISTS))
                 .getRooms()
