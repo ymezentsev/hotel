@@ -1,7 +1,7 @@
 package com.robot.hotel.roomtype;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -12,6 +12,9 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Long> {
 
     boolean existsByType(String type);
 
-    @EntityGraph(attributePaths = {"rooms"})
+     @Query("""
+            SELECT DISTINCT rt FROM RoomType rt
+            LEFT JOIN FETCH rt.rooms r
+            WHERE rt.id = :id""")
     Optional<RoomType> findById(Long id);
 }
