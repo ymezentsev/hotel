@@ -4,13 +4,17 @@ import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.reservation.dto.ReservationDto;
 import com.robot.hotel.reservation.dto.ReservationRequest;
-import com.robot.hotel.room.*;
+import com.robot.hotel.room.Room;
+import com.robot.hotel.room.RoomMapper;
+import com.robot.hotel.room.RoomRepository;
+import com.robot.hotel.room.RoomService;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.user.User;
 import com.robot.hotel.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,6 +23,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ReservationServiceImpl implements ReservationService {
@@ -37,6 +42,7 @@ public class ReservationServiceImpl implements ReservationService {
     private static final String TOO_EARLY_RESERVATION = "Reservation of rooms opens 180 days in advance";
     private static final String TOO_MANY_GUESTS = "The quantity of guests exceeds the maximum allowed in this room";
     private static final String OCCUPIED_ROOM = "This room is occupied for your dates";
+    private static final String SUCCESSFUL_ACTION_WITH_RESERVATION = "Successful %s reservation with id: {}";
 
     @Override
     @Transactional
@@ -75,6 +81,8 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional
     public ReservationDto save(ReservationRequest reservationRequest) {
+        log.info("Saving reservation with room number: {}", reservationRequest.getRoomNumber().toLowerCase().strip());
+
         Room room = roomRepository.findByNumber(reservationRequest.getRoomNumber().toLowerCase().strip())
                 .orElseThrow(() -> new NoSuchElementException(ROOM_IS_NOT_EXISTS));
 
@@ -112,7 +120,10 @@ public class ReservationServiceImpl implements ReservationService {
                 .checkOutDate(reservationRequest.getCheckOutDate())
                 .users(users)
                 .build();
-        return reservationMapper.toDto(reservationRepository.save(newReservation));
+
+        Reservation savedReservation = reservationRepository.save(newReservation);
+        log.info(String.format(SUCCESSFUL_ACTION_WITH_RESERVATION, "created"), savedReservation.getId());
+        return reservationMapper.toDto(savedReservation);
     }
 
     @Override
@@ -137,9 +148,11 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void deleteById(Long id) {
+        log.info("Deleting reservation with id: {}", id);
         if (!reservationRepository.existsById(id)) {
             throw new NoSuchElementException(RESERVATION_IS_NOT_EXISTS);
         }
         reservationRepository.deleteById(id);
+        log.info(String.format(SUCCESSFUL_ACTION_WITH_RESERVATION, "deleted"), id);
     }
 }
