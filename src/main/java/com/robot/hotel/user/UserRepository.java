@@ -18,35 +18,60 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByPassportSerialNumber(String passportSerialNumber);
 
     @Override
-    @EntityGraph(attributePaths = {"reservations"})
+    @Query("""
+            SELECT DISTINCT u FROM User u
+            LEFT JOIN FETCH u.reservations r""")
     List<User> findAll();
 
     @Override
-    @EntityGraph(attributePaths = {"reservations"})
+    @Query("""
+            SELECT DISTINCT u FROM User u
+            LEFT JOIN FETCH u.reservations r
+            WHERE u.id = :id""")
     Optional<User> findById(Long id);
 
-    @EntityGraph(attributePaths = {"reservations"})
+    @Query("""
+            SELECT DISTINCT u FROM User u
+            LEFT JOIN FETCH u.reservations r
+            WHERE u.email = :email""")
     Optional<User> findByEmail(String email);
 
-    @EntityGraph(attributePaths = {"reservations"})
+    @Query("""
+            SELECT DISTINCT u FROM User u
+            LEFT JOIN FETCH u.reservations r
+            WHERE u.phoneNumber = :phoneNumber""")
     Optional<User> findByPhoneNumber(String phoneNumber);
 
-    @EntityGraph(attributePaths = {"reservations"})
-    @Query("SELECT u FROM User u JOIN u.country c " +
-            "WHERE CONCAT(c.phoneCode, u.phoneNumber) = :phoneNumber")
+    @Query("""
+            SELECT DISTINCT u FROM User u
+            LEFT JOIN FETCH u.reservations r
+            JOIN u.country c
+            WHERE CONCAT(c.phoneCode, u.phoneNumber) = :phoneNumber""")
     Optional<User> findByFullPhoneNumber(@Param("phoneNumber") String phoneNumber);
 
-    @EntityGraph(attributePaths = {"reservations"})
-    @Query("SELECT u FROM User u JOIN u.passport p " +
-            "WHERE p.serialNumber = :passportSerialNumber")
+    @Query("""
+            SELECT u FROM User u
+            LEFT JOIN FETCH u.reservations r
+            JOIN u.passport p
+            WHERE p.serialNumber = :passportSerialNumber""")
     Optional<User> findByPassportSerialNumber(@Param("passportSerialNumber") String passportSerialNumber);
 
-    @EntityGraph(attributePaths = {"reservations"})
+    @Query("""
+            SELECT DISTINCT u FROM User u
+            LEFT JOIN FETCH u.reservations r
+            WHERE u.lastName = :lastName""")
     List<User> findByLastName(String lastName);
 
     @EntityGraph(attributePaths = {"reservations"})
+    @Query("""
+            SELECT DISTINCT u FROM User u
+            LEFT JOIN FETCH u.reservations r
+            WHERE r.id = :reservationId""")
     List<User> findByReservationsId(Long reservationId);
 
-    @EntityGraph(attributePaths = {"reservations"})
+    @Query("""
+            SELECT DISTINCT u FROM User u
+            LEFT JOIN FETCH u.reservations r
+            WHERE u.role = :role""")
     List<User> findByRole(Role role);
 }

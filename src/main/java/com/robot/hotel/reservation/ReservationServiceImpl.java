@@ -22,6 +22,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -103,10 +104,10 @@ public class ReservationServiceImpl implements ReservationService {
             throw new GuestsQuantityException(TOO_MANY_GUESTS);
         }
 
-        List<User> users = reservationRequest.getUserEmails().stream()
+        Set<User> users = reservationRequest.getUserEmails().stream()
                 .map(email -> userRepository.findByEmail(email)
                         .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)))
-                .toList();
+                .collect(Collectors.toSet());
 
         Set<RoomDto> freeRooms = roomService.findFreeRooms(new FreeRoomRequest(
                 reservationRequest.getCheckInDate(), reservationRequest.getCheckOutDate()));

@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class DBInitializer {
@@ -184,28 +185,28 @@ public class DBInitializer {
                 .room(roomRepository.findByNumber("204").orElseThrow())
                 .checkInDate(LocalDate.now())
                 .checkOutDate(LocalDate.now().plusDays(4))
-                .users(List.of(user2, user3))
+                .users(Set.of(user2, user3))
                 .build());
 
         reservationRepository.save(Reservation.builder()
                 .room(roomRepository.findByNumber("204").orElseThrow())
                 .checkInDate(LocalDate.of(2024, 1, 15))
                 .checkOutDate(LocalDate.of(2024, 1, 18))
-                .users(List.of(user3))
+                .users(Set.of(user3))
                 .build());
 
         reservationRepository.save(Reservation.builder()
                 .room(roomRepository.findByNumber("203").orElseThrow())
                 .checkInDate(LocalDate.now().plusDays(4))
                 .checkOutDate(LocalDate.now().plusDays(6))
-                .users(List.of(user5, user6))
+                .users(Set.of(user5, user6))
                 .build());
 
         reservationRepository.save(Reservation.builder()
                 .room(roomRepository.findByNumber("101").orElseThrow())
                 .checkInDate(LocalDate.now().minusDays(2))
                 .checkOutDate(LocalDate.now().plusDays(3))
-                .users(List.of(user2, user3, user6))
+                .users(Set.of(user2, user3, user6))
                 .build());
     }
 }

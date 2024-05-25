@@ -9,7 +9,6 @@ import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserRequest;
 import com.robot.hotel.user.passport.Passport;
 import com.robot.hotel.user.passport.PassportRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,7 +35,6 @@ public class UserServiceImpl implements UserService {
     private static final String SUCCESSFUL_ACTION_WITH_USER = "Successful %s user with id: {}";
 
     @Override
-    @Transactional
     public List<UserDto> findAll() {
         return userRepository.findAll().stream()
                 .map(userMapper::toDto)
@@ -68,7 +66,7 @@ public class UserServiceImpl implements UserService {
                 .password(userRequest.getPassword())
                 .role(Role.USER)
                 .passport(passport)
-                .reservations(Collections.emptyList())
+                .reservations(Collections.emptySet())
                 .build();
 
         User savedUser = userRepository.save(newUser);
@@ -77,7 +75,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UserDto findById(Long id) {
         return userMapper.toDto(userRepository
                 .findById(id)
@@ -85,7 +82,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UserDto findByEmail(String email) {
         return userMapper.toDto(userRepository
                 .findByEmail(email.toLowerCase().strip())
@@ -93,7 +89,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UserDto findByPhoneNumber(String phoneNumber) {
         if (phoneNumber.startsWith("+")) {
             return userMapper.toDto(userRepository
@@ -107,7 +102,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UserDto findByPassportSerialNumber(String passportSerialNumber) {
         return userMapper.toDto(userRepository
                 .findByPassportSerialNumber(passportSerialNumber.toLowerCase().strip())
@@ -115,7 +109,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public List<UserDto> findByLastName(String lastName) {
         return userRepository.findByLastName(lastName.toLowerCase().strip()).stream()
                 .map(userMapper::toDto)
@@ -123,7 +116,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public List<UserDto> findUsersByReservation(Long id) {
         return userRepository.findByReservationsId(id).stream()
                 .map(userMapper::toDto)
@@ -131,7 +123,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public List<UserDto> findUsersByRole(String role) {
         role = role.toUpperCase().strip();
 

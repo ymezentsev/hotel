@@ -1,22 +1,20 @@
 package com.robot.hotel.user;
 
+import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.user.country.Country;
 import com.robot.hotel.user.passport.Passport;
-import com.robot.hotel.reservation.Reservation;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-@Entity
+@Entity()
+@EqualsAndHashCode(exclude = {"country", "passport", "reservations"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,5 +48,5 @@ public class User {
     private Passport passport;
 
     @ManyToMany(mappedBy = "users")
-    private List<Reservation> reservations;
+    private Set<Reservation> reservations;
 }

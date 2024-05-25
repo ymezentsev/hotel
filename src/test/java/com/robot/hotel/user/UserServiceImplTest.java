@@ -31,7 +31,7 @@ class UserServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        dbInitializer.populateDB();
+       dbInitializer.populateDB();
     }
 
     @Test

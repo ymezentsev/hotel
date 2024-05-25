@@ -1,7 +1,7 @@
 package com.robot.hotel.reservation;
 
-import com.robot.hotel.user.User;
 import com.robot.hotel.room.Room;
+import com.robot.hotel.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -37,5 +37,5 @@ public class Reservation {
             name = "reservation_user",
             joinColumns = @JoinColumn(name = "reservation_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users;
+    private Set<User> users;
 }
