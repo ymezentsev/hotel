@@ -1,6 +1,5 @@
 package com.robot.hotel.room;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +15,10 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     Optional<Room> findByNumber(String number);
 
-    @EntityGraph(attributePaths = {"reservations", "roomType"})
+    @Query("""
+            SELECT DISTINCT r FROM Room r
+            LEFT JOIN FETCH r.reservations res
+            WHERE r.id = :id""")
     Optional<Room> findById(Long id);
 
     List<Room> findByRoomTypeId(Long id);
