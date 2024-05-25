@@ -1,20 +1,22 @@
 package com.robot.hotel.user;
 
-import com.robot.hotel.user.country.Country;
-import com.robot.hotel.user.country.CountryRepository;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.NotEnoughInformationException;
+import com.robot.hotel.user.country.Country;
+import com.robot.hotel.user.country.CountryRepository;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserRequest;
 import com.robot.hotel.user.passport.Passport;
 import com.robot.hotel.user.passport.PassportRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private static final String COUNTRY_IS_NOT_EXISTS = "Such country is not exists";
     private static final String NOT_ENOUGH_INFORMATION = "There is not enough information to save your passport";
     private static final String ROLE_IS_NOT_EXISTS = "Such role is not exists";
+    private static final String SUCCESSFUL_ACTION_WITH_USER = "Successful %s user with id: {}";
 
     @Override
     @Transactional
@@ -42,6 +45,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto save(UserRequest userRequest) {
+        log.info("Saving user with email: {}", userRequest.getEmail().toLowerCase());
+
         Country country = getCountryFromTelCode(userRequest.getPhoneCode());
 
         if (userRepository.existsByPhoneNumber(userRequest.getPhoneNumber())) {
@@ -65,7 +70,10 @@ public class UserServiceImpl implements UserService {
                 .passport(passport)
                 .reservations(Collections.emptyList())
                 .build();
-        return userMapper.toDto(userRepository.save(newUser));
+
+        User savedUser = userRepository.save(newUser);
+        log.info(String.format(SUCCESSFUL_ACTION_WITH_USER, "created"), savedUser.getId());
+        return userMapper.toDto(savedUser);
     }
 
     @Override
@@ -141,6 +149,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(Long userId, UserRequest userRequest) {
+        log.info("Updating user with id: {}", userId);
         User userToUpdate = userRepository.findById(userId).orElseThrow(
                 () -> new NoSuchElementException(USER_IS_NOT_EXISTS)
         );
@@ -171,15 +180,19 @@ public class UserServiceImpl implements UserService {
             userToUpdate.setPassport(passport);
         }
         userRepository.save(userToUpdate);
+
+        log.info(String.format(SUCCESSFUL_ACTION_WITH_USER, "updated"), userId);
     }
 
     @Override
     public void deleteById(Long id) {
+        log.info("Deleting user with id: {}", id);
         if (userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS))
                 .getReservations()
                 .isEmpty()) {
             userRepository.deleteById(id);
+            log.info(String.format(SUCCESSFUL_ACTION_WITH_USER, "deleted"), id);
         } else {
             throw new NotEmptyObjectException(RESERVATIONS_FOR_THIS_USER_ARE_EXISTS);
         }
