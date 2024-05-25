@@ -12,7 +12,6 @@ import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.user.User;
 import com.robot.hotel.user.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,7 +45,6 @@ public class ReservationServiceImpl implements ReservationService {
     private static final String SUCCESSFUL_ACTION_WITH_RESERVATION = "Successful %s reservation with id: {}";
 
     @Override
-    @Transactional
     public List<ReservationDto> findAll() {
         return reservationRepository.findAll().stream()
                 .map(reservationMapper::toDto)
@@ -54,7 +52,6 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    @Transactional
     public ReservationDto findById(Long id) {
         return reservationMapper.toDto(reservationRepository
                 .findById(id)
@@ -62,7 +59,6 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    @Transactional
     public List<ReservationDto> findReservationsByUserId(Long userId) {
         return reservationRepository.findByUsersId(userId).stream()
                 .map(reservationMapper::toDto)
@@ -70,7 +66,6 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    @Transactional
     public List<ReservationDto> findReservationsByRoom(String roomNumber) {
         Long roomId = roomService.findByNumber(roomNumber).id();
 
@@ -80,7 +75,6 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    @Transactional
     public ReservationDto save(ReservationRequest reservationRequest) {
         log.info("Saving reservation with room number: {}", reservationRequest.getRoomNumber().toLowerCase().strip());
 
@@ -128,7 +122,6 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    @Transactional
     public List<ReservationDto> findCurrentReservations() {
         return reservationRepository.findCurrentReservations()
                 .stream()
@@ -137,7 +130,6 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    @Transactional
     public List<ReservationDto> findCurrentReservationsForSpecificRoom(String roomNumber) {
         Long roomId = roomService.findByNumber(roomNumber).id();
 
