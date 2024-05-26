@@ -14,6 +14,7 @@ import com.robot.hotel.user.User;
 import com.robot.hotel.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -34,12 +35,17 @@ public class ReservationServiceImpl implements ReservationService {
     private final UserRepository userRepository;
     private final RoomMapper roomMapper;
 
+    @Value("${max.duration.of.reservation.in.days}")
+    private int maxDurationOfReservationInDays;
+    @Value("${reservation.opening.time.in.days}")
+    private int reservationOpeningTimeInDays;
+
     private static final String RESERVATION_IS_NOT_EXISTS = "Such reservation is not exists";
     private static final String ROOM_IS_NOT_EXISTS = "Such room is not exists";
     private static final String USER_IS_NOT_EXISTS = "Such user is not exists";
     private static final String CHECK_OUT_LESS_THAN_CHECK_IN_DATE = "The check out date must be after check in date";
-    private static final String TOO_LONG_RESERVATION = "You can't reserve room for more than 60 days";
-    private static final String TOO_EARLY_RESERVATION = "Reservation of rooms opens 180 days in advance";
+    private static final String TOO_LONG_RESERVATION = "You can't reserve room for more than %s days";
+    private static final String TOO_EARLY_RESERVATION = "Reservation of rooms opens %s days in advance";
     private static final String TOO_MANY_GUESTS = "The quantity of guests exceeds the maximum allowed in this room";
     private static final String OCCUPIED_ROOM = "This room is occupied for your dates";
     private static final String SUCCESSFUL_ACTION_WITH_RESERVATION = "Successful %s reservation with id: {}";
@@ -86,12 +92,14 @@ public class ReservationServiceImpl implements ReservationService {
             throw new WrongDatesException(CHECK_OUT_LESS_THAN_CHECK_IN_DATE);
         }
 
-        if (ChronoUnit.DAYS.between(reservationRequest.getCheckInDate(), reservationRequest.getCheckOutDate()) > 60) {
-            throw new WrongDatesException(TOO_LONG_RESERVATION);
+        if (ChronoUnit.DAYS.between(reservationRequest.getCheckInDate(), reservationRequest.getCheckOutDate())
+                > maxDurationOfReservationInDays) {
+            throw new WrongDatesException(String.format(TOO_LONG_RESERVATION, maxDurationOfReservationInDays));
         }
 
-        if (ChronoUnit.DAYS.between(LocalDate.now(), reservationRequest.getCheckOutDate()) > 180) {
-            throw new WrongDatesException(TOO_EARLY_RESERVATION);
+        if (ChronoUnit.DAYS.between(LocalDate.now(), reservationRequest.getCheckOutDate())
+                > reservationOpeningTimeInDays) {
+            throw new WrongDatesException(String.format(TOO_EARLY_RESERVATION, reservationOpeningTimeInDays));
         }
 
         if (reservationRequest.getUserEmails().size() > room.getMaxCountOfGuests()) {
