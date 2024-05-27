@@ -43,9 +43,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             SELECT DISTINCT r.room FROM Reservation r
             WHERE (r.checkOutDate <= :checkIn or r.checkInDate >= :checkOut)
             and r.checkOutDate > CURDATE()""")
-    Page<Room> findFreeRoomsWithReservations(@Param("checkIn") LocalDate checkIn,
-                                             @Param("checkOut") LocalDate checkOut,
-                                             Pageable pageable);
+    List<Room> findFreeRoomsWithReservations(@Param("checkIn") LocalDate checkIn,
+                                             @Param("checkOut") LocalDate checkOut);
 
     @Query("""
             SELECT DISTINCT r FROM Reservation r

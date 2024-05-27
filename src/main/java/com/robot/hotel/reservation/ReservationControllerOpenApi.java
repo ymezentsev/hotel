@@ -15,8 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
-
 @Tag(name = "Reservations Controller", description = "API to work with Reservations")
 public interface ReservationControllerOpenApi {
     @Operation(summary = "Get all reservations")
@@ -90,7 +88,7 @@ public interface ReservationControllerOpenApi {
                     responseCode = "404",
                     description = "Such room is not exists")
     })
-    List<ReservationDto> findReservationsByRoom(@PathVariable String roomNumber, Pageable pageable);
+    Page<ReservationDto> findReservationsByRoom(@PathVariable String roomNumber, Pageable pageable);
 
     @Operation(summary = "Get all current reservations")
     @ApiResponses(value = {
