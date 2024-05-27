@@ -8,8 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/reservations")
@@ -32,23 +30,24 @@ public class ReservationController implements ReservationControllerOpenApi {
     }
 
     @GetMapping("/user/{id}")
-    public List<ReservationDto> findReservationsByUserId(@PathVariable Long id) {
-        return reservationService.findReservationsByUserId(id);
+    public Page<ReservationDto> findReservationsByUserId(@PathVariable Long id, Pageable pageable) {
+        return reservationService.findReservationsByUserId(id, pageable);
     }
 
     @GetMapping("/room/{roomNumber}")
-    public List<ReservationDto> findReservationsByRoom(@PathVariable String roomNumber) {
-        return reservationService.findReservationsByRoom(roomNumber);
+    public Page<ReservationDto> findReservationsByRoom(@PathVariable String roomNumber, Pageable pageable) {
+        return reservationService.findReservationsByRoom(roomNumber, pageable);
     }
 
     @GetMapping("/current")
-    public List<ReservationDto> findCurrentReservations() {
-        return reservationService.findCurrentReservations();
+    public Page<ReservationDto> findCurrentReservations(Pageable pageable) {
+        return reservationService.findCurrentReservations(pageable);
     }
 
     @GetMapping("/current/room/{roomNumber}")
-    public List<ReservationDto> findCurrentReservationsForSpecificRoom(@PathVariable String roomNumber) {
-        return reservationService.findCurrentReservationsForSpecificRoom(roomNumber);
+    public Page<ReservationDto> findCurrentReservationsForSpecificRoom(@PathVariable String roomNumber,
+                                                                       Pageable pageable) {
+        return reservationService.findCurrentReservationsForSpecificRoom(roomNumber, pageable);
     }
 
     @DeleteMapping("/{id}")

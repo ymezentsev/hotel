@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
@@ -37,7 +38,7 @@ class ReservationServiceImplTest {
     @Test
     @DisplayName("Find all reservations")
     void findAllTest() {
-        assertEquals(4, reservationService.findAll().size());
+        assertEquals(4, reservationService.findAll(Pageable.unpaged()).getTotalElements());
     }
 
     @Test
@@ -58,13 +59,14 @@ class ReservationServiceImplTest {
     @DisplayName("Find reservations by user id")
     void findReservationsByUserIdTest() {
         Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
-        assertEquals(2, reservationService.findReservationsByUserId(id).size());
+        assertEquals(2, reservationService.findReservationsByUserId(id, Pageable.unpaged()).getTotalElements());
     }
 
     @Test
     @DisplayName("Find reservations by room number")
     void findReservationsByRoomTest() {
-        assertEquals(2, reservationService.findReservationsByRoom("204").size());
+        assertEquals(2,
+                reservationService.findReservationsByRoom("204", Pageable.unpaged()).getTotalElements());
     }
 
     @Test
@@ -77,7 +79,7 @@ class ReservationServiceImplTest {
 
         assertAll(
                 () -> assertNotNull(reservationService.save(reservationRequest).id()),
-                () -> assertEquals(5, reservationService.findAll().size())
+                () -> assertEquals(5, reservationService.findAll(Pageable.unpaged()).getTotalElements())
         );
     }
 
@@ -168,13 +170,15 @@ class ReservationServiceImplTest {
     @Test
     @DisplayName("Find all current reservations")
     void findCurrentReservationsTest() {
-        assertEquals(3, reservationService.findCurrentReservations().size());
+        assertEquals(3, reservationService.findCurrentReservations(Pageable.unpaged()).getTotalElements());
     }
 
     @Test
     @DisplayName("Find all current reservations for a specific room")
     void findCurrentReservationsForSpecificRoomTest() {
-        assertEquals(1, reservationService.findCurrentReservationsForSpecificRoom("204").size());
+        assertEquals(1,
+                reservationService.findCurrentReservationsForSpecificRoom("204",
+                        Pageable.unpaged()).getTotalElements());
     }
 
     @Test
@@ -182,7 +186,7 @@ class ReservationServiceImplTest {
     void deleteByIdTest() {
         Long id = testDBUtils.getReservationIdByRoom("101");
         reservationService.deleteById(id);
-        assertEquals(3, reservationService.findAll().size());
+        assertEquals(3, reservationService.findAll(Pageable.unpaged()).getTotalElements());
     }
 
     @Test

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 
@@ -22,9 +23,12 @@ class ReservationRepositoryTest {
     @DisplayName("Find reservations by user id")
     void findByUserIdTest() {
         assertAll(
-                () -> assertEquals(2, reservationRepository.findByUsersId(2L).size()),
-                () -> assertEquals(3, reservationRepository.findByUsersId(3L).size()),
-                () -> assertEquals(0, reservationRepository.findByUsersId(4L).size())
+                () -> assertEquals(2,
+                        reservationRepository.findByUsersId(2L, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(3,
+                        reservationRepository.findByUsersId(3L, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(0,
+                        reservationRepository.findByUsersId(4L, Pageable.unpaged()).getTotalElements())
         );
     }
 
@@ -32,9 +36,12 @@ class ReservationRepositoryTest {
     @DisplayName("Find reservations by room id")
     void findByRoomIdTest() {
         assertAll(
-                () -> assertEquals(1, reservationRepository.findByRoomId(1L).size()),
-                () -> assertEquals(2, reservationRepository.findByRoomId(5L).size()),
-                () -> assertEquals(0, reservationRepository.findByRoomId(3L).size())
+                () -> assertEquals(1,
+                        reservationRepository.findByRoomId(1L, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(2,
+                        reservationRepository.findByRoomId(5L, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(0,
+                        reservationRepository.findByRoomId(3L, Pageable.unpaged()).getTotalElements())
         );
     }
 
@@ -43,18 +50,24 @@ class ReservationRepositoryTest {
     void findFreeRoomsWithReservationsTest() {
         assertAll(
                 () -> assertEquals(1, reservationRepository
-                        .findFreeRoomsWithReservations(LocalDate.now(), LocalDate.now().plusDays(1)).size()),
+                        .findFreeRoomsWithReservations(LocalDate.now(), LocalDate.now().plusDays(1),
+                                Pageable.unpaged()).getTotalElements()),
                 () -> assertEquals(2, reservationRepository
-                        .findFreeRoomsWithReservations(LocalDate.now().plusDays(3), LocalDate.now().plusDays(4)).size()),
+                        .findFreeRoomsWithReservations(LocalDate.now().plusDays(3),
+                                LocalDate.now().plusDays(4),
+                                Pageable.unpaged()).getTotalElements()),
                 () -> assertEquals(3, reservationRepository
-                        .findFreeRoomsWithReservations(LocalDate.now().plusDays(6), LocalDate.now().plusDays(7)).size())
+                        .findFreeRoomsWithReservations(LocalDate.now().plusDays(6),
+                                LocalDate.now().plusDays(7),
+                                Pageable.unpaged()).getTotalElements())
         );
     }
 
     @Test
     @DisplayName("Find current reservations")
     void findCurrentReservationsTest() {
-        assertEquals(3, reservationRepository.findCurrentReservations().size());
+        assertEquals(3,
+                reservationRepository.findCurrentReservations(Pageable.unpaged()).getTotalElements());
     }
 
     @Test
@@ -62,11 +75,11 @@ class ReservationRepositoryTest {
     void findCurrentReservationsForRoomTest() {
         assertAll(
                 () -> assertEquals(1, reservationRepository
-                        .findCurrentReservationsForRoom(5L).size()),
+                        .findCurrentReservationsForRoom(5L, Pageable.unpaged()).getTotalElements()),
                 () -> assertEquals(1, reservationRepository
-                        .findCurrentReservationsForRoom(4L).size()),
+                        .findCurrentReservationsForRoom(4L, Pageable.unpaged()).getTotalElements()),
                 () -> assertEquals(0, reservationRepository
-                        .findCurrentReservationsForRoom(2L).size())
+                        .findCurrentReservationsForRoom(2L, Pageable.unpaged()).getTotalElements())
         );
     }
 }

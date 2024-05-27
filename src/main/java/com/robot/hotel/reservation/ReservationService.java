@@ -12,15 +12,15 @@ public interface ReservationService {
 
     ReservationDto findById(Long id);
 
-    List<ReservationDto> findReservationsByUserId(Long userId);
+    Page<ReservationDto> findReservationsByUserId(Long userId, Pageable pageable);
 
-    List<ReservationDto> findReservationsByRoom(String roomNumber);
+    Page<ReservationDto> findReservationsByRoom(String roomNumber, Pageable pageable);
 
     ReservationDto save(ReservationRequest reservationRequest);
 
-    List<ReservationDto> findCurrentReservations();
+    Page<ReservationDto> findCurrentReservations(Pageable pageable);
 
-    List<ReservationDto> findCurrentReservationsForSpecificRoom(String roomNumber);
+    Page<ReservationDto> findCurrentReservationsForSpecificRoom(String roomNumber, Pageable pageable);
 
     void deleteById(Long id);
 }

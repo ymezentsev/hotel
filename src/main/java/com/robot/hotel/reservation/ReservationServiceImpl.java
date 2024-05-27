@@ -66,19 +66,17 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationDto> findReservationsByUserId(Long userId) {
-        return reservationRepository.findByUsersId(userId).stream()
-                .map(reservationMapper::toDto)
-                .toList();
+    public Page<ReservationDto> findReservationsByUserId(Long userId, Pageable pageable) {
+        return reservationRepository.findByUsersId(userId, pageable)
+                .map(reservationMapper::toDto);
     }
 
     @Override
-    public List<ReservationDto> findReservationsByRoom(String roomNumber) {
+    public Page<ReservationDto> findReservationsByRoom(String roomNumber, Pageable pageable) {
         Long roomId = roomService.findByNumber(roomNumber).id();
 
-        return reservationRepository.findByRoomId(roomId).stream()
-                .map(reservationMapper::toDto)
-                .toList();
+        return reservationRepository.findByRoomId(roomId, pageable)
+                .map(reservationMapper::toDto);
     }
 
     @Override
@@ -131,21 +129,17 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationDto> findCurrentReservations() {
-        return reservationRepository.findCurrentReservations()
-                .stream()
-                .map(reservationMapper::toDto)
-                .toList();
+    public Page<ReservationDto> findCurrentReservations(Pageable pageable) {
+        return reservationRepository.findCurrentReservations(pageable)
+                .map(reservationMapper::toDto);
     }
 
     @Override
-    public List<ReservationDto> findCurrentReservationsForSpecificRoom(String roomNumber) {
+    public Page<ReservationDto> findCurrentReservationsForSpecificRoom(String roomNumber, Pageable pageable) {
         Long roomId = roomService.findByNumber(roomNumber).id();
 
-        return reservationRepository.findCurrentReservationsForRoom(roomId)
-                .stream()
-                .map(reservationMapper::toDto)
-                .toList();
+        return reservationRepository.findCurrentReservationsForRoom(roomId, pageable)
+                .map(reservationMapper::toDto);
     }
 
     @Override

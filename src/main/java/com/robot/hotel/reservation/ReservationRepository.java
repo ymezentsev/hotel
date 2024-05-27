@@ -31,30 +31,31 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             SELECT DISTINCT r FROM Reservation r
             LEFT JOIN FETCH r.users u
             WHERE u.id = :userId""")
-    List<Reservation> findByUsersId(Long userId);
+    Page<Reservation> findByUsersId(Long userId, Pageable pageable);
 
     @Query("""
             SELECT DISTINCT r FROM Reservation r
             LEFT JOIN FETCH r.users u
             WHERE r.room.id = :roomId""")
-    List<Reservation> findByRoomId(Long roomId);
+    Page<Reservation> findByRoomId(Long roomId, Pageable pageable);
 
     @Query("""
             SELECT DISTINCT r.room FROM Reservation r
             WHERE (r.checkOutDate <= :checkIn or r.checkInDate >= :checkOut)
             and r.checkOutDate > CURDATE()""")
-    List<Room> findFreeRoomsWithReservations(@Param("checkIn") LocalDate checkIn,
-                                             @Param("checkOut") LocalDate checkOut);
+    Page<Room> findFreeRoomsWithReservations(@Param("checkIn") LocalDate checkIn,
+                                             @Param("checkOut") LocalDate checkOut,
+                                             Pageable pageable);
 
     @Query("""
             SELECT DISTINCT r FROM Reservation r
             LEFT JOIN FETCH r.users u
             WHERE r.checkOutDate >= CURDATE()""")
-    List<Reservation> findCurrentReservations();
+    Page<Reservation> findCurrentReservations(Pageable pageable);
 
     @Query("""
             SELECT DISTINCT r FROM Reservation r
             LEFT JOIN FETCH r.users u
             WHERE r.checkOutDate >= CURDATE() and r.room.id = :roomId""")
-    List<Reservation> findCurrentReservationsForRoom(@Param("roomId") Long roomId);
+    Page<Reservation> findCurrentReservationsForRoom(@Param("roomId") Long roomId, Pageable pageable);
 }

@@ -79,7 +79,7 @@ public interface ReservationControllerOpenApi {
                     responseCode = "200",
                     description = "Successfully fetched reservations by user id")
     })
-    List<ReservationDto> findReservationsByUserId(@PathVariable Long id);
+    Page<ReservationDto> findReservationsByUserId(@PathVariable Long id, Pageable pageable);
 
     @Operation(summary = "Get reservations by room's number")
     @ApiResponses(value = {
@@ -90,7 +90,7 @@ public interface ReservationControllerOpenApi {
                     responseCode = "404",
                     description = "Such room is not exists")
     })
-    List<ReservationDto> findReservationsByRoom(@PathVariable String roomNumber);
+    List<ReservationDto> findReservationsByRoom(@PathVariable String roomNumber, Pageable pageable);
 
     @Operation(summary = "Get all current reservations")
     @ApiResponses(value = {
@@ -98,7 +98,7 @@ public interface ReservationControllerOpenApi {
                     responseCode = "200",
                     description = "Successfully fetched all current reservations")
     })
-    List<ReservationDto> findCurrentReservations();
+    Page<ReservationDto> findCurrentReservations(Pageable pageable);
 
     @Operation(summary = "Get all current reservations for a specific room")
     @ApiResponses(value = {
@@ -109,7 +109,7 @@ public interface ReservationControllerOpenApi {
                     responseCode = "404",
                     description = "Such room is not exists")
     })
-    List<ReservationDto> findCurrentReservationsForSpecificRoom(@PathVariable String roomNumber);
+    Page<ReservationDto> findCurrentReservationsForSpecificRoom(@PathVariable String roomNumber, Pageable pageable);
 
     @Operation(summary = "Delete reservation")
     @ApiResponses(value = {

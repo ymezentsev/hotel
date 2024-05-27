@@ -5,6 +5,7 @@ import com.robot.hotel.room.RoomRepository;
 import com.robot.hotel.roomtype.RoomTypeRepository;
 import com.robot.hotel.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,7 +41,8 @@ public class TestDBUtils {
     }
 
     public Long getReservationIdByRoom(String number) {
-        return reservationRepository.findByRoomId(getRoomIdByNumber(number))
+        return reservationRepository.findByRoomId(getRoomIdByNumber(number), Pageable.unpaged())
+                .getContent()
                 .get(0)
                 .getId();
     }
