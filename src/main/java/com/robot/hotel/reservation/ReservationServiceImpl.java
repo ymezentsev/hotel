@@ -15,6 +15,8 @@ import com.robot.hotel.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -51,10 +53,9 @@ public class ReservationServiceImpl implements ReservationService {
     private static final String SUCCESSFUL_ACTION_WITH_RESERVATION = "Successful %s reservation with id: {}";
 
     @Override
-    public List<ReservationDto> findAll() {
-        return reservationRepository.findAll().stream()
-                .map(reservationMapper::toDto)
-                .toList();
+    public Page<ReservationDto> findAll(Pageable pageable) {
+        return reservationRepository.findAll(pageable)
+                .map(reservationMapper::toDto);
     }
 
     @Override

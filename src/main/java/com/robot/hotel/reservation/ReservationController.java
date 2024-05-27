@@ -4,6 +4,8 @@ import com.robot.hotel.reservation.dto.ReservationDto;
 import com.robot.hotel.reservation.dto.ReservationRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,8 +17,8 @@ public class ReservationController implements ReservationControllerOpenApi {
     private final ReservationService reservationService;
 
     @GetMapping()
-    public List<ReservationDto> findAll() {
-        return reservationService.findAll();
+    public Page<ReservationDto> findAll(Pageable pageable) {
+        return reservationService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
