@@ -91,7 +91,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Page<RoomDto> findByPriceMoreThanOrEqual(BigDecimal price, Pageable pageable) {
         return roomRepository.findByPriceMoreThanOrEqual(price, pageable)
-                .map(roomMapper::toDto));
+                .map(roomMapper::toDto);
     }
 
     @Override
