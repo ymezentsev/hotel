@@ -45,7 +45,7 @@ class RoomControllerTest {
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("size()", is(5));
+                .body("content.size()", is(5));
     }
 
     @Test
@@ -109,7 +109,7 @@ class RoomControllerTest {
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("size()", is(2));
+                .body("content.size()", is(2));
     }
 
     @Test
@@ -121,7 +121,7 @@ class RoomControllerTest {
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("size()", is(3));
+                .body("content.size()", is(3));
     }
 
     @Test
@@ -133,7 +133,7 @@ class RoomControllerTest {
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("size()", is(4));
+                .body("content.size()", is(4));
     }
 
     @Test
@@ -145,7 +145,7 @@ class RoomControllerTest {
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("size()", is(1));
+                .body("content.size()", is(1));
     }
 
     @Test
