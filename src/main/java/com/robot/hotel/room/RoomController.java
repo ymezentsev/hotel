@@ -5,10 +5,11 @@ import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.room.dto.RoomRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -19,8 +20,8 @@ public class RoomController implements RoomControllerOpenApi {
     private final RoomService roomService;
 
     @GetMapping()
-    public List<RoomDto> findAll() {
-        return roomService.findAll();
+    public Page<RoomDto> findAll(Pageable pageable) {
+        return roomService.findAll(pageable);
     }
 
     @PostMapping()
@@ -39,23 +40,23 @@ public class RoomController implements RoomControllerOpenApi {
     }
 
     @GetMapping("/type/{type}")
-    public List<RoomDto> findByType(@PathVariable String type) {
-        return roomService.findByType(type);
+    public Page<RoomDto> findByType(@PathVariable String type, Pageable pageable) {
+        return roomService.findByType(type, pageable);
     }
 
     @GetMapping("/price>/{price}")
-    public List<RoomDto> findByPriceMoreThanOrEqual(@PathVariable BigDecimal price) {
-        return roomService.findByPriceMoreThanOrEqual(price);
+    public Page<RoomDto> findByPriceMoreThanOrEqual(@PathVariable BigDecimal price, Pageable pageable) {
+        return roomService.findByPriceMoreThanOrEqual(price, pageable);
     }
 
     @GetMapping("/price</{price}")
-    public List<RoomDto> findByPriceLessThanOrEqual(@PathVariable BigDecimal price) {
-        return roomService.findByPriceLessThanOrEqual(price);
+    public Page<RoomDto> findByPriceLessThanOrEqual(@PathVariable BigDecimal price, Pageable pageable) {
+        return roomService.findByPriceLessThanOrEqual(price, pageable);
     }
 
     @GetMapping("/guestsCount/{guestCount}")
-    public List<RoomDto> findByGuestsCount(@PathVariable int guestCount) {
-        return roomService.findByGuestsCount(guestCount);
+    public Page<RoomDto> findByGuestsCount(@PathVariable int guestCount, Pageable pageable) {
+        return roomService.findByGuestsCount(guestCount, pageable);
     }
 
     @GetMapping("/freeRooms")

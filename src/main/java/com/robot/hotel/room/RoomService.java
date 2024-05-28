@@ -3,14 +3,15 @@ package com.robot.hotel.room;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.room.dto.RoomRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
 
 public interface RoomService {
 
-    List<RoomDto> findAll();
+    Page<RoomDto> findAll(Pageable pageable);
 
     RoomDto save(RoomRequest roomRequest);
 
@@ -18,13 +19,13 @@ public interface RoomService {
 
     RoomDto findByNumber(String number);
 
-    List<RoomDto> findByType(String type);
+    Page<RoomDto> findByType(String type, Pageable pageable);
 
-    List<RoomDto> findByPriceMoreThanOrEqual(BigDecimal price);
+    Page<RoomDto> findByPriceMoreThanOrEqual(BigDecimal price, Pageable pageable);
 
-    List<RoomDto> findByPriceLessThanOrEqual(BigDecimal price);
+    Page<RoomDto> findByPriceLessThanOrEqual(BigDecimal price, Pageable pageable);
 
-    List<RoomDto> findByGuestsCount(int guestCount);
+    Page<RoomDto> findByGuestsCount(int guestCount, Pageable pageable);
 
     Set<RoomDto> findFreeRooms(FreeRoomRequest freeRoomRequest);
 

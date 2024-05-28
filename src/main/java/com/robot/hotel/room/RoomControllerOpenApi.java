@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +29,7 @@ public interface RoomControllerOpenApi {
                     responseCode = "200",
                     description = "Successfully fetched all rooms")
     })
-    List<RoomDto> findAll();
+    Page<RoomDto> findAll(Pageable pageable);
 
     @Operation(summary = "Create new room")
     @ApiResponses(value = {
@@ -80,7 +82,7 @@ public interface RoomControllerOpenApi {
                     responseCode = "404",
                     description = "Such room type is not exists")
     })
-    List<RoomDto> findByType(@PathVariable String type);
+    Page<RoomDto> findByType(@PathVariable String type, Pageable pageable);
 
     @Operation(summary = "Get rooms with more or equal price")
     @ApiResponses(value = {
@@ -88,7 +90,7 @@ public interface RoomControllerOpenApi {
                     responseCode = "200",
                     description = "Successfully fetched rooms")
     })
-    List<RoomDto> findByPriceMoreThanOrEqual(@PathVariable BigDecimal price);
+    Page<RoomDto> findByPriceMoreThanOrEqual(@PathVariable BigDecimal price, Pageable pageable);
 
     @Operation(summary = "Get rooms with less or equal price")
     @ApiResponses(value = {
@@ -96,7 +98,7 @@ public interface RoomControllerOpenApi {
                     responseCode = "200",
                     description = "Successfully fetched rooms")
     })
-    List<RoomDto> findByPriceLessThanOrEqual(@PathVariable BigDecimal price);
+    Page<RoomDto> findByPriceLessThanOrEqual(@PathVariable BigDecimal price, Pageable pageable);
 
     @Operation(summary = "Get rooms with more or equal count of guests")
     @ApiResponses(value = {
@@ -104,7 +106,7 @@ public interface RoomControllerOpenApi {
                     responseCode = "200",
                     description = "Successfully fetched rooms")
     })
-    List<RoomDto> findByGuestsCount(@PathVariable int guestCount);
+    Page<RoomDto> findByGuestsCount(@PathVariable int guestCount, Pageable pageable);
 
     @Operation(summary = "Get free rooms")
     @ApiResponses(value = {

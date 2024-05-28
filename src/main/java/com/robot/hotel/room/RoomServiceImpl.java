@@ -12,6 +12,8 @@ import com.robot.hotel.roomtype.RoomTypeRepository;
 import com.robot.hotel.roomtype.RoomTypeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -36,10 +38,9 @@ public class RoomServiceImpl implements RoomService {
     private static final String SUCCESSFUL_ACTION_WITH_ROOM = "Successful %s room with id: {}";
 
     @Override
-    public List<RoomDto> findAll() {
-        return roomRepository.findAll().stream()
-                .map(roomMapper::toDto)
-                .toList();
+    public Page<RoomDto> findAll(Pageable pageable) {
+        return roomRepository.findAll(pageable)
+                .map(roomMapper::toDto);
     }
 
     @Override
@@ -80,33 +81,29 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomDto> findByType(String type) {
+    public Page<RoomDto> findByType(String type, Pageable pageable) {
         Long roomTypeId = roomTypeService.findByType(type).id();
 
-        return roomRepository.findByRoomTypeId(roomTypeId).stream()
-                .map(roomMapper::toDto)
-                .toList();
+        return roomRepository.findByRoomTypeId(roomTypeId, pageable)
+                .map(roomMapper::toDto);
     }
 
     @Override
-    public List<RoomDto> findByPriceMoreThanOrEqual(BigDecimal price) {
-        return roomRepository.findByPriceMoreThanOrEqual(price).stream()
-                .map(roomMapper::toDto)
-                .toList();
+    public Page<RoomDto> findByPriceMoreThanOrEqual(BigDecimal price, Pageable pageable) {
+        return roomRepository.findByPriceMoreThanOrEqual(price, pageable)
+                .map(roomMapper::toDto));
     }
 
     @Override
-    public List<RoomDto> findByPriceLessThanOrEqual(BigDecimal price) {
-        return roomRepository.findByPriceLessThanOrEqual(price).stream()
-                .map(roomMapper::toDto)
-                .toList();
+    public Page<RoomDto> findByPriceLessThanOrEqual(BigDecimal price, Pageable pageable) {
+        return roomRepository.findByPriceLessThanOrEqual(price, pageable)
+                .map(roomMapper::toDto);
     }
 
     @Override
-    public List<RoomDto> findByGuestsCount(int guestCount) {
-        return roomRepository.findByGuestsCount(guestCount).stream()
-                .map(roomMapper::toDto)
-                .toList();
+    public Page<RoomDto> findByGuestsCount(int guestCount, Pageable pageable) {
+        return roomRepository.findByGuestsCount(guestCount, pageable)
+                .map(roomMapper::toDto);
     }
 
     @Override
