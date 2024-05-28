@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -39,7 +40,7 @@ class RoomServiceImplTest {
     @Test
     @DisplayName("Find all rooms")
     void findAllTest() {
-        assertEquals(5, roomService.findAll().size());
+        assertEquals(5, roomService.findAll(Pageable.unpaged()).getTotalElements());
     }
 
     @Test
@@ -48,7 +49,7 @@ class RoomServiceImplTest {
         RoomRequest roomRequest = new RoomRequest("105", BigDecimal.valueOf(1000), 3, "lux");
         assertAll(
                 () -> assertNotNull(roomService.save(roomRequest).id()),
-                () -> assertEquals(6, roomService.findAll().size())
+                () -> assertEquals(6, roomService.findAll(Pageable.unpaged()).getTotalElements())
         );
     }
 
@@ -98,23 +99,30 @@ class RoomServiceImplTest {
     @Test
     @DisplayName("Successful find rooms by types")
     void findByTypeTest() {
-        assertEquals(2, roomService.findByType("standart single").size());
+        assertEquals(2, roomService
+                .findByType("standart single", Pageable.unpaged()).getTotalElements());
     }
 
     @Test
     @DisplayName("Fail find rooms by types")
     void findByTypeThrowNoSuchElementExceptionTest() {
         assertThrows(NoSuchElementException.class,
-                () -> roomService.findByType("new lux"));
+                () -> roomService.findByType("new lux", Pageable.unpaged()));
     }
 
     @Test
     @DisplayName("Find rooms with price more or equal than given")
     void findByPriceMoreThanOrEqualTest() {
         assertAll(
-                () -> assertEquals(1, roomService.findByPriceMoreThanOrEqual(BigDecimal.valueOf(5000)).size()),
-                () -> assertEquals(3, roomService.findByPriceMoreThanOrEqual(BigDecimal.valueOf(1500)).size()),
-                () -> assertEquals(0, roomService.findByPriceMoreThanOrEqual(BigDecimal.valueOf(5500)).size())
+                () -> assertEquals(1, roomService
+                        .findByPriceMoreThanOrEqual(BigDecimal.valueOf(5000), Pageable.unpaged())
+                        .getTotalElements()),
+                () -> assertEquals(3, roomService
+                        .findByPriceMoreThanOrEqual(BigDecimal.valueOf(1500), Pageable.unpaged())
+                        .getTotalElements()),
+                () -> assertEquals(0, roomService
+                        .findByPriceMoreThanOrEqual(BigDecimal.valueOf(5500), Pageable.unpaged())
+                        .getTotalElements())
         );
     }
 
@@ -122,9 +130,15 @@ class RoomServiceImplTest {
     @DisplayName("Find rooms with price less or equal than given")
     void findByPriceLessThanOrEqualTest() {
         assertAll(
-                () -> assertEquals(4, roomService.findByPriceLessThanOrEqual(BigDecimal.valueOf(1500)).size()),
-                () -> assertEquals(2, roomService.findByPriceLessThanOrEqual(BigDecimal.valueOf(1000)).size()),
-                () -> assertEquals(0, roomService.findByPriceLessThanOrEqual(BigDecimal.valueOf(500)).size())
+                () -> assertEquals(4, roomService
+                        .findByPriceLessThanOrEqual(BigDecimal.valueOf(1500), Pageable.unpaged())
+                        .getTotalElements()),
+                () -> assertEquals(2, roomService
+                        .findByPriceLessThanOrEqual(BigDecimal.valueOf(1000), Pageable.unpaged())
+                        .getTotalElements()),
+                () -> assertEquals(0, roomService
+                        .findByPriceLessThanOrEqual(BigDecimal.valueOf(500), Pageable.unpaged())
+                        .getTotalElements())
         );
     }
 
@@ -132,9 +146,12 @@ class RoomServiceImplTest {
     @DisplayName("Find rooms with max count of guests more or equal than given")
     void findByGuestsCountTest() {
         assertAll(
-                () -> assertEquals(0, roomService.findByGuestsCount(5).size()),
-                () -> assertEquals(1, roomService.findByGuestsCount(3).size()),
-                () -> assertEquals(5, roomService.findByGuestsCount(2).size())
+                () -> assertEquals(0, roomService
+                        .findByGuestsCount(5, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(1, roomService
+                        .findByGuestsCount(3, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(5, roomService
+                        .findByGuestsCount(2, Pageable.unpaged()).getTotalElements())
         );
     }
 
@@ -164,7 +181,7 @@ class RoomServiceImplTest {
         roomService.update(id, roomRequest);
         assertAll(
                 () -> assertEquals("105", roomService.findById(id).number()),
-                () -> assertEquals(5, roomService.findAll().size())
+                () -> assertEquals(5, roomService.findAll(Pageable.unpaged()).getTotalElements())
         );
    }
 
@@ -202,7 +219,7 @@ class RoomServiceImplTest {
     void deleteByIdTest() {
         Long id = testDBUtils.getRoomIdByNumber("201");
         roomService.deleteById(id);
-        assertEquals(4, roomService.findAll().size());
+        assertEquals(4, roomService.findAll(Pageable.unpaged()).getTotalElements());
     }
 
     @Test
