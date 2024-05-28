@@ -27,7 +27,9 @@ public interface RoomService {
 
     Page<RoomDto> findByGuestsCount(int guestCount, Pageable pageable);
 
-    Set<RoomDto> findFreeRooms(FreeRoomRequest freeRoomRequest);
+    Set<RoomDto> findFreeRoomsSet(FreeRoomRequest freeRoomRequest);
+
+    Page<RoomDto> findFreeRoomsPage(FreeRoomRequest freeRoomRequest, Pageable pageable);
 
     void update(Long id, RoomRequest roomRequest);
 

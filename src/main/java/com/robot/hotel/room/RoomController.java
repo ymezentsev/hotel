@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -60,8 +59,8 @@ public class RoomController implements RoomControllerOpenApi {
     }
 
     @GetMapping("/freeRooms")
-    public Set<RoomDto> findFreeRooms(@Valid @RequestBody FreeRoomRequest freeRoomRequest) {
-        return roomService.findFreeRooms(freeRoomRequest);
+    public Page<RoomDto> findFreeRooms(@Valid @RequestBody FreeRoomRequest freeRoomRequest, Pageable pageable) {
+        return roomService.findFreeRoomsPage(freeRoomRequest, pageable);
     }
 
     @PutMapping("/{id}")

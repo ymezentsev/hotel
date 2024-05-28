@@ -159,7 +159,7 @@ class RoomControllerTest {
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("size()", is(3));
+                .body("content.size()", is(3));
     }
 
     @Test

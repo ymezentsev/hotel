@@ -13,6 +13,7 @@ import com.robot.hotel.roomtype.RoomTypeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -107,7 +108,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Set<RoomDto> findFreeRooms(FreeRoomRequest freeRoomRequest) {
+    public Set<RoomDto> findFreeRoomsSet(FreeRoomRequest freeRoomRequest) {
         if (freeRoomRequest.getCheckOutDate().isBefore(freeRoomRequest.getCheckInDate())
                 || freeRoomRequest.getCheckOutDate().isEqual(freeRoomRequest.getCheckInDate())) {
             throw new WrongDatesException(CHECK_OUT_LESS_THAN_CHECK_IN_DATE);
@@ -126,6 +127,12 @@ public class RoomServiceImpl implements RoomService {
         Set<RoomDto> freeRoomsDto = new HashSet<>(roomsDtoWithMatchDates);
         freeRoomsDto.addAll(roomsDtoWithoutReservations);
         return freeRoomsDto;
+    }
+
+    @Override
+    public Page<RoomDto> findFreeRoomsPage(FreeRoomRequest freeRoomRequest, Pageable pageable) {
+        List<RoomDto> freeRoomsDtoList = new ArrayList<>(findFreeRoomsSet(freeRoomRequest));
+        return new PageImpl<>(freeRoomsDtoList, pageable, freeRoomsDtoList.size());
     }
 
     @Override

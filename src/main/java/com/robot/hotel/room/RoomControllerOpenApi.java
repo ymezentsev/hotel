@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Set;
 
 @Tag(name = "Rooms Controller", description = "API to work with Rooms")
 public interface RoomControllerOpenApi {
@@ -123,7 +121,7 @@ public interface RoomControllerOpenApi {
                     responseCode = "400",
                     description = "Check in date must be before check out date")
     })
-    Set<RoomDto> findFreeRooms(@Valid @RequestBody FreeRoomRequest freeRoomRequest);
+    Page<RoomDto> findFreeRooms(@Valid @RequestBody FreeRoomRequest freeRoomRequest, Pageable pageable);
 
     @Operation(summary = "Update room")
     @ApiResponses(value = {

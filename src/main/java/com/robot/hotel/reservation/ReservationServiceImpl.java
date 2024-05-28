@@ -109,7 +109,7 @@ public class ReservationServiceImpl implements ReservationService {
                         .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)))
                 .collect(Collectors.toSet());
 
-        Set<RoomDto> freeRooms = roomService.findFreeRooms(new FreeRoomRequest(
+        Set<RoomDto> freeRooms = roomService.findFreeRoomsSet(new FreeRoomRequest(
                 reservationRequest.getCheckInDate(), reservationRequest.getCheckOutDate()));
         if (!freeRooms.contains(roomMapper.toDto(room))) {
             throw new WrongDatesException(OCCUPIED_ROOM);

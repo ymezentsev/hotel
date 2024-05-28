@@ -160,7 +160,7 @@ class RoomServiceImplTest {
     void findFreeRoomsTest() {
         FreeRoomRequest freeRoomRequest = new FreeRoomRequest(LocalDate.now(), LocalDate.now().plusDays(3));
 
-        assertEquals(3, roomService.findFreeRooms(freeRoomRequest).size());
+        assertEquals(3, roomService.findFreeRoomsSet(freeRoomRequest).size());
     }
 
     @Test
@@ -169,7 +169,7 @@ class RoomServiceImplTest {
         FreeRoomRequest freeRoomRequest = new FreeRoomRequest(LocalDate.now(), LocalDate.now());
 
         assertThrows(WrongDatesException.class,
-                () -> roomService.findFreeRooms(freeRoomRequest));
+                () -> roomService.findFreeRoomsSet(freeRoomRequest));
     }
 
     @Test
