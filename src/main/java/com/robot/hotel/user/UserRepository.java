@@ -1,12 +1,13 @@
 package com.robot.hotel.user;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,7 +22,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("""
             SELECT DISTINCT u FROM User u
             LEFT JOIN FETCH u.reservations r""")
-    List<User> findAll();
+    Page<User> findAll(Pageable pageable);
 
     @Override
     @Query("""
@@ -60,18 +61,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
             SELECT DISTINCT u FROM User u
             LEFT JOIN FETCH u.reservations r
             WHERE u.lastName = :lastName""")
-    List<User> findByLastName(String lastName);
+    Page<User> findByLastName(String lastName, Pageable pageable);
 
     @EntityGraph(attributePaths = {"reservations"})
     @Query("""
             SELECT DISTINCT u FROM User u
             LEFT JOIN FETCH u.reservations r
             WHERE r.id = :reservationId""")
-    List<User> findByReservationsId(Long reservationId);
+    Page<User> findByReservationsId(Long reservationId, Pageable pageable);
 
     @Query("""
             SELECT DISTINCT u FROM User u
             LEFT JOIN FETCH u.reservations r
             WHERE u.role = :role""")
-    List<User> findByRole(Role role);
+    Page<User> findByRole(Role role, Pageable pageable);
 }
