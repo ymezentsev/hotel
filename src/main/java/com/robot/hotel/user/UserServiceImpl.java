@@ -11,6 +11,8 @@ import com.robot.hotel.user.passport.Passport;
 import com.robot.hotel.user.passport.PassportRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -35,10 +37,9 @@ public class UserServiceImpl implements UserService {
     private static final String SUCCESSFUL_ACTION_WITH_USER = "Successful %s user with id: {}";
 
     @Override
-    public List<UserDto> findAll() {
-        return userRepository.findAll().stream()
-                .map(userMapper::toDto)
-                .toList();
+    public Page<UserDto> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable)
+                .map(userMapper::toDto);
     }
 
     @Override
@@ -109,21 +110,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> findByLastName(String lastName) {
-        return userRepository.findByLastName(lastName.toLowerCase().strip()).stream()
-                .map(userMapper::toDto)
-                .toList();
+    public Page<UserDto> findByLastName(String lastName, Pageable pageable) {
+        return userRepository.findByLastName(lastName.toLowerCase().strip(), pageable)
+                .map(userMapper::toDto);
     }
 
     @Override
-    public List<UserDto> findUsersByReservation(Long id) {
-        return userRepository.findByReservationsId(id).stream()
-                .map(userMapper::toDto)
-                .toList();
+    public Page<UserDto> findUsersByReservation(Long id, Pageable pageable) {
+        return userRepository.findByReservationsId(id, pageable)
+                .map(userMapper::toDto);
     }
 
     @Override
-    public List<UserDto> findUsersByRole(String role) {
+    public Page<UserDto> findUsersByRole(String role, Pageable pageable) {
         role = role.toUpperCase().strip();
 
         if (!Arrays.stream(Role.values())
@@ -133,9 +132,8 @@ public class UserServiceImpl implements UserService {
             throw new NoSuchElementException(ROLE_IS_NOT_EXISTS);
         }
 
-        return userRepository.findByRole(Role.valueOf(role)).stream()
-                .map(userMapper::toDto)
-                .toList();
+        return userRepository.findByRole(Role.valueOf(role), pageable)
+                .map(userMapper::toDto);
     }
 
     @Override

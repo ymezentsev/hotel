@@ -2,11 +2,11 @@ package com.robot.hotel.user;
 
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserRequest;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UserService {
-    List<UserDto> findAll();
+    Page<UserDto> findAll(Pageable pageable);
 
     UserDto save(UserRequest userRequest);
 
@@ -18,11 +18,11 @@ public interface UserService {
 
     UserDto findByPassportSerialNumber(String passportSerialNumber);
 
-    List<UserDto> findByLastName(String lastName);
+    Page<UserDto> findByLastName(String lastName, Pageable pageable);
 
-    List<UserDto> findUsersByReservation(Long id);
+    Page<UserDto> findUsersByReservation(Long id, Pageable pageable);
 
-    List<UserDto> findUsersByRole(String role);
+    Page<UserDto> findUsersByRole(String role, Pageable pageable);
 
     void update(Long userId, UserRequest userRequest);
 
