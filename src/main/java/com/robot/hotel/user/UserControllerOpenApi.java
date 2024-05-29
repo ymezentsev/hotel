@@ -9,11 +9,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.List;
 
 @Tag(name = "Users Controller", description = "API to work with Users")
 public interface UserControllerOpenApi {
@@ -24,7 +24,7 @@ public interface UserControllerOpenApi {
                     responseCode = "200",
                     description = "Successfully fetched all users")
     })
-    List<UserDto> findAll();
+    Page<UserDto> findAll(Pageable pageable);
 
     @Operation(summary = "Create new user")
     @ApiResponses(value = {
@@ -99,7 +99,7 @@ public interface UserControllerOpenApi {
                     responseCode = "200",
                     description = "Successfully fetched users by lastname")
     })
-    List<UserDto> findByLastName(@PathVariable String lastName);
+    Page<UserDto> findByLastName(@PathVariable String lastName, Pageable pageable);
 
     @Operation(summary = "Get users by reservation")
     @ApiResponses(value = {
@@ -107,7 +107,7 @@ public interface UserControllerOpenApi {
                     responseCode = "200",
                     description = "Successfully fetched users by reservation")
     })
-    List<UserDto> findUsersByReservation(@PathVariable Long id);
+    Page<UserDto> findUsersByReservation(@PathVariable Long id, Pageable pageable);
 
     @Operation(summary = "Get users by role")
     @ApiResponses(value = {
@@ -118,7 +118,7 @@ public interface UserControllerOpenApi {
                     responseCode = "404",
                     description = "Such role is not exists")
     })
-    List<UserDto> findUsersByRole(@PathVariable String role);
+    Page<UserDto> findUsersByRole(@PathVariable String role, Pageable pageable);
 
     @Operation(summary = "Update user")
     @ApiResponses(value = {

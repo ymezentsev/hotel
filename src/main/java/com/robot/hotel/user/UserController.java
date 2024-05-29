@@ -4,9 +4,9 @@ import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,8 +15,8 @@ public class UserController implements UserControllerOpenApi {
     private final UserService userService;
 
     @GetMapping()
-    public List<UserDto> findAll() {
-        return userService.findAll();
+    public Page<UserDto> findAll(Pageable pageable) {
+        return userService.findAll(pageable);
     }
 
     @PostMapping()
@@ -45,18 +45,18 @@ public class UserController implements UserControllerOpenApi {
     }
 
     @GetMapping("/lastName/{lastName}")
-    public List<UserDto> findByLastName(@PathVariable String lastName) {
-        return userService.findByLastName(lastName);
+    public Page<UserDto> findByLastName(@PathVariable String lastName, Pageable pageable) {
+        return userService.findByLastName(lastName, pageable);
     }
 
     @GetMapping("/reservations/{id}")
-    public List<UserDto> findUsersByReservation(@PathVariable Long id) {
-        return userService.findUsersByReservation(id);
+    public Page<UserDto> findUsersByReservation(@PathVariable Long id, Pageable pageable) {
+        return userService.findUsersByReservation(id, pageable);
     }
 
     @GetMapping("/role/{role}")
-    public List<UserDto> findUsersByRole(@PathVariable String role) {
-        return userService.findUsersByRole(role);
+    public Page<UserDto> findUsersByRole(@PathVariable String role, Pageable pageable) {
+        return userService.findUsersByRole(role, pageable);
     }
 
     @PutMapping("/{id}")
