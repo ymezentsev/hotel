@@ -43,7 +43,7 @@ class UserControllerTest {
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("size()", is(6));
+                .body("content.size()", is(6));
     }
 
     @Test
@@ -135,7 +135,7 @@ class UserControllerTest {
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("size()", is(2));
+                .body("content.size()", is(2));
     }
 
     @Test
@@ -147,7 +147,7 @@ class UserControllerTest {
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("size()", is(2));
+                .body("content.size()", is(2));
     }
 
     @Test
@@ -159,7 +159,7 @@ class UserControllerTest {
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("size()", is(4));
+                .body("content.size()", is(4));
     }
 
     @Test
