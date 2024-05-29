@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -89,9 +90,12 @@ class UserRepositoryTest {
     @DisplayName("Find user by lastname")
     void findByLastNameTest() {
         assertAll(
-                () -> assertEquals(2, userRepository.findByLastName("sidorov").size()),
-                () -> assertEquals(1, userRepository.findByLastName("dmitrenko").size()),
-                () -> assertEquals(0, userRepository.findByLastName("grigorenko").size())
+                () -> assertEquals(2, userRepository
+                        .findByLastName("sidorov", Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(1, userRepository
+                        .findByLastName("dmitrenko", Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(0, userRepository
+                        .findByLastName("grigorenko", Pageable.unpaged()).getTotalElements())
         );
     }
 
@@ -99,8 +103,10 @@ class UserRepositoryTest {
     @DisplayName("Find user by reservation")
     void findByReservationsIdTest() {
         assertAll(
-                () -> assertEquals(2, userRepository.findByReservationsId(1L).size()),
-                () -> assertEquals(0, userRepository.findByReservationsId(100L).size())
+                () -> assertEquals(2, userRepository
+                        .findByReservationsId(1L, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(0, userRepository
+                        .findByReservationsId(100L, Pageable.unpaged()).getTotalElements())
         );
     }
 
@@ -108,9 +114,12 @@ class UserRepositoryTest {
     @DisplayName("Find users by role")
     void findByRoleTest() {
         assertAll(
-                () -> assertEquals(4, userRepository.findByRole(Role.USER).size()),
-                () -> assertEquals(1, userRepository.findByRole(Role.MANAGER).size()),
-                () -> assertEquals(1, userRepository.findByRole(Role.ADMIN).size())
+                () -> assertEquals(4, userRepository
+                        .findByRole(Role.USER, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(1, userRepository
+                        .findByRole(Role.MANAGER, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(1, userRepository
+                        .findByRole(Role.ADMIN, Pageable.unpaged()).getTotalElements())
         );
     }
 }
