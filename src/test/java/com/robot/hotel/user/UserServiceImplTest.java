@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
@@ -37,7 +38,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Find all users")
     void findAllTest() {
-        assertEquals(6, userService.findAll().size());
+        assertEquals(6, userService.findAll(Pageable.unpaged()).getTotalElements());
     }
 
     @Test
@@ -48,7 +49,7 @@ class UserServiceImplTest {
                 "df123456", "usa", LocalDate.of(2018, 3, 8));
         assertAll(
                 () -> assertNotNull(userService.save(userRequest).id()),
-                () -> assertEquals(7, userService.findAll().size())
+                () -> assertEquals(7, userService.findAll(Pageable.unpaged()).getTotalElements())
         );
     }
 
@@ -60,7 +61,7 @@ class UserServiceImplTest {
                 null, null, null);
         assertAll(
                 () -> assertNotNull(userService.save(userRequest).id()),
-                () -> assertEquals(7, userService.findAll().size())
+                () -> assertEquals(7, userService.findAll(Pageable.unpaged()).getTotalElements())
         );
     }
 
@@ -193,27 +194,29 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Find user by lastname")
     void findByLastNameTest() {
-        assertEquals(2, userService.findByLastName("sidorov").size());
+        assertEquals(2, userService
+                .findByLastName("sidorov", Pageable.unpaged()).getTotalElements());
     }
 
     @Test
     @DisplayName("Find user by reservation")
     void findUsersByReservationTest() {
         Long id = testDBUtils.getReservationIdByRoom("101");
-        assertEquals(3, userService.findUsersByReservation(id).size());
+        assertEquals(3, userService.findUsersByReservation(id, Pageable.unpaged()).getTotalElements());
     }
 
     @Test
     @DisplayName("Successful find users by role")
     void findUsersByRoleTest() {
-        assertEquals(4, userService.findUsersByRole("user").size());
+        assertEquals(4, userService
+                .findUsersByRole("user", Pageable.unpaged()).getTotalElements());
     }
 
     @Test
     @DisplayName("Fail find users by role")
     void findUsersByRoleThrowNoSuchElementExceptionTest() {
         assertThrows(NoSuchElementException.class,
-                () -> userService.findUsersByRole("NEW_USER"));
+                () -> userService.findUsersByRole("NEW_USER", Pageable.unpaged()));
     }
 
     @Test
@@ -227,7 +230,7 @@ class UserServiceImplTest {
         userService.update(id, userRequest);
         assertAll(
                 () -> assertEquals("dmitro", userService.findById(id).firstName()),
-                () -> assertEquals(6, userService.findAll().size())
+                () -> assertEquals(6, userService.findAll(Pageable.unpaged()).getTotalElements())
         );
     }
 
@@ -305,7 +308,7 @@ class UserServiceImplTest {
     void deleteByIdTest() {
         Long id = testDBUtils.getUserIdByEmail("dmitr@gmail.com");
         userService.deleteById(id);
-        assertEquals(5, userService.findAll().size());
+        assertEquals(5, userService.findAll(Pageable.unpaged()).getTotalElements());
     }
 
     @Test
