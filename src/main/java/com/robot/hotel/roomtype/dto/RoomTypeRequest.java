@@ -14,5 +14,6 @@ import lombok.NoArgsConstructor;
 public class RoomTypeRequest {
     @NotBlank(message = "Room type is required")
     @Size(max = 20, message = "Max size for room type is 20 characters")
+    @Schema(description = "Room type", example = "Standard")
     private String type;
 }

@@ -17,15 +17,19 @@ import java.math.BigDecimal;
 public class RoomRequest {
     @NotBlank(message = "Room number is required")
     @Size(max = 20, message = "Max size for room number is 20 characters")
+    @Schema(description = "Room number", example = "101")
     private String number;
 
     @Positive(message = "Price must be more than 0")
+    @Schema(description = "Room price", example = "1500.00")
     private BigDecimal price;
 
     @Positive(message = "Maximum count of guests must be more than 0")
+    @Schema(description = "Maximum count of guests in room", example = "3")
     private int maxCountOfGuests;
 
     @NotBlank(message = "Room type is required")
     @Size(max = 20, message = "Max size for room type is 20 characters")
+    @Schema(description = "Room type", example = "Standard")
     private String roomType;
 }

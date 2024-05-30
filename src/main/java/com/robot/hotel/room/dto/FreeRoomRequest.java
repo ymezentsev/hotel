@@ -15,9 +15,11 @@ import java.time.LocalDate;
 public class FreeRoomRequest {
     @NotNull(message = "Check in date is required")
     @FutureOrPresent(message = "Check in date must be future or present")
+    @Schema(description = "Check in date", example = "2024-01-01")
     private LocalDate checkInDate;
 
     @NotNull(message = "Check out date is required")
     @Future(message = "Check out date must be future")
+    @Schema(description = "Check out date", example = "2024-01-10")
     private LocalDate checkOutDate;
 }
