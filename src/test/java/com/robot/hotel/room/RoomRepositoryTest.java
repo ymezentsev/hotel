@@ -20,24 +20,26 @@ class RoomRepositoryTest {
     @Autowired
     RoomRepository roomRepository;
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Check by number if room exists")
-    void existsByNumberTest() {
-        assertAll(
-                () -> assertTrue(roomRepository.existsByNumber("101")),
-                () -> assertTrue(roomRepository.existsByNumber("202")),
-                () -> assertFalse(roomRepository.existsByNumber("105"))
-        );
+    @CsvSource(value = {
+            "101, true",
+            "202, true",
+            "105, false"
+    })
+    void existsByNumberTest(String number, boolean result) {
+        assertEquals(result, roomRepository.existsByNumber(number));
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find room by number")
-    void findByNumberTest() {
-        assertAll(
-                () -> assertTrue(roomRepository.findByNumber("101").isPresent()),
-                () -> assertTrue(roomRepository.findByNumber("202").isPresent()),
-                () -> assertTrue(roomRepository.findByNumber("105").isEmpty())
-        );
+    @CsvSource(value = {
+            "101, true",
+            "202, true",
+            "105, false"
+    })
+    void findByNumberTest(String number, boolean result) {
+        assertEquals(result, roomRepository.findByNumber(number).isPresent());
     }
 
     @ParameterizedTest
