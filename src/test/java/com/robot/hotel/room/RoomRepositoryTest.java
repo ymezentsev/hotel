@@ -3,6 +3,8 @@ package com.robot.hotel.room;
 import com.robot.hotel.ContainerConfiguration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,65 +40,54 @@ class RoomRepositoryTest {
         );
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find rooms by type")
-    void findByRoomTypeIdTest() {
-        assertAll(
-                () -> assertEquals(1, roomRepository.findByRoomTypeId(1L, Pageable.unpaged())
-                        .getTotalElements()),
-                () -> assertEquals(2, roomRepository.findByRoomTypeId(2L, Pageable.unpaged())
-                        .getTotalElements()),
-                () -> assertEquals(0, roomRepository.findByRoomTypeId(4L, Pageable.unpaged())
-                        .getTotalElements())
-        );
+    @CsvSource(value = {
+            "1, 1",
+            "2, 2",
+            "4, 0"
+    })
+    void findByRoomTypeIdTest(Long id, int result) {
+        assertEquals(result, roomRepository.findByRoomTypeId(id, Pageable.unpaged()).getTotalElements());
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find rooms with price more or equal than given")
-    void findByPriceMoreThanOrEqualTest() {
-        assertAll(
-                () -> assertEquals(1, roomRepository
-                        .findByPriceMoreThanOrEqual(BigDecimal.valueOf(5000), Pageable.unpaged())
-                        .getTotalElements()),
-                () -> assertEquals(3, roomRepository
-                        .findByPriceMoreThanOrEqual(BigDecimal.valueOf(1500), Pageable.unpaged())
-                        .getTotalElements()),
-                () -> assertEquals(0, roomRepository
-                        .findByPriceMoreThanOrEqual(BigDecimal.valueOf(5500), Pageable.unpaged())
-                        .getTotalElements())
-        );
+    @CsvSource(value = {
+            "5000, 1",
+            "1500, 3",
+            "5500, 0"
+    })
+    void findByPriceMoreThanOrEqualTest(double price, int result) {
+        assertEquals(result, roomRepository
+                .findByPriceMoreThanOrEqual(BigDecimal.valueOf(price), Pageable.unpaged())
+                .getTotalElements());
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find rooms with price less or equal than given")
-    void findByPriceLessThanOrEqualTest() {
-        assertAll(
-                () -> assertEquals(4, roomRepository
-                        .findByPriceLessThanOrEqual(BigDecimal.valueOf(1500), Pageable.unpaged())
-                        .getTotalElements()),
-                () -> assertEquals(2, roomRepository
-                        .findByPriceLessThanOrEqual(BigDecimal.valueOf(1000), Pageable.unpaged())
-                        .getTotalElements()),
-                () -> assertEquals(0, roomRepository
-                        .findByPriceLessThanOrEqual(BigDecimal.valueOf(500), Pageable.unpaged())
-                        .getTotalElements())
-        );
+    @CsvSource(value = {
+            "1500, 4",
+            "1000, 2",
+            "500, 0"
+    })
+    void findByPriceLessThanOrEqualTest(double price, int result) {
+        assertEquals(result, roomRepository
+                .findByPriceLessThanOrEqual(BigDecimal.valueOf(price), Pageable.unpaged())
+                .getTotalElements());
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find rooms with max count of guests more or equal than given")
-    void findByGuestsCountTest() {
-        assertAll(
-                () -> assertEquals(0, roomRepository
-                        .findByGuestsCount(5, Pageable.unpaged())
-                        .getTotalElements()),
-                () -> assertEquals(1, roomRepository
-                        .findByGuestsCount(3, Pageable.unpaged())
-                        .getTotalElements()),
-                () -> assertEquals(5, roomRepository
-                        .findByGuestsCount(2, Pageable.unpaged())
-                        .getTotalElements())
-        );
+    @CsvSource(value = {
+            "5, 0",
+            "3, 1",
+            "2, 5"
+    })
+    void findByGuestsCountTest(int guestsCount, int result) {
+        assertEquals(result, roomRepository
+                .findByGuestsCount(guestsCount, Pageable.unpaged())
+                .getTotalElements());
     }
 
     @Test
