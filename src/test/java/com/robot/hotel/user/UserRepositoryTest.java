@@ -2,13 +2,14 @@ package com.robot.hotel.user;
 
 import com.robot.hotel.ContainerConfiguration;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @AutoConfigureDataJpa
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ContainerConfiguration.class)
@@ -16,110 +17,115 @@ class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Check by email if user exists")
-    void existsByEmailTest() {
-        assertAll(
-                () -> assertTrue(userRepository.existsByEmail("sidor@gmail.com")),
-                () -> assertTrue(userRepository.existsByEmail("dmitr@gmail.com")),
-                () -> assertFalse(userRepository.existsByEmail("dmitr123@gmail.com"))
-        );
+    @CsvSource(value = {
+            "sidor@gmail.com, true",
+            "dmitr@gmail.com, true",
+            "dmitr123@gmail.com, false"
+    })
+    void existsByEmailTest(String email, boolean result) {
+        assertEquals(result, userRepository.existsByEmail(email));
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Check by phone number if user exists")
-    void existsByPhoneNumberTest() {
-        assertAll(
-                () -> assertTrue(userRepository.existsByPhoneNumber("965467834")),
-                () -> assertTrue(userRepository.existsByPhoneNumber("954375647")),
-                () -> assertFalse(userRepository.existsByPhoneNumber("+934375647"))
-        );
+    @CsvSource(value = {
+            "965467834, true",
+            "954375647, true",
+            "+934375647, false"
+    })
+    void existsByPhoneNumberTest(String phoneNumber, boolean result) {
+        assertEquals(result, userRepository.existsByPhoneNumber(phoneNumber));
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Check by passport serial number if user exists")
-    void existsByPassportSerialNumberTest() {
-        assertAll(
-                () -> assertTrue(userRepository.existsByPassportSerialNumber("bb345678")),
-                () -> assertTrue(userRepository.existsByPassportSerialNumber("va123456")),
-                () -> assertFalse(userRepository.existsByPassportSerialNumber("+va123962"))
-        );
+    @CsvSource(value = {
+            "bb345678, true",
+            "va123456, true",
+            "+va123962, false"
+    })
+    void existsByPassportSerialNumberTest(String passportSerialNumber, boolean result) {
+        assertEquals(result, userRepository.existsByPassportSerialNumber(passportSerialNumber));
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find user by email")
-    void findByEmailTest() {
-        assertAll(
-                () -> assertTrue(userRepository.findByEmail("sidor@gmail.com").isPresent()),
-                () -> assertTrue(userRepository.findByEmail("dmitr@gmail.com").isPresent()),
-                () -> assertTrue(userRepository.findByEmail("dmitr123@gmail.com").isEmpty())
-        );
+    @CsvSource(value = {
+            "sidor@gmail.com, true",
+            "dmitr@gmail.com, true",
+            "dmitr123@gmail.com, false"
+    })
+    void findByEmailTest(String email, boolean result) {
+        assertEquals(result, userRepository.findByEmail(email).isPresent());
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find user by phone number")
-    void findByPhoneNumberTest() {
-        assertAll(
-                () -> assertTrue(userRepository.findByPhoneNumber("965467834").isPresent()),
-                () -> assertTrue(userRepository.findByPhoneNumber("954375647").isPresent()),
-                () -> assertTrue(userRepository.findByPhoneNumber("+934375647").isEmpty())
-        );
+    @CsvSource(value = {
+            "965467834, true",
+            "954375647, true",
+            "+934375647, false"
+    })
+    void findByPhoneNumberTest(String phoneNumber, boolean result) {
+        assertEquals(result, userRepository.findByPhoneNumber(phoneNumber).isPresent());
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find user by full phone number")
-    void findByPhoneFullNumberTest() {
-        assertAll(
-                () -> assertTrue(userRepository.findByFullPhoneNumber("+380965467834").isPresent()),
-                () -> assertTrue(userRepository.findByFullPhoneNumber("+390934560912").isPresent()),
-                () -> assertTrue(userRepository.findByFullPhoneNumber("+10934375647").isEmpty())
-        );
+    @CsvSource(value = {
+            "+380965467834, true",
+            "+390934560912, true",
+            "+10934375647, false"
+    })
+    void findByPhoneFullNumberTest(String phoneNumber, boolean result) {
+        assertEquals(result, userRepository.findByFullPhoneNumber(phoneNumber).isPresent());
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find user by passport serial number")
-    void findByPassportSerialNumberTest() {
-        assertAll(
-                () -> assertTrue(userRepository.findByPassportSerialNumber("bb345678").isPresent()),
-                () -> assertTrue(userRepository.findByPassportSerialNumber("va123456").isPresent()),
-                () -> assertTrue(userRepository.findByPassportSerialNumber("+va123962").isEmpty())
-        );
+    @CsvSource(value = {
+            "bb345678, true",
+            "va123456, true",
+            "+va123962, false"
+    })
+    void findByPassportSerialNumberTest(String passportSerialNumber, boolean result) {
+        assertEquals(result, userRepository.findByPassportSerialNumber(passportSerialNumber).isPresent());
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find user by lastname")
-    void findByLastNameTest() {
-        assertAll(
-                () -> assertEquals(2, userRepository
-                        .findByLastName("sidorov", Pageable.unpaged()).getTotalElements()),
-                () -> assertEquals(1, userRepository
-                        .findByLastName("dmitrenko", Pageable.unpaged()).getTotalElements()),
-                () -> assertEquals(0, userRepository
-                        .findByLastName("grigorenko", Pageable.unpaged()).getTotalElements())
-        );
+    @CsvSource(value = {
+            "sidorov, 2",
+            "dmitrenko, 1",
+            "grigorenko, 0"
+    })
+    void findByLastNameTest(String lastName, int result) {
+        assertEquals(result, userRepository
+                .findByLastName(lastName, Pageable.unpaged()).getTotalElements());
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find user by reservation")
-    void findByReservationsIdTest() {
-        assertAll(
-                () -> assertEquals(2, userRepository
-                        .findByReservationsId(1L, Pageable.unpaged()).getTotalElements()),
-                () -> assertEquals(0, userRepository
-                        .findByReservationsId(100L, Pageable.unpaged()).getTotalElements())
-        );
+    @CsvSource(value = {
+            "1, 2",
+            "100, 0"
+    })
+    void findByReservationsIdTest(long id, int result) {
+        assertEquals(result, userRepository
+                .findByReservationsId(id, Pageable.unpaged()).getTotalElements());
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find users by role")
-    void findByRoleTest() {
-        assertAll(
-                () -> assertEquals(4, userRepository
-                        .findByRole(Role.USER, Pageable.unpaged()).getTotalElements()),
-                () -> assertEquals(1, userRepository
-                        .findByRole(Role.MANAGER, Pageable.unpaged()).getTotalElements()),
-                () -> assertEquals(1, userRepository
-                        .findByRole(Role.ADMIN, Pageable.unpaged()).getTotalElements())
-        );
+    @CsvSource(value = {
+            "USER, 4",
+            "MANAGER, 1",
+            "ADMIN, 1"
+    })
+    void findByRoleTest(Role role, int result) {
+        assertEquals(result, userRepository
+                .findByRole(role, Pageable.unpaged()).getTotalElements());
     }
 }
