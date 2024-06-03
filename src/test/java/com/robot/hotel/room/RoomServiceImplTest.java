@@ -11,6 +11,8 @@ import com.robot.hotel.room.dto.RoomRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
@@ -110,49 +112,42 @@ class RoomServiceImplTest {
                 () -> roomService.findByType("new lux", Pageable.unpaged()));
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find rooms with price more or equal than given")
-    void findByPriceMoreThanOrEqualTest() {
-        assertAll(
-                () -> assertEquals(1, roomService
-                        .findByPriceMoreThanOrEqual(BigDecimal.valueOf(5000), Pageable.unpaged())
-                        .getTotalElements()),
-                () -> assertEquals(3, roomService
-                        .findByPriceMoreThanOrEqual(BigDecimal.valueOf(1500), Pageable.unpaged())
-                        .getTotalElements()),
-                () -> assertEquals(0, roomService
-                        .findByPriceMoreThanOrEqual(BigDecimal.valueOf(5500), Pageable.unpaged())
-                        .getTotalElements())
-        );
+    @CsvSource(value = {
+            "5000, 1",
+            "1500, 3",
+            "5500, 0"
+    })
+    void findByPriceMoreThanOrEqualTest(double price, int result) {
+        assertEquals(result, roomService
+                .findByPriceMoreThanOrEqual(BigDecimal.valueOf(price), Pageable.unpaged())
+                .getTotalElements());
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find rooms with price less or equal than given")
-    void findByPriceLessThanOrEqualTest() {
-        assertAll(
-                () -> assertEquals(4, roomService
-                        .findByPriceLessThanOrEqual(BigDecimal.valueOf(1500), Pageable.unpaged())
-                        .getTotalElements()),
-                () -> assertEquals(2, roomService
-                        .findByPriceLessThanOrEqual(BigDecimal.valueOf(1000), Pageable.unpaged())
-                        .getTotalElements()),
-                () -> assertEquals(0, roomService
-                        .findByPriceLessThanOrEqual(BigDecimal.valueOf(500), Pageable.unpaged())
-                        .getTotalElements())
-        );
+    @CsvSource(value = {
+            "1500, 4",
+            "1000, 2",
+            "500, 0"
+    })
+    void findByPriceLessThanOrEqualTest(double price, int result) {
+        assertEquals(result, roomService
+                .findByPriceLessThanOrEqual(BigDecimal.valueOf(price), Pageable.unpaged())
+                .getTotalElements());
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find rooms with max count of guests more or equal than given")
-    void findByGuestsCountTest() {
-        assertAll(
-                () -> assertEquals(0, roomService
-                        .findByGuestsCount(5, Pageable.unpaged()).getTotalElements()),
-                () -> assertEquals(1, roomService
-                        .findByGuestsCount(3, Pageable.unpaged()).getTotalElements()),
-                () -> assertEquals(5, roomService
-                        .findByGuestsCount(2, Pageable.unpaged()).getTotalElements())
-        );
+    @CsvSource(value = {
+            "5, 0",
+            "3, 1",
+            "2, 5"
+    })
+    void findByGuestsCountTest(int guestsCount, int result) {
+        assertEquals(result, roomService
+                .findByGuestsCount(guestsCount, Pageable.unpaged()).getTotalElements());
     }
 
     @Test
@@ -183,7 +178,7 @@ class RoomServiceImplTest {
                 () -> assertEquals("105", roomService.findById(id).number()),
                 () -> assertEquals(5, roomService.findAll(Pageable.unpaged()).getTotalElements())
         );
-   }
+    }
 
     @Test
     @DisplayName("Fail update room (throw NoSuchElementException, wrong id)")
