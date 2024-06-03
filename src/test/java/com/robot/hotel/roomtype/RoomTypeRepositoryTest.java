@@ -2,12 +2,13 @@ package com.robot.hotel.roomtype;
 
 import com.robot.hotel.ContainerConfiguration;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @AutoConfigureDataJpa
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ContainerConfiguration.class)
@@ -15,21 +16,23 @@ class RoomTypeRepositoryTest {
     @Autowired
     RoomTypeRepository roomTypeRepository;
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Find room type by type")
-    void findByTypeTest() {
-        assertAll(
-                () -> assertTrue(roomTypeRepository.findByType("lux").isPresent()),
-                () -> assertFalse(roomTypeRepository.findByType("new lux").isPresent())
-        );
+    @CsvSource(value = {
+            "lux, true",
+            "new lux, false"
+    })
+    void findByTypeTest(String roomType, boolean result) {
+        assertEquals(result, roomTypeRepository.findByType(roomType).isPresent());
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Check if room type exists")
-    void existsByTypeTest() {
-        assertAll(
-                () -> assertTrue(roomTypeRepository.existsByType("lux")),
-                () -> assertFalse(roomTypeRepository.existsByType("new lux"))
-        );
+    @CsvSource(value = {
+            "lux, true",
+            "new lux, false"
+    })
+    void existsByTypeTest(String roomType, boolean result) {
+        assertEquals(result, roomTypeRepository.existsByType(roomType));
     }
 }
