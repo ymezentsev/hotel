@@ -5,5 +5,3 @@ public class NotEnoughInformationException extends RuntimeException {
         super(message);
     }
 }
-
-
