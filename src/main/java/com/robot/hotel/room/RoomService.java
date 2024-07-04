@@ -3,6 +3,7 @@ package com.robot.hotel.room;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.room.dto.RoomRequest;
+import com.robot.hotel.room.searchcriteria.RoomSearchParameters;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,6 +27,8 @@ public interface RoomService {
     Page<RoomDto> findByPriceLessThanOrEqual(BigDecimal price, Pageable pageable);
 
     Page<RoomDto> findByGuestsCount(int guestCount, Pageable pageable);
+
+    Page<RoomDto> search(RoomSearchParameters params, Pageable pageable);
 
     Set<RoomDto> findFreeRoomsSet(FreeRoomRequest freeRoomRequest);
 

@@ -7,6 +7,8 @@ import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.room.dto.RoomRequest;
+import com.robot.hotel.room.searchcriteria.RoomSearchParameters;
+import com.robot.hotel.room.searchcriteria.SpecificationBuilder;
 import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
 import com.robot.hotel.roomtype.RoomTypeService;
@@ -15,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -29,6 +32,7 @@ public class RoomServiceImpl implements RoomService {
     private final RoomTypeRepository roomTypeRepository;
     private final ReservationRepository reservationRepository;
     private final RoomMapper roomMapper;
+    private final SpecificationBuilder specificationBuilder;
 
     private static final String NUMBER_IS_ALREADY_EXISTS = "Such number is already exists";
     private static final String CHECK_OUT_LESS_THAN_CHECK_IN_DATE = "The check out date must be after check in date";
@@ -104,6 +108,13 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Page<RoomDto> findByGuestsCount(int guestCount, Pageable pageable) {
         return roomRepository.findByGuestsCount(guestCount, pageable)
+                .map(roomMapper::toDto);
+    }
+
+    @Override
+    public Page<RoomDto> search(RoomSearchParameters params, Pageable pageable) {
+        Specification<Room> roomSpecification = specificationBuilder.build(params);
+        return roomRepository.findAll(roomSpecification, pageable)
                 .map(roomMapper::toDto);
     }
 
