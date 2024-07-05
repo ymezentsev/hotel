@@ -1,4 +1,4 @@
-package com.robot.hotel.room.search;
+package com.robot.hotel.room.dto;
 
 import java.math.BigDecimal;
 
