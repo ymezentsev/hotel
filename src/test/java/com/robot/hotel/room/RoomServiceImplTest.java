@@ -99,59 +99,6 @@ class RoomServiceImplTest {
                 () -> roomService.findByNumber("1100"));
     }
 
-    @Test
-    @DisplayName("Successful find rooms by types")
-    void findByTypeTest() {
-        assertEquals(2, roomService
-                .findByType("standart single", Pageable.unpaged()).getTotalElements());
-    }
-
-    @Test
-    @DisplayName("Fail find rooms by types")
-    void findByTypeThrowNoSuchElementExceptionTest() {
-        assertThrows(NoSuchElementException.class,
-                () -> roomService.findByType("new lux", Pageable.unpaged()));
-    }
-
-    @ParameterizedTest
-    @DisplayName("Find rooms with price more or equal than given")
-    @CsvSource(value = {
-            "5000, 1",
-            "1500, 3",
-            "5500, 0"
-    })
-    void findByPriceMoreThanOrEqualTest(double price, int result) {
-        assertEquals(result, roomService
-                .findByPriceMoreThanOrEqual(BigDecimal.valueOf(price), Pageable.unpaged())
-                .getTotalElements());
-    }
-
-    @ParameterizedTest
-    @DisplayName("Find rooms with price less or equal than given")
-    @CsvSource(value = {
-            "1500, 4",
-            "1000, 2",
-            "500, 0"
-    })
-    void findByPriceLessThanOrEqualTest(double price, int result) {
-        assertEquals(result, roomService
-                .findByPriceLessThanOrEqual(BigDecimal.valueOf(price), Pageable.unpaged())
-                .getTotalElements());
-    }
-
-    @ParameterizedTest
-    @DisplayName("Find rooms with max count of guests more or equal than given")
-    @CsvSource(value = {
-            "5, 0",
-            "3, 1",
-            "2, 5"
-    })
-    void findByGuestsCountTest(int guestsCount, int result) {
-        assertEquals(result, roomService
-                .findByGuestsCount(guestsCount, Pageable.unpaged()).getTotalElements());
-    }
-
-
     @ParameterizedTest
     @DisplayName("Successful search rooms")
     @CsvSource(value = {

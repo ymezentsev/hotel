@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,  classes = ContainerConfiguration.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ContainerConfiguration.class)
 class RoomControllerTest {
     @LocalServerPort
     Integer port;
@@ -98,54 +98,6 @@ class RoomControllerTest {
                 .statusCode(200)
                 .assertThat()
                 .body("maxCountOfGuests", equalTo(4));
-    }
-
-    @Test
-    @DisplayName("Find rooms by type")
-    void findByTypeTest() {
-        given().contentType(ContentType.JSON)
-                .pathParam("type", "standart single")
-                .when().get("/type/{type}")
-                .then()
-                .statusCode(200)
-                .assertThat()
-                .body("content.size()", is(2));
-    }
-
-    @Test
-    @DisplayName("Find rooms with price more or equal than given")
-    void findByPriceMoreThanOrEqualTest() {
-        given().contentType(ContentType.JSON)
-                .pathParam("price", 1500)
-                .when().get("price>/{price}")
-                .then()
-                .statusCode(200)
-                .assertThat()
-                .body("content.size()", is(3));
-    }
-
-    @Test
-    @DisplayName("Find rooms with price less or equal than given")
-    void findByPriceLessThanOrEqualTest() {
-        given().contentType(ContentType.JSON)
-                .pathParam("price", 1500)
-                .when().get("/price</{price}")
-                .then()
-                .statusCode(200)
-                .assertThat()
-                .body("content.size()", is(4));
-    }
-
-    @Test
-    @DisplayName("Find rooms with max count of guests more or equal than given")
-    void findByGuestsCountTest() {
-        given().contentType(ContentType.JSON)
-                .pathParam("guestCount", 3)
-                .when().get("/guestsCount/{guestCount}")
-                .then()
-                .statusCode(200)
-                .assertThat()
-                .body("content.size()", is(1));
     }
 
     @Test
