@@ -149,6 +149,19 @@ class RoomControllerTest {
     }
 
     @Test
+    @DisplayName("Successful search rooms")
+    void searchTest() {
+        given().contentType(ContentType.JSON)
+                .params("types", "lux,standart single",
+                        "minPrice", 1500, "guestsCount", 2)
+                .when().get("/search")
+                .then()
+                .statusCode(200)
+                .assertThat()
+                .body("content.size()", is(3));
+    }
+
+    @Test
     @DisplayName("Successful find free rooms")
     void findFreeRoomsTest() {
         FreeRoomRequest freeRoomRequest = new FreeRoomRequest(LocalDate.now(), LocalDate.now().plusDays(4));
