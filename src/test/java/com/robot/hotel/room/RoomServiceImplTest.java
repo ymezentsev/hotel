@@ -247,5 +247,4 @@ class RoomServiceImplTest {
         assertThrows(NotEmptyObjectException.class,
                 () -> roomService.deleteById(id));
     }
-
 }
