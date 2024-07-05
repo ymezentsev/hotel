@@ -18,8 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.math.BigDecimal;
-
 @Tag(name = "Rooms Controller", description = "API to work with Rooms")
 public interface RoomControllerOpenApi {
 
@@ -73,40 +71,17 @@ public interface RoomControllerOpenApi {
     })
     RoomDto findByNumber(@PathVariable String number);
 
-    @Operation(summary = "Get rooms by type")
+    @Operation(summary = "Get all rooms filtered by types, min and max price, guests count",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     description = "Successfully fetched rooms"),
             @ApiResponse(
-                    responseCode = "404",
-                    description = "Such room type is not exists")
+                    responseCode = "500",
+                    description = "No property found for 'Room'")
     })
-    Page<RoomDto> findByType(@PathVariable String type, Pageable pageable);
-
-    @Operation(summary = "Get rooms with more or equal price")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Successfully fetched rooms")
-    })
-    Page<RoomDto> findByPriceMoreThanOrEqual(@PathVariable BigDecimal price, Pageable pageable);
-
-    @Operation(summary = "Get rooms with less or equal price")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Successfully fetched rooms")
-    })
-    Page<RoomDto> findByPriceLessThanOrEqual(@PathVariable BigDecimal price, Pageable pageable);
-
-    @Operation(summary = "Get rooms with more or equal count of guests")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Successfully fetched rooms")
-    })
-    Page<RoomDto> findByGuestsCount(@PathVariable int guestCount, Pageable pageable);
+    Page<RoomDto> search(RoomSearchParameters parameters, Pageable pageable);
 
     @Operation(summary = "Get free rooms")
     @ApiResponses(value = {
@@ -124,18 +99,6 @@ public interface RoomControllerOpenApi {
                     description = "Check in date must be before check out date")
     })
     Page<RoomDto> findFreeRooms(@Valid @RequestBody FreeRoomRequest freeRoomRequest, Pageable pageable);
-
-    @Operation(summary = "Get all rooms filtered by types, min and max price, guests count",
-            security = @SecurityRequirement(name = "Bearer Authentication"))
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Successfully fetched rooms"),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "No property found for 'Room'")
-    })
-    Page<RoomDto> search(RoomSearchParameters parameters, Pageable pageable);
 
     @Operation(summary = "Update room")
     @ApiResponses(value = {

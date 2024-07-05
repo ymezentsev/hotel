@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/rooms")
@@ -36,26 +34,6 @@ public class RoomController implements RoomControllerOpenApi {
     @GetMapping("/number/{number}")
     public RoomDto findByNumber(@PathVariable String number) {
         return roomService.findByNumber(number);
-    }
-
-    @GetMapping("/type/{type}")
-    public Page<RoomDto> findByType(@PathVariable String type, Pageable pageable) {
-        return roomService.findByType(type, pageable);
-    }
-
-    @GetMapping("/price>/{price}")
-    public Page<RoomDto> findByPriceMoreThanOrEqual(@PathVariable BigDecimal price, Pageable pageable) {
-        return roomService.findByPriceMoreThanOrEqual(price, pageable);
-    }
-
-    @GetMapping("/price</{price}")
-    public Page<RoomDto> findByPriceLessThanOrEqual(@PathVariable BigDecimal price, Pageable pageable) {
-        return roomService.findByPriceLessThanOrEqual(price, pageable);
-    }
-
-    @GetMapping("/guestsCount/{guestCount}")
-    public Page<RoomDto> findByGuestsCount(@PathVariable int guestCount, Pageable pageable) {
-        return roomService.findByGuestsCount(guestCount, pageable);
     }
 
     @GetMapping("/search")

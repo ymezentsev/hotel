@@ -20,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Slf4j
@@ -83,32 +82,6 @@ public class RoomServiceImpl implements RoomService {
         return roomMapper.toDto(roomRepository
                 .findByNumber(number.toLowerCase().strip())
                 .orElseThrow(() -> new NoSuchElementException(ROOM_IS_NOT_EXISTS)));
-    }
-
-    @Override
-    public Page<RoomDto> findByType(String type, Pageable pageable) {
-        Long roomTypeId = roomTypeService.findByType(type).id();
-
-        return roomRepository.findByRoomTypeId(roomTypeId, pageable)
-                .map(roomMapper::toDto);
-    }
-
-    @Override
-    public Page<RoomDto> findByPriceMoreThanOrEqual(BigDecimal price, Pageable pageable) {
-        return roomRepository.findByPriceMoreThanOrEqual(price, pageable)
-                .map(roomMapper::toDto);
-    }
-
-    @Override
-    public Page<RoomDto> findByPriceLessThanOrEqual(BigDecimal price, Pageable pageable) {
-        return roomRepository.findByPriceLessThanOrEqual(price, pageable)
-                .map(roomMapper::toDto);
-    }
-
-    @Override
-    public Page<RoomDto> findByGuestsCount(int guestCount, Pageable pageable) {
-        return roomRepository.findByGuestsCount(guestCount, pageable)
-                .map(roomMapper::toDto);
     }
 
     @Override
