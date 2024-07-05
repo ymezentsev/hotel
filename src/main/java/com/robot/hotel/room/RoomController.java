@@ -3,6 +3,7 @@ package com.robot.hotel.room;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.room.dto.RoomRequest;
+import com.robot.hotel.room.dto.RoomSearchParameters;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,6 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 @RequestMapping("/rooms")
 public class RoomController implements RoomControllerOpenApi {
-
     private final RoomService roomService;
 
     @GetMapping()
@@ -56,6 +56,11 @@ public class RoomController implements RoomControllerOpenApi {
     @GetMapping("/guestsCount/{guestCount}")
     public Page<RoomDto> findByGuestsCount(@PathVariable int guestCount, Pageable pageable) {
         return roomService.findByGuestsCount(guestCount, pageable);
+    }
+
+    @GetMapping("/search")
+    public Page<RoomDto> search(RoomSearchParameters parameters, Pageable pageable) {
+        return roomService.search(parameters, pageable);
     }
 
     @GetMapping("/freeRooms")

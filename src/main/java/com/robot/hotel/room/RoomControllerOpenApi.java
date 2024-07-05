@@ -3,11 +3,13 @@ package com.robot.hotel.room;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.room.dto.RoomRequest;
+import com.robot.hotel.room.dto.RoomSearchParameters;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -122,6 +124,18 @@ public interface RoomControllerOpenApi {
                     description = "Check in date must be before check out date")
     })
     Page<RoomDto> findFreeRooms(@Valid @RequestBody FreeRoomRequest freeRoomRequest, Pageable pageable);
+
+    @Operation(summary = "Get all rooms filtered by types, min and max price, guests count",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successfully fetched rooms"),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "No property found for 'Room'")
+    })
+    Page<RoomDto> search(RoomSearchParameters parameters, Pageable pageable);
 
     @Operation(summary = "Update room")
     @ApiResponses(value = {
