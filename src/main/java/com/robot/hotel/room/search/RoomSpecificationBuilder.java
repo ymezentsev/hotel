@@ -14,7 +14,7 @@ public class RoomSpecificationBuilder implements SpecificationBuilder<Room> {
     public Specification<Room> build(RoomSearchParameters searchParameters) {
         Specification<Room> spec = Specification.where(null);
 
-        if(searchParameters != null && searchParameters.types().length > 0){
+        if(searchParameters != null && searchParameters.types() != null && searchParameters.types().length > 0){
             spec = spec.and(specificationProviderManager
                     .getSpecificationProvider("type")
                     .getSpecification(searchParameters.types()));

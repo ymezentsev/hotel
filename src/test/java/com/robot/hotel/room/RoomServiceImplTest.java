@@ -8,6 +8,7 @@ import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomRequest;
+import com.robot.hotel.room.dto.RoomSearchParameters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -150,6 +151,21 @@ class RoomServiceImplTest {
                 .findByGuestsCount(guestsCount, Pageable.unpaged()).getTotalElements());
     }
 
+
+    @ParameterizedTest
+    @DisplayName("Successful search rooms")
+    @CsvSource(value = {
+            "lux, 3000, 6000, 3, 1",
+            "standart single, 1000, 2000, 3, 0",
+            "standart single, 1000, 2000, 1, 2"
+    })
+    void searchTest(String type, BigDecimal minPrice, BigDecimal maxPrice, int guestsCount, int result) {
+        RoomSearchParameters searchParameters =
+                new RoomSearchParameters(new String[]{type}, minPrice, maxPrice, guestsCount);
+
+        assertEquals(result, roomService.search(searchParameters, Pageable.unpaged()).getTotalElements());
+    }
+
     @Test
     @DisplayName("Successful find free rooms")
     void findFreeRoomsTest() {
@@ -231,4 +247,5 @@ class RoomServiceImplTest {
         assertThrows(NotEmptyObjectException.class,
                 () -> roomService.deleteById(id));
     }
+
 }
