@@ -3,7 +3,7 @@ package com.robot.hotel.room;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.room.dto.RoomRequest;
-import com.robot.hotel.room.searchcriteria.RoomSearchParameters;
+import com.robot.hotel.room.dto.RoomSearchParameters;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

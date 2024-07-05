@@ -7,8 +7,8 @@ import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.room.dto.RoomRequest;
-import com.robot.hotel.room.searchcriteria.RoomSearchParameters;
-import com.robot.hotel.room.searchcriteria.SpecificationBuilder;
+import com.robot.hotel.room.dto.RoomSearchParameters;
+import com.robot.hotel.room.search.SpecificationBuilder;
 import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
 import com.robot.hotel.roomtype.RoomTypeService;
@@ -32,7 +32,7 @@ public class RoomServiceImpl implements RoomService {
     private final RoomTypeRepository roomTypeRepository;
     private final ReservationRepository reservationRepository;
     private final RoomMapper roomMapper;
-    private final SpecificationBuilder specificationBuilder;
+    private final SpecificationBuilder<Room> specificationBuilder;
 
     private static final String NUMBER_IS_ALREADY_EXISTS = "Such number is already exists";
     private static final String CHECK_OUT_LESS_THAN_CHECK_IN_DATE = "The check out date must be after check in date";
