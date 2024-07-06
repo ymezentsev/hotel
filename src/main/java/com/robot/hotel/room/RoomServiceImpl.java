@@ -8,10 +8,9 @@ import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.room.dto.RoomRequest;
 import com.robot.hotel.room.dto.RoomSearchParameters;
-import com.robot.hotel.room.search.SpecificationBuilder;
 import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
-import com.robot.hotel.roomtype.RoomTypeService;
+import com.robot.hotel.search_criteria.SpecificationBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,7 +26,6 @@ import java.util.*;
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
-    private final RoomTypeService roomTypeService;
     private final RoomTypeRepository roomTypeRepository;
     private final ReservationRepository reservationRepository;
     private final RoomMapper roomMapper;

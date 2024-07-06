@@ -1,6 +1,7 @@
-package com.robot.hotel.room.search;
+package com.robot.hotel.search_criteria.room;
 
 import com.robot.hotel.room.Room;
+import com.robot.hotel.search_criteria.SpecificationProvider;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 

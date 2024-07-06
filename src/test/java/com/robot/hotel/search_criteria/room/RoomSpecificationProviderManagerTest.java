@@ -1,4 +1,4 @@
-package com.robot.hotel.room.search;
+package com.robot.hotel.search_criteria.room;
 
 import com.robot.hotel.ContainerConfiguration;
 import org.junit.jupiter.api.DisplayName;

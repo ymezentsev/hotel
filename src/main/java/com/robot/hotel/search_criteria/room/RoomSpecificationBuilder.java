@@ -1,7 +1,9 @@
-package com.robot.hotel.room.search;
+package com.robot.hotel.search_criteria.room;
 
 import com.robot.hotel.room.Room;
 import com.robot.hotel.room.dto.RoomSearchParameters;
+import com.robot.hotel.search_criteria.SpecificationBuilder;
+import com.robot.hotel.search_criteria.SpecificationProviderManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
