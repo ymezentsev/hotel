@@ -1,12 +1,16 @@
 package com.robot.hotel.user;
 
+import com.robot.hotel.room.dto.RoomDto;
+import com.robot.hotel.room.dto.RoomSearchParameters;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserRequest;
+import com.robot.hotel.user.dto.UserSearchParameters;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -119,6 +123,19 @@ public interface UserControllerOpenApi {
                     description = "Such role is not exists")
     })
     Page<UserDto> findUsersByRole(@PathVariable String role, Pageable pageable);
+
+    @Operation(summary = "Get all users filtered by firstname, lastname, phone number, " +
+            "email, role, passport serial number, reservation and country",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successfully fetched users"),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "No property found for 'User'")
+    })
+    Page<UserDto> search(UserSearchParameters parameters, Pageable pageable);
 
     @Operation(summary = "Update user")
     @ApiResponses(value = {

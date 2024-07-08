@@ -2,6 +2,7 @@ package com.robot.hotel.user;
 
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserRequest;
+import com.robot.hotel.user.dto.UserSearchParameters;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -57,6 +58,11 @@ public class UserController implements UserControllerOpenApi {
     @GetMapping("/role/{role}")
     public Page<UserDto> findUsersByRole(@PathVariable String role, Pageable pageable) {
         return userService.findUsersByRole(role, pageable);
+    }
+
+    @GetMapping("/search")
+    public Page<UserDto> search(UserSearchParameters parameters, Pageable pageable) {
+        return userService.search(parameters, pageable);
     }
 
     @PutMapping("/{id}")

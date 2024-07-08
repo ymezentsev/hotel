@@ -3,16 +3,19 @@ package com.robot.hotel.user;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.NotEnoughInformationException;
+import com.robot.hotel.search_criteria.SpecificationBuilder;
 import com.robot.hotel.user.country.Country;
 import com.robot.hotel.user.country.CountryRepository;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserRequest;
+import com.robot.hotel.user.dto.UserSearchParameters;
 import com.robot.hotel.user.passport.Passport;
 import com.robot.hotel.user.passport.PassportRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final CountryRepository countryRepository;
     private final PassportRepository passportRepository;
+    private final SpecificationBuilder<User> specificationBuilder;
 
     private static final String USER_IS_ALREADY_EXISTS = "User with such %s is already exists";
     private static final String USER_IS_NOT_EXISTS = "Such user is not exists";
@@ -133,6 +137,13 @@ public class UserServiceImpl implements UserService {
         }
 
         return userRepository.findByRole(Role.valueOf(role), pageable)
+                .map(userMapper::toDto);
+    }
+
+    @Override
+    public Page<UserDto> search(UserSearchParameters params, Pageable pageable) {
+        Specification<User> userSpecification = specificationBuilder.build(params);
+        return userRepository.findAll(userSpecification, pageable)
                 .map(userMapper::toDto);
     }
 
