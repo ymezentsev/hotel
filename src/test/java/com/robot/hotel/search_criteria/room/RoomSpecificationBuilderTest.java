@@ -29,7 +29,7 @@ class RoomSpecificationBuilderTest {
                 BigDecimal.valueOf(1000),
                 3);
         assertAll(
-                () -> assertEquals(originalSpec, roomSpecificationBuilder.build(null)),
+                () -> assertEquals(originalSpec, roomSpecificationBuilder.build((RoomSearchParameters) null)),
                 () -> assertNotEquals(originalSpec, roomSpecificationBuilder.build(searchParameters))
         );
     }

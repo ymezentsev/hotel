@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RoomSpecificationBuilder implements SpecificationBuilder<Room> {
+public abstract class RoomSpecificationBuilder implements SpecificationBuilder<Room> {
     private final SpecificationProviderManager<Room> specificationProviderManager;
     @Override
     public Specification<Room> build(RoomSearchParameters searchParameters) {
