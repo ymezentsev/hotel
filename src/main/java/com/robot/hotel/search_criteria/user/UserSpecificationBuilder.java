@@ -1,5 +1,6 @@
 package com.robot.hotel.search_criteria.user;
 
+import com.robot.hotel.room.dto.RoomSearchParameters;
 import com.robot.hotel.search_criteria.SpecificationBuilder;
 import com.robot.hotel.search_criteria.SpecificationProviderManager;
 import com.robot.hotel.user.User;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public abstract class UserSpecificationBuilder implements SpecificationBuilder<User> {
+public class UserSpecificationBuilder implements SpecificationBuilder<User> {
     private final SpecificationProviderManager<User> specificationProviderManager;
 
     @Override
@@ -81,5 +82,10 @@ public abstract class UserSpecificationBuilder implements SpecificationBuilder<U
                     .getSpecification(searchParameters.countryCodes()));
         }
         return spec;
+    }
+
+    @Override
+    public Specification<User> build(RoomSearchParameters searchParameters) {
+        return null;
     }
  }
