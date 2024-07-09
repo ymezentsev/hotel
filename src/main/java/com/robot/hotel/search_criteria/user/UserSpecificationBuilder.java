@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
-import java.util.NoSuchElementException;
-
 @Component
 @RequiredArgsConstructor
 public class UserSpecificationBuilder implements SpecificationBuilder<User> {
