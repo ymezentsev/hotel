@@ -30,36 +30,6 @@ public class UserController implements UserControllerOpenApi {
         return userService.findById(id);
     }
 
-    @GetMapping("/email/{email}")
-    public UserDto findByEmail(@PathVariable String email) {
-        return userService.findByEmail(email);
-    }
-
-    @GetMapping("/phoneNumber/{phoneNumber}")
-    public UserDto findByPhoneNumber(@PathVariable String phoneNumber) {
-        return userService.findByPhoneNumber(phoneNumber);
-    }
-
-    @GetMapping("/passport/{passportSerialNumber}")
-    public UserDto findByPassportSerialNumber(@PathVariable String passportSerialNumber) {
-        return userService.findByPassportSerialNumber(passportSerialNumber);
-    }
-
-    @GetMapping("/lastName/{lastName}")
-    public Page<UserDto> findByLastName(@PathVariable String lastName, Pageable pageable) {
-        return userService.findByLastName(lastName, pageable);
-    }
-
-    @GetMapping("/reservations/{id}")
-    public Page<UserDto> findUsersByReservation(@PathVariable Long id, Pageable pageable) {
-        return userService.findUsersByReservation(id, pageable);
-    }
-
-    @GetMapping("/role/{role}")
-    public Page<UserDto> findUsersByRole(@PathVariable String role, Pageable pageable) {
-        return userService.findUsersByRole(role, pageable);
-    }
-
     @GetMapping("/search")
     public Page<UserDto> search(UserSearchParameters parameters, Pageable pageable) {
         return userService.search(parameters, pageable);

@@ -1,7 +1,5 @@
 package com.robot.hotel.user;
 
-import com.robot.hotel.room.dto.RoomDto;
-import com.robot.hotel.room.dto.RoomSearchParameters;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserRequest;
 import com.robot.hotel.user.dto.UserSearchParameters;
@@ -63,66 +61,6 @@ public interface UserControllerOpenApi {
                     description = "Such user is not exists")
     })
     UserDto findById(@PathVariable Long id);
-
-    @Operation(summary = "Get user by email")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Successfully fetched user by email"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Such user is not exists")
-    })
-    UserDto findByEmail(@PathVariable String email);
-
-    @Operation(summary = "Get user by phone number")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Successfully fetched user by phone number"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Such user is not exists")
-    })
-    UserDto findByPhoneNumber(@PathVariable String phoneNumber);
-
-    @Operation(summary = "Get user by passport number")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Successfully fetched user by passport number"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Such user is not exists")
-    })
-    UserDto findByPassportSerialNumber(@PathVariable String passportSerialNumber);
-
-    @Operation(summary = "Get users by lastname")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Successfully fetched users by lastname")
-    })
-    Page<UserDto> findByLastName(@PathVariable String lastName, Pageable pageable);
-
-    @Operation(summary = "Get users by reservation")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Successfully fetched users by reservation")
-    })
-    Page<UserDto> findUsersByReservation(@PathVariable Long id, Pageable pageable);
-
-    @Operation(summary = "Get users by role")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Successfully fetched users by role"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Such role is not exists")
-    })
-    Page<UserDto> findUsersByRole(@PathVariable String role, Pageable pageable);
 
     @Operation(summary = "Get all users filtered by firstname, lastname, phone number, " +
             "email, role, passport serial number, reservation and country",
