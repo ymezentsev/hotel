@@ -2,7 +2,6 @@ package com.robot.hotel.user;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -45,35 +44,9 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     Optional<User> findByPhoneNumber(String phoneNumber);
 
     @Query("""
-            SELECT DISTINCT u FROM User u
-            LEFT JOIN FETCH u.reservations r
-            JOIN u.country c
-            WHERE CONCAT(c.phoneCode, u.phoneNumber) = :phoneNumber""")
-    Optional<User> findByFullPhoneNumber(@Param("phoneNumber") String phoneNumber);
-
-    @Query("""
             SELECT u FROM User u
             LEFT JOIN FETCH u.reservations r
             JOIN u.passport p
             WHERE p.serialNumber = :passportSerialNumber""")
     Optional<User> findByPassportSerialNumber(@Param("passportSerialNumber") String passportSerialNumber);
-
-    @Query("""
-            SELECT DISTINCT u FROM User u
-            LEFT JOIN FETCH u.reservations r
-            WHERE u.lastName = :lastName""")
-    Page<User> findByLastName(String lastName, Pageable pageable);
-
-    @EntityGraph(attributePaths = {"reservations"})
-    @Query("""
-            SELECT DISTINCT u FROM User u
-            LEFT JOIN FETCH u.reservations r
-            WHERE r.id = :reservationId""")
-    Page<User> findByReservationsId(Long reservationId, Pageable pageable);
-
-    @Query("""
-            SELECT DISTINCT u FROM User u
-            LEFT JOIN FETCH u.reservations r
-            WHERE u.role = :role""")
-    Page<User> findByRole(Role role, Pageable pageable);
 }
