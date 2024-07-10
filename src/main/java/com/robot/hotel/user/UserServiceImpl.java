@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService {
     private static final String TEL_CODE_IS_NOT_EXISTS = "Such phone code is not exists";
     private static final String COUNTRY_IS_NOT_EXISTS = "Such country is not exists";
     private static final String NOT_ENOUGH_INFORMATION = "There is not enough information to save your passport";
-    private static final String ROLE_IS_NOT_EXISTS = "Such role is not exists";
     private static final String SUCCESSFUL_ACTION_WITH_USER = "Successful %s user with id: {}";
 
     @Override
@@ -84,60 +83,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(userRepository
                 .findById(id)
                 .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)));
-    }
-
-    @Override
-    public UserDto findByEmail(String email) {
-        return userMapper.toDto(userRepository
-                .findByEmail(email.toLowerCase().strip())
-                .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)));
-    }
-
-    @Override
-    public UserDto findByPhoneNumber(String phoneNumber) {
-        if (phoneNumber.startsWith("+")) {
-            return userMapper.toDto(userRepository
-                    .findByFullPhoneNumber(phoneNumber)
-                    .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)));
-        } else {
-            return userMapper.toDto(userRepository
-                    .findByPhoneNumber(phoneNumber)
-                    .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)));
-        }
-    }
-
-    @Override
-    public UserDto findByPassportSerialNumber(String passportSerialNumber) {
-        return userMapper.toDto(userRepository
-                .findByPassportSerialNumber(passportSerialNumber.toLowerCase().strip())
-                .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)));
-    }
-
-    @Override
-    public Page<UserDto> findByLastName(String lastName, Pageable pageable) {
-        return userRepository.findByLastName(lastName.toLowerCase().strip(), pageable)
-                .map(userMapper::toDto);
-    }
-
-    @Override
-    public Page<UserDto> findUsersByReservation(Long id, Pageable pageable) {
-        return userRepository.findByReservationsId(id, pageable)
-                .map(userMapper::toDto);
-    }
-
-    @Override
-    public Page<UserDto> findUsersByRole(String role, Pageable pageable) {
-        role = role.toUpperCase().strip();
-
-        if (!Arrays.stream(Role.values())
-                .map(Enum::name)
-                .toList()
-                .contains(role)) {
-            throw new NoSuchElementException(ROLE_IS_NOT_EXISTS);
-        }
-
-        return userRepository.findByRole(Role.valueOf(role), pageable)
-                .map(userMapper::toDto);
     }
 
     @Override
