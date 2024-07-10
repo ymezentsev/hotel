@@ -91,6 +91,18 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("Successful search users")
+    void searchTest() {
+        given().contentType(ContentType.JSON)
+                .params("lastnames", "sidor")
+                .when().get("/search")
+                .then()
+                .statusCode(200)
+                .assertThat()
+                .body("content.size()", is(2));
+    }
+
+    @Test
     @DisplayName("Successful update user")
     void updateTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
