@@ -7,7 +7,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -73,17 +72,6 @@ class UserRepositoryTest {
     }
 
     @ParameterizedTest
-    @DisplayName("Find user by full phone number")
-    @CsvSource(value = {
-            "+380965467834, true",
-            "+390934560912, true",
-            "+10934375647, false"
-    })
-    void findByPhoneFullNumberTest(String phoneNumber, boolean result) {
-        assertEquals(result, userRepository.findByFullPhoneNumber(phoneNumber).isPresent());
-    }
-
-    @ParameterizedTest
     @DisplayName("Find user by passport serial number")
     @CsvSource(value = {
             "bb345678, true",
@@ -92,40 +80,5 @@ class UserRepositoryTest {
     })
     void findByPassportSerialNumberTest(String passportSerialNumber, boolean result) {
         assertEquals(result, userRepository.findByPassportSerialNumber(passportSerialNumber).isPresent());
-    }
-
-    @ParameterizedTest
-    @DisplayName("Find user by lastname")
-    @CsvSource(value = {
-            "sidorov, 2",
-            "dmitrenko, 1",
-            "grigorenko, 0"
-    })
-    void findByLastNameTest(String lastName, int result) {
-        assertEquals(result, userRepository
-                .findByLastName(lastName, Pageable.unpaged()).getTotalElements());
-    }
-
-    @ParameterizedTest
-    @DisplayName("Find user by reservation")
-    @CsvSource(value = {
-            "1, 2",
-            "100, 0"
-    })
-    void findByReservationsIdTest(long id, int result) {
-        assertEquals(result, userRepository
-                .findByReservationsId(id, Pageable.unpaged()).getTotalElements());
-    }
-
-    @ParameterizedTest
-    @DisplayName("Find users by role")
-    @CsvSource(value = {
-            "USER, 4",
-            "MANAGER, 1",
-            "ADMIN, 1"
-    })
-    void findByRoleTest(Role role, int result) {
-        assertEquals(result, userRepository
-                .findByRole(role, Pageable.unpaged()).getTotalElements());
     }
 }

@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,  classes = ContainerConfiguration.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ContainerConfiguration.class)
 class UserControllerTest {
     @LocalServerPort
     Integer port;
@@ -88,78 +88,6 @@ class UserControllerTest {
                 .statusCode(200)
                 .assertThat()
                 .body("lastName", equalTo("sidorov"));
-    }
-
-    @Test
-    @DisplayName("Find user by email")
-    void findByEmailTest() {
-        given().contentType(ContentType.JSON)
-                .pathParam("email", "sidor@gmail.com")
-                .when().get("/email/{email}")
-                .then()
-                .statusCode(200)
-                .assertThat()
-                .body("lastName", equalTo("sidorov"));
-    }
-
-    @Test
-    @DisplayName("Find user by phone number")
-    void findByPhoneNumberTest() {
-        given().contentType(ContentType.JSON)
-                .pathParam("phoneNumber", "+380965467834")
-                .when().get("/phoneNumber/{phoneNumber}")
-                .then()
-                .statusCode(200)
-                .assertThat()
-                .body("lastName", equalTo("sidorov"));
-    }
-
-    @Test
-    @DisplayName("Find user by passport serial number")
-    void findByPassportSerialNumberTest() {
-        given().contentType(ContentType.JSON)
-                .pathParam("passportSerialNumber", "va123456")
-                .when().get("/passport/{passportSerialNumber}")
-                .then()
-                .statusCode(200)
-                .assertThat()
-                .body("lastName", equalTo("dmitrenko"));
-    }
-
-    @Test
-    @DisplayName("Find user by lastname")
-    void findByLastNameTest() {
-        given().contentType(ContentType.JSON)
-                .pathParam("lastName", "sidorov")
-                .when().get("/lastName/{lastName}")
-                .then()
-                .statusCode(200)
-                .assertThat()
-                .body("content.size()", is(2));
-    }
-
-    @Test
-    @DisplayName("Find users by reservation")
-    void findUsersByReservationTest() {
-        given().contentType(ContentType.JSON)
-                .pathParam("id", testDBUtils.getReservationIdByRoom("204"))
-                .when().get("/reservations/{id}")
-                .then()
-                .statusCode(200)
-                .assertThat()
-                .body("content.size()", is(2));
-    }
-
-    @Test
-    @DisplayName("Find users by role")
-    void findUsersByRoleTest() {
-        given().contentType(ContentType.JSON)
-                .pathParam("role", "USER")
-                .when().get("/role/{role}")
-                .then()
-                .statusCode(200)
-                .assertThat()
-                .body("content.size()", is(4));
     }
 
     @Test

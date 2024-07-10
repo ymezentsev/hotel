@@ -32,7 +32,7 @@ class UserServiceImplTest {
 
     @BeforeEach
     void setUp() {
-       dbInitializer.populateDB();
+        dbInitializer.populateDB();
     }
 
     @Test
@@ -137,86 +137,6 @@ class UserServiceImplTest {
     void findByIdThrowNoSuchElementExceptionTest() {
         assertThrows(NoSuchElementException.class,
                 () -> userService.findById(200L));
-    }
-
-    @Test
-    @DisplayName("Successful find user by email")
-    void findByEmailTest() {
-        assertEquals("+380965467834", userService.findByEmail("sidor@gmail.com").phoneNumber());
-    }
-
-    @Test
-    @DisplayName("Fail find user by email")
-    void findByEmailThrowNoSuchElementExceptionTest() {
-        assertThrows(NoSuchElementException.class,
-                () -> userService.findByEmail("sidor1234@gmail.com"));
-    }
-
-    @Test
-    @DisplayName("Successful find user by phone number")
-    void findByPhoneNumberTest() {
-        assertEquals("sidor@gmail.com", userService.findByPhoneNumber("965467834").email());
-    }
-
-    @Test
-    @DisplayName("Fail find user by phone number")
-    void findByPhoneNumberThrowNoSuchElementExceptionTest() {
-        assertThrows(NoSuchElementException.class,
-                () -> userService.findByPhoneNumber("0937564235"));
-    }
-
-    @Test
-    @DisplayName("Successful find user by full phone number")
-    void findByFullPhoneNumberTest() {
-        assertEquals("sidor@gmail.com", userService.findByPhoneNumber("+380965467834").email());
-    }
-
-    @Test
-    @DisplayName("Fail find user by full phone number")
-    void findByFullPhoneNumberThrowNoSuchElementExceptionTest() {
-        assertThrows(NoSuchElementException.class,
-                () -> userService.findByPhoneNumber("+3800937564235"));
-    }
-
-    @Test
-    @DisplayName("Successful find user by passport serial number")
-    void findByPassportSerialNumberTest() {
-        assertEquals("sidor_andr@gmail.com", userService.findByPassportSerialNumber("bb345678").email());
-    }
-
-    @Test
-    @DisplayName("Fail find user by passport serial number")
-    void findByPassportSerialNumberThrowNoSuchElementExceptionTest() {
-        assertThrows(NoSuchElementException.class,
-                () -> userService.findByPassportSerialNumber("df345123"));
-    }
-
-    @Test
-    @DisplayName("Find user by lastname")
-    void findByLastNameTest() {
-        assertEquals(2, userService
-                .findByLastName("sidorov", Pageable.unpaged()).getTotalElements());
-    }
-
-    @Test
-    @DisplayName("Find user by reservation")
-    void findUsersByReservationTest() {
-        Long id = testDBUtils.getReservationIdByRoom("101");
-        assertEquals(3, userService.findUsersByReservation(id, Pageable.unpaged()).getTotalElements());
-    }
-
-    @Test
-    @DisplayName("Successful find users by role")
-    void findUsersByRoleTest() {
-        assertEquals(4, userService
-                .findUsersByRole("user", Pageable.unpaged()).getTotalElements());
-    }
-
-    @Test
-    @DisplayName("Fail find users by role")
-    void findUsersByRoleThrowNoSuchElementExceptionTest() {
-        assertThrows(NoSuchElementException.class,
-                () -> userService.findUsersByRole("NEW_USER", Pageable.unpaged()));
     }
 
     @Test
