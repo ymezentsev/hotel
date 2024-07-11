@@ -7,6 +7,7 @@ import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.NotEnoughInformationException;
 import com.robot.hotel.user.dto.UserRequest;
+import com.robot.hotel.user.dto.UserSearchParameters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -137,6 +138,75 @@ class UserServiceImplTest {
     void findByIdThrowNoSuchElementExceptionTest() {
         assertThrows(NoSuchElementException.class,
                 () -> userService.findById(200L));
+    }
+
+    @Test
+    @DisplayName("Successful search users")
+    void searchTest() {
+        UserSearchParameters searchFirstname =
+                new UserSearchParameters(new String[]{"andriy"},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{});
+        UserSearchParameters searchLastname =
+                new UserSearchParameters(new String[]{},
+                        new String[]{"sidor"},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{});
+        UserSearchParameters searchPhoneNumber =
+                new UserSearchParameters(new String[]{},
+                        new String[]{},
+                        new String[]{"+380"},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{});
+        UserSearchParameters searchRole =
+                new UserSearchParameters(new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{"USer"},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{});
+        UserSearchParameters searchReservation =
+                new UserSearchParameters(new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{testDBUtils.getReservationIdByRoom("101").toString(),
+                                testDBUtils.getReservationIdByRoom("203").toString()},
+                        new String[]{});
+        UserSearchParameters searchCountry =
+                new UserSearchParameters(new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{},
+                        new String[]{"UKR"});
+
+        assertAll(
+                () -> assertEquals(2, userService.search(searchFirstname, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(2, userService.search(searchLastname, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(5, userService.search(searchPhoneNumber, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(4, userService.search(searchRole, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(4, userService.search(searchReservation, Pageable.unpaged()).getTotalElements()),
+                () -> assertEquals(2, userService.search(searchCountry, Pageable.unpaged()).getTotalElements())
+        );
     }
 
     @Test
