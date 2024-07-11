@@ -11,6 +11,7 @@ import com.robot.hotel.user.dto.UserRequest;
 import com.robot.hotel.user.dto.UserSearchParameters;
 import com.robot.hotel.user.passport.Passport;
 import com.robot.hotel.user.passport.PassportRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -86,6 +87,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Page<UserDto> search(UserSearchParameters params, Pageable pageable) {
         Specification<User> userSpecification = specificationBuilder.build(params);
         return userRepository.findAll(userSpecification, pageable)
