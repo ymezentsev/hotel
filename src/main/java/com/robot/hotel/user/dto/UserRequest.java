@@ -1,7 +1,11 @@
 package com.robot.hotel.user.dto;
 
+import com.robot.hotel.user.validation.FieldMatch;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +13,11 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Data
+@FieldMatch.List({
+    @FieldMatch(first = "password",
+        second = "repeatPassword",
+        message = "Passwords do not match")
+})
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Dto for create and update user")
@@ -50,6 +59,14 @@ public class UserRequest {
                     "letters in upper case and letters in lower case")
     @Schema(description = "User password", example = "Qwerty123456")
     private String password;
+
+    @NotBlank(message = "Repeat password is required")
+    @Size(min = 8, max = 100, message = "The password size must be from 8 to 100 characters long")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,100}$",
+            message = "Password should have 8 or more characters and contains digits, " +
+                    "letters in upper case and letters in lower case")
+    @Schema(description = "User password", example = "Qwerty123456")
+    private String repeatPassword;
 
     @Size(min = 6, max = 12, message = "Passport serial number's length must be from 6 to 20 characters long")
     @Schema(description = "User's passport serial number", example = "BB123456")
