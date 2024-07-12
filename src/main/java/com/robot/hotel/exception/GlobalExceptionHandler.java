@@ -2,71 +2,94 @@ package com.robot.hotel.exception;
 
 import com.robot.hotel.error.AppError;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.HashMap;
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
 @ControllerAdvice
 @Slf4j
-public class GlobalExceptionHandler {
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, List<String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error(e.getMessage(), e);
-        List<String> errors = e.getBindingResult()
-                .getFieldErrors()
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("errorCode", HttpStatus.BAD_REQUEST.value());
+        body.put("timestamp", LocalDateTime.now());
+        List<String> errors = ex.getBindingResult().getAllErrors()
                 .stream()
-                .map(FieldError::getDefaultMessage)
+                .map(this::getErrorMessage)
                 .toList();
-        return new ResponseEntity<>(getErrorsMap(errors), HttpStatus.BAD_REQUEST);
+        body.put("errorText", errors);
+
+        log.error(ex.getMessage(), ex);
+        return new ResponseEntity<>(body, headers, status);
     }
 
-    private Map<String, List<String>> getErrorsMap(List<String> errors) {
-        Map<String, List<String>> errorResponse = new HashMap<>();
-        errorResponse.put("errors", errors);
-        return errorResponse;
+    private String getErrorMessage(ObjectError e) {
+        if (e instanceof FieldError) {
+            String field = ((FieldError) e).getField();
+            String message = e.getDefaultMessage();
+            return field + " " + message;
+        }
+        return e.getDefaultMessage();
     }
 
     @ExceptionHandler(DuplicateObjectException.class)
     public ResponseEntity<AppError> catchDuplicateObjectException(DuplicateObjectException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new AppError(HttpStatus.CONFLICT.value(), e.getMessage()), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new AppError(HttpStatus.CONFLICT.value(), LocalDateTime.now(), e.getMessage()),
+                HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<AppError> catchNoSuchElementException(NoSuchElementException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(), e.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(), LocalDateTime.now(), e.getMessage()),
+                HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(NotEmptyObjectException.class)
     public ResponseEntity<AppError> catchNotEmptyObjectException(NotEmptyObjectException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new AppError(HttpStatus.CONFLICT.value(), e.getMessage()), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new AppError(HttpStatus.CONFLICT.value(), LocalDateTime.now(), e.getMessage()),
+                HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(GuestsQuantityException.class)
     public ResponseEntity<AppError> catchGuestsQuantityException(GuestsQuantityException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), e.getMessage()),
+                HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(WrongDatesException.class)
     public ResponseEntity<AppError> catchWrongDatesException(WrongDatesException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), e.getMessage()),
+                HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NotEnoughInformationException.class)
     public ResponseEntity<AppError> catchNotEnoughInformationException(NotEnoughInformationException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), e.getMessage()),
+                HttpStatus.BAD_REQUEST);
     }
 }
