@@ -50,7 +50,7 @@ class UserControllerTest {
     @DisplayName("Successful create new user")
     void saveTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1",
+                "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
@@ -66,7 +66,7 @@ class UserControllerTest {
     @DisplayName("Fail create new user (incorrect user input)")
     void saveWithIncorrectDataTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "semenovgmail.com", "Password1",
+                "0953453434", "semenovgmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
@@ -106,7 +106,7 @@ class UserControllerTest {
     @DisplayName("Successful update user")
     void updateTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1",
+                "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
@@ -121,7 +121,7 @@ class UserControllerTest {
     @DisplayName("Fail update user (incorrect user input)")
     void updateWithIncorrectDataTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "semenovgmail.com", "Password1",
+                "0953453434", "semenovgmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
