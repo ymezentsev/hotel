@@ -46,7 +46,7 @@ class UserServiceImplTest {
     @DisplayName("Successful create new user with passport")
     void saveWithPassportTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1",
+                "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "usa", LocalDate.of(2018, 3, 8));
         assertAll(
                 () -> assertNotNull(userService.save(userRequest).id()),
@@ -58,7 +58,7 @@ class UserServiceImplTest {
     @DisplayName("Successful create new user without passport")
     void saveWithoutPassportTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1",
+                "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 null, null, null);
         assertAll(
                 () -> assertNotNull(userService.save(userRequest).id()),
@@ -70,7 +70,7 @@ class UserServiceImplTest {
     @DisplayName("Fail create new user (throw NoSuchElementException - wrong phone code)")
     void saveThrowNoSuchElementExceptionWrongPhoneCodeTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+999",
-                "0953453434", "semenov@gmail.com", "Password1",
+                "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
         assertThrows(NoSuchElementException.class,
                 () -> userService.save(userRequest));
@@ -80,7 +80,7 @@ class UserServiceImplTest {
     @DisplayName("Fail create new user (throw NoSuchElementException - wrong country code for passport)")
     void saveThrowNoSuchElementExceptionWrongCountryCodeTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1",
+                "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKK", LocalDate.of(2018, 3, 8));
         assertThrows(NoSuchElementException.class,
                 () -> userService.save(userRequest));
@@ -90,7 +90,7 @@ class UserServiceImplTest {
     @DisplayName("Fail create new user (throw DuplicateObjectException - wrong email)")
     void saveThrowDuplicateObjectExceptionWrongEmailTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "sidor@gmail.com", "Password1",
+                "0953453434", "sidor@gmail.com", "Password1", "Password1",
                 "df123456", "USA", LocalDate.of(2018, 3, 8));
         assertThrows(DuplicateObjectException.class,
                 () -> userService.save(userRequest));
@@ -100,7 +100,7 @@ class UserServiceImplTest {
     @DisplayName("Fail create new user (throw DuplicateObjectException - wrong phone number)")
     void saveThrowDuplicateObjectExceptionWrongPhoneTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "965467834", "semenov@gmail.com", "Password1",
+                "965467834", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "USA", LocalDate.of(2018, 3, 8));
         assertThrows(DuplicateObjectException.class,
                 () -> userService.save(userRequest));
@@ -110,7 +110,7 @@ class UserServiceImplTest {
     @DisplayName("Fail create new user (throw DuplicateObjectException - wrong passport)")
     void saveThrowDuplicateObjectExceptionWrongPassportTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1",
+                "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "bb345678", "USA", LocalDate.of(2018, 3, 8));
         assertThrows(DuplicateObjectException.class,
                 () -> userService.save(userRequest));
@@ -120,7 +120,7 @@ class UserServiceImplTest {
     @DisplayName("Fail create new user (throw NotEnoughInformationException - not all information for creating passport)")
     void saveThrowNotEnoughInformationExceptionTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1",
+                "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", null, LocalDate.of(2018, 3, 8));
         assertThrows(NotEnoughInformationException.class,
                 () -> userService.save(userRequest));
@@ -214,7 +214,7 @@ class UserServiceImplTest {
     void updateTest() {
         Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1",
+                "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         userService.update(id, userRequest);
@@ -228,7 +228,7 @@ class UserServiceImplTest {
     @DisplayName("Fail update user (throw NoSuchElementException - wrong user id)")
     void updateThrowNoSuchElementExceptionWrongUserIdTest() {
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1",
+                "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "usa", LocalDate.of(2018, 3, 8));
 
         assertThrows(NoSuchElementException.class,
@@ -240,7 +240,7 @@ class UserServiceImplTest {
     void updateThrowNoSuchElementExceptionWrongPhoneCodeTest() {
         Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+999",
-                "0953453434", "semenov@gmail.com", "Password1",
+                "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
         assertThrows(NoSuchElementException.class,
                 () -> userService.update(id, userRequest));
@@ -251,7 +251,7 @@ class UserServiceImplTest {
     void updateThrowNoSuchElementExceptionWrongCountryCodeTest() {
         Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1",
+                "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKK", LocalDate.of(2018, 3, 8));
         assertThrows(NoSuchElementException.class,
                 () -> userService.update(id, userRequest));
@@ -262,7 +262,7 @@ class UserServiceImplTest {
     void updateThrowDuplicateObjectExceptionWrongEmailTest() {
         Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "kozlov@gmail.com", "Password1",
+                "0953453434", "kozlov@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         assertThrows(DuplicateObjectException.class,
@@ -274,7 +274,7 @@ class UserServiceImplTest {
     void updateThrowDuplicateObjectExceptionWrongPhoneTest() {
         Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "505463213", "semenov@gmail.com", "Password1",
+                "505463213", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         assertThrows(DuplicateObjectException.class,
@@ -286,7 +286,7 @@ class UserServiceImplTest {
     void updateThrowDuplicateObjectExceptionWrongPassportTest() {
         Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
         UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1",
+                "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "bb345678", "UKR", LocalDate.of(2018, 3, 8));
 
         assertThrows(DuplicateObjectException.class,
