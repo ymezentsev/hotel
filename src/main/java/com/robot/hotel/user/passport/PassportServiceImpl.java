@@ -25,6 +25,12 @@ public class PassportServiceImpl implements PassportService {
 
     @Override
     public Passport getPassportFromUserRequest(RegistrationRequestDto registrationRequestDto, Long userId) {
+        if (registrationRequestDto.getPassportSerialNumber() == null &&
+                registrationRequestDto.getCountryCode() == null &&
+                registrationRequestDto.getIssueDate() == null) {
+            return null;
+        }
+
         if (registrationRequestDto.getPassportSerialNumber() != null &&
                 registrationRequestDto.getCountryCode() != null &&
                 registrationRequestDto.getIssueDate() != null) {
@@ -48,13 +54,6 @@ public class PassportServiceImpl implements PassportService {
                     .issueDate(registrationRequestDto.getIssueDate())
                     .build();
         }
-
-        if (registrationRequestDto.getPassportSerialNumber() == null &&
-                registrationRequestDto.getCountryCode() == null &&
-                registrationRequestDto.getIssueDate() == null) {
-            return null;
-        }
-
         throw new NotEnoughInformationException(NOT_ENOUGH_INFORMATION);
     }
 }
