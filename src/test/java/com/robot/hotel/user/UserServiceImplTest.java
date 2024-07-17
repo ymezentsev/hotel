@@ -5,7 +5,6 @@ import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
-import com.robot.hotel.exception.NotEnoughInformationException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,90 +40,6 @@ class UserServiceImplTest {
     void findAllTest() {
         assertEquals(6, userService.findAll(Pageable.unpaged()).getTotalElements());
     }
-
-/*    @Test
-    @DisplayName("Successful create new user with passport")
-    void saveWithPassportTest() {
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
-                "df123456", "usa", LocalDate.of(2018, 3, 8));
-        assertAll(
-                () -> assertNotNull(userService.save(registrationRequestDto).id()),
-                () -> assertEquals(7, userService.findAll(Pageable.unpaged()).getTotalElements())
-        );
-    }
-
-    @Test
-    @DisplayName("Successful create new user without passport")
-    void saveWithoutPassportTest() {
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
-                null, null, null);
-        assertAll(
-                () -> assertNotNull(userService.save(registrationRequestDto).id()),
-                () -> assertEquals(7, userService.findAll(Pageable.unpaged()).getTotalElements())
-        );
-    }
-
-    @Test
-    @DisplayName("Fail create new user (throw NoSuchElementException - wrong phone code)")
-    void saveThrowNoSuchElementExceptionWrongPhoneCodeTest() {
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+999",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
-                "df123456", "UKR", LocalDate.of(2018, 3, 8));
-        assertThrows(NoSuchElementException.class,
-                () -> userService.save(registrationRequestDto));
-    }
-
-    @Test
-    @DisplayName("Fail create new user (throw NoSuchElementException - wrong country code for passport)")
-    void saveThrowNoSuchElementExceptionWrongCountryCodeTest() {
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
-                "df123456", "UKK", LocalDate.of(2018, 3, 8));
-        assertThrows(NoSuchElementException.class,
-                () -> userService.save(registrationRequestDto));
-    }
-
-    @Test
-    @DisplayName("Fail create new user (throw DuplicateObjectException - wrong email)")
-    void saveThrowDuplicateObjectExceptionWrongEmailTest() {
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "sidor@gmail.com", "Password1", "Password1",
-                "df123456", "USA", LocalDate.of(2018, 3, 8));
-        assertThrows(DuplicateObjectException.class,
-                () -> userService.save(registrationRequestDto));
-    }
-
-    @Test
-    @DisplayName("Fail create new user (throw DuplicateObjectException - wrong phone number)")
-    void saveThrowDuplicateObjectExceptionWrongPhoneTest() {
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "965467834", "semenov@gmail.com", "Password1", "Password1",
-                "df123456", "USA", LocalDate.of(2018, 3, 8));
-        assertThrows(DuplicateObjectException.class,
-                () -> userService.save(registrationRequestDto));
-    }
-
-    @Test
-    @DisplayName("Fail create new user (throw DuplicateObjectException - wrong passport)")
-    void saveThrowDuplicateObjectExceptionWrongPassportTest() {
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
-                "bb345678", "USA", LocalDate.of(2018, 3, 8));
-        assertThrows(DuplicateObjectException.class,
-                () -> userService.save(registrationRequestDto));
-    }
-
-    @Test
-    @DisplayName("Fail create new user (throw NotEnoughInformationException - not all information for creating passport)")
-    void saveThrowNotEnoughInformationExceptionTest() {
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
-                "df123456", null, LocalDate.of(2018, 3, 8));
-        assertThrows(NotEnoughInformationException.class,
-                () -> userService.save(registrationRequestDto));
-    }*/
 
     @Test
     @DisplayName("Successful find user by id")
