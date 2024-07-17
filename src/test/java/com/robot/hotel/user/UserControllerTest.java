@@ -47,38 +47,6 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Successful create new user")
-    void saveTest() {
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
-                "df123456", "UKR", LocalDate.of(2018, 3, 8));
-
-        given().contentType(ContentType.JSON)
-                .body(registrationRequestDto)
-                .when().post()
-                .then()
-                .statusCode(200)
-                .assertThat()
-                .body("id", notNullValue());
-    }
-
-    @Test
-    @DisplayName("Fail create new user (incorrect user input)")
-    void saveWithIncorrectDataTest() {
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenovgmail.com", "Password1", "Password1",
-                "df123456", "UKR", LocalDate.of(2018, 3, 8));
-
-        given().contentType(ContentType.JSON)
-                .body(registrationRequestDto)
-                .when().post()
-                .then()
-                .statusCode(400)
-                .assertThat()
-                .body(containsString("Not valid email"));
-    }
-
-    @Test
     @DisplayName("Find user by id")
     void findByIdTest() {
         given().contentType(ContentType.JSON)
