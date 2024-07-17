@@ -3,7 +3,7 @@ package com.robot.hotel.user;
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
-import com.robot.hotel.user.dto.UserRequest;
+import com.robot.hotel.user.dto.RegistrationRequestDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,12 +49,12 @@ class UserControllerTest {
     @Test
     @DisplayName("Successful create new user")
     void saveTest() {
-        UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
+        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
                 "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
-                .body(userRequest)
+                .body(registrationRequestDto)
                 .when().post()
                 .then()
                 .statusCode(200)
@@ -65,12 +65,12 @@ class UserControllerTest {
     @Test
     @DisplayName("Fail create new user (incorrect user input)")
     void saveWithIncorrectDataTest() {
-        UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
+        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
                 "0953453434", "semenovgmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
-                .body(userRequest)
+                .body(registrationRequestDto)
                 .when().post()
                 .then()
                 .statusCode(400)
@@ -105,12 +105,12 @@ class UserControllerTest {
     @Test
     @DisplayName("Successful update user")
     void updateTest() {
-        UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
+        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
                 "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
-                .body(userRequest)
+                .body(registrationRequestDto)
                 .pathParam("id", testDBUtils.getUserIdByEmail("kozlov@gmail.com"))
                 .when().put("/{id}")
                 .then()
@@ -120,12 +120,12 @@ class UserControllerTest {
     @Test
     @DisplayName("Fail update user (incorrect user input)")
     void updateWithIncorrectDataTest() {
-        UserRequest userRequest = new UserRequest("dmitro", "semenov", "+1",
+        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
                 "0953453434", "semenovgmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
-                .body(userRequest)
+                .body(registrationRequestDto)
                 .pathParam("id", testDBUtils.getUserIdByEmail("sidor@gmail.com"))
                 .when().put("/{id}")
                 .then()

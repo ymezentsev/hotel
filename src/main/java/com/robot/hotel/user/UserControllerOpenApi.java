@@ -1,7 +1,7 @@
 package com.robot.hotel.user;
 
+import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
-import com.robot.hotel.user.dto.UserRequest;
 import com.robot.hotel.user.dto.UserSearchParameters;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,29 +27,6 @@ public interface UserControllerOpenApi {
                     description = "Successfully fetched all users")
     })
     Page<UserDto> findAll(Pageable pageable);
-
-    @Operation(summary = "Create new user")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "User successfully created",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema =
-                                    @Schema(implementation = UserRequest.class))
-                    }),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "Such user is already exists"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Such phone code is not exists"),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "There is not enough information to save user's passport")
-    })
-    UserDto save(@Valid @RequestBody UserRequest userRequest);
 
     @Operation(summary = "Get user by id")
     @ApiResponses(value = {
@@ -84,7 +61,7 @@ public interface UserControllerOpenApi {
                             @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema =
-                                    @Schema(implementation = UserRequest.class))
+                                    @Schema(implementation = RegistrationRequestDto.class))
                     }),
             @ApiResponse(
                     responseCode = "409",
@@ -96,7 +73,7 @@ public interface UserControllerOpenApi {
                     responseCode = "404",
                     description = "Such phone code is not exists")
     })
-    void update(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest);
+    void update(@PathVariable Long id, @Valid @RequestBody RegistrationRequestDto registrationRequestDto);
 
     @Operation(summary = "Delete user")
     @ApiResponses(value = {

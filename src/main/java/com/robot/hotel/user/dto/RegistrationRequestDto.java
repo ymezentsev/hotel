@@ -21,7 +21,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Dto for create and update user")
-public class UserRequest {
+public class RegistrationRequestDto {
     @NotBlank(message = "Firstname is required")
     @Size(min = 2, max = 20, message = "Firstname's length must be from 2 to 20 characters long")
     @Pattern(regexp = "[A-zА-яҐЄІЇґєії']{2,20}", message = "Firstname should contains only letters")

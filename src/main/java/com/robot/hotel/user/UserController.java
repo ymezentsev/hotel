@@ -1,7 +1,7 @@
 package com.robot.hotel.user;
 
 import com.robot.hotel.user.dto.UserDto;
-import com.robot.hotel.user.dto.UserRequest;
+import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +20,6 @@ public class UserController implements UserControllerOpenApi {
         return userService.findAll(pageable);
     }
 
-    @PostMapping()
-    public UserDto save(@Valid @RequestBody UserRequest userRequest) {
-        return userService.save(userRequest);
-    }
-
     @GetMapping(value = "/{id}")
     public UserDto findById(@PathVariable Long id) {
         return userService.findById(id);
@@ -36,8 +31,8 @@ public class UserController implements UserControllerOpenApi {
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest) {
-        userService.update(id, userRequest);
+    public void update(@PathVariable Long id, @Valid @RequestBody RegistrationRequestDto registrationRequestDto) {
+        userService.update(id, registrationRequestDto);
     }
 
     @DeleteMapping("/{id}")
