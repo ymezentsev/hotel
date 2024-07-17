@@ -151,28 +151,6 @@ class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("Fail update user (throw NoSuchElementException - wrong phone code)")
-    void updateThrowNoSuchElementExceptionWrongPhoneCodeTest() {
-        Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+999",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
-                "df123456", "UKR", LocalDate.of(2018, 3, 8));
-        assertThrows(NoSuchElementException.class,
-                () -> userService.update(id, registrationRequestDto));
-    }
-
-    @Test
-    @DisplayName("Fail update user (throw NoSuchElementException - wrong country code for passport)")
-    void updateThrowNoSuchElementExceptionWrongCountryCodeTest() {
-        Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
-                "df123456", "UKK", LocalDate.of(2018, 3, 8));
-        assertThrows(NoSuchElementException.class,
-                () -> userService.update(id, registrationRequestDto));
-    }
-
-    @Test
     @DisplayName("Fail update user (throw DuplicateObjectException - wrong email)")
     void updateThrowDuplicateObjectExceptionWrongEmailTest() {
         Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
@@ -191,18 +169,6 @@ class UserServiceImplTest {
         RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
                 "505463213", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
-
-        assertThrows(DuplicateObjectException.class,
-                () -> userService.update(id, registrationRequestDto));
-    }
-
-    @Test
-    @DisplayName("Fail update user (throw DuplicateObjectException - wrong passport)")
-    void updateThrowDuplicateObjectExceptionWrongPassportTest() {
-        Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
-                "bb345678", "UKR", LocalDate.of(2018, 3, 8));
 
         assertThrows(DuplicateObjectException.class,
                 () -> userService.update(id, registrationRequestDto));

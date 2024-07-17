@@ -1,10 +1,12 @@
 package com.robot.hotel.user.passport;
 
 import com.robot.hotel.ContainerConfiguration;
+import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEnoughInformationException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,15 @@ class PassportServiceImplTest {
     PassportService passportService;
 
     @Autowired
+    DBInitializer dbInitializer;
+
+    @Autowired
     TestDBUtils testDBUtils;
+
+    @BeforeEach
+    void setUp() {
+        dbInitializer.populateDB();
+    }
 
     @Test
     @DisplayName("Successful create new passport")
