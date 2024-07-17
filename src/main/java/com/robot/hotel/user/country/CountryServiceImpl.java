@@ -10,13 +10,13 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class CountryServiceImpl implements CountryService{
     private final CountryRepository countryRepository;
-    private static final String TEL_CODE_IS_NOT_EXISTS = "Such phone code is not exists";
+    private static final String PHONE_CODE_IS_NOT_EXISTS = "Such phone code is not exists";
 
     @Override
-    public Country getCountryFromTelCode(String telCode) {
-        List<Country> countries = countryRepository.findByPhoneCode(telCode);
+    public Country getCountryFromPhoneCode(String phoneCode) {
+        List<Country> countries = countryRepository.findByPhoneCode(phoneCode);
         if (countries.isEmpty()) {
-            throw new NoSuchElementException(TEL_CODE_IS_NOT_EXISTS);
+            throw new NoSuchElementException(PHONE_CODE_IS_NOT_EXISTS);
         }
         return countries.get(0);
     }
