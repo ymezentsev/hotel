@@ -119,6 +119,7 @@ public class DBInitializer {
                 .password(password)
                 .role(role)
                 .passport(passport)
+                .isEnabled(true)
                 .build());
     }
 
