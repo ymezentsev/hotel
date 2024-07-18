@@ -36,6 +36,7 @@ create table IF NOT EXISTS users(
     password VARCHAR(100) not null,
     role VARCHAR(10) not null default 'USER',
 	passport_id bigint,
+	is_enabled BOOLEAN not null,
 	foreign key (passport_id) references passport (id),
 	foreign key (phone_country_code) references country (country_code)
 );

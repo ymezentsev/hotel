@@ -1,2 +1,2 @@
-INSERT INTO users (first_name, last_name, phone_country_code, phone_number, email, password, role, passport_id)
-VALUES  ('admin', 'admin', 'UKR', '991111111', 'admin@gmail.com', 'User1User1', 'ADMIN', NULL);
+INSERT INTO users (first_name, last_name, phone_country_code, phone_number, email, password, role, passport_id, is_enabled)
+VALUES  ('admin', 'admin', 'UKR', '991111111', 'admin@gmail.com', 'User1User1', 'ADMIN', NULL, true);
