@@ -18,8 +18,8 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     private final RoomTypeRepository roomTypeRepository;
     private final RoomTypeMapper roomTypeMapper;
 
-    private static final String TYPE_IS_ALREADY_EXISTS = "Such type of room is already exists";
-    private static final String TYPE_IS_NOT_EXISTS = "Such type of room is not exists";
+    private static final String TYPE_IS_ALREADY_EXISTS = "Such type of room already exists";
+    private static final String TYPE_IS_NOT_EXISTS = "Such type of room not exists";
     private static final String ROOMS_OF_SUCH_TYPE_ARE_EXISTS =
             "There are rooms of this type at hotel. At first delete rooms";
     private static final String SUCCESSFUL_ACTION_WITH_ROOM_TYPE = "Successful %s room type with id: {}";

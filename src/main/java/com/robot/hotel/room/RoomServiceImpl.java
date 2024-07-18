@@ -31,10 +31,10 @@ public class RoomServiceImpl implements RoomService {
     private final RoomMapper roomMapper;
     private final SpecificationBuilder<Room> specificationBuilder;
 
-    private static final String NUMBER_IS_ALREADY_EXISTS = "Such number is already exists";
+    private static final String NUMBER_IS_ALREADY_EXISTS = "Such number already exists";
     private static final String CHECK_OUT_LESS_THAN_CHECK_IN_DATE = "The check out date must be after check in date";
-    private static final String ROOM_IS_NOT_EXISTS = "Such room is not exists";
-    private static final String TYPE_IS_NOT_EXISTS = "Such type of room is not exists";
+    private static final String ROOM_IS_NOT_EXISTS = "Such room not exists";
+    private static final String TYPE_IS_NOT_EXISTS = "Such type of room not exists";
     private static final String RESERVATIONS_FOR_THIS_ROOM_ARE_EXISTS =
             "There are reservations for this room. At first delete reservations";
     private static final String SUCCESSFUL_ACTION_WITH_ROOM = "Successful %s room with id: {}";

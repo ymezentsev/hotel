@@ -41,9 +41,9 @@ public class ReservationServiceImpl implements ReservationService {
     @Value("${reservation.opening.time.in.days}")
     private int reservationOpeningTimeInDays;
 
-    private static final String RESERVATION_IS_NOT_EXISTS = "Such reservation is not exists";
-    private static final String ROOM_IS_NOT_EXISTS = "Such room is not exists";
-    private static final String USER_IS_NOT_EXISTS = "Such user is not exists";
+    private static final String RESERVATION_IS_NOT_EXISTS = "Such reservation not exists";
+    private static final String ROOM_IS_NOT_EXISTS = "Such room not exists";
+    private static final String USER_IS_NOT_EXISTS = "Such user not exists";
     private static final String CHECK_OUT_LESS_THAN_CHECK_IN_DATE = "The check out date must be after check in date";
     private static final String TOO_LONG_RESERVATION = "You can't reserve room for more than %s days";
     private static final String TOO_EARLY_RESERVATION = "Reservation of rooms opens %s days in advance";
