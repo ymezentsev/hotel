@@ -92,4 +92,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), e.getMessage()),
                 HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(FailedToSendEmailException.class)
+    public ResponseEntity<AppError> catchFailedToSendEmailException(FailedToSendEmailException e) {
+        log.error(e.getMessage(), e);
+        return new ResponseEntity<>(new AppError(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                LocalDateTime.now(),
+                e.getMessage()),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
