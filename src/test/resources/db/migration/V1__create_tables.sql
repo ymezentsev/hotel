@@ -1,57 +1,77 @@
-create table IF NOT EXISTS country(
-	country_code varchar(3) primary key,
-    country_name varchar(60) unique not null,
-    phone_code varchar(5) not null
+CREATE TABLE IF NOT EXISTS country (
+	country_code VARCHAR(3) PRIMARY KEY,
+    country_name VARCHAR(60) UNIQUE NOT NULL,
+    phone_code VARCHAR(5) NOT NULL
 );
 
-create table IF NOT EXISTS passport(
-	id bigint primary key auto_increment,
-    serial_number varchar(12) unique not null,
-    country_code varchar(3) not null,
-    issue_date date not null,
-    foreign key (country_code) references country (country_code)
+CREATE TABLE IF NOT EXISTS passport (
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    serial_number VARCHAR(12) UNIQUE NOT NULL,
+    country_code VARCHAR(3) NOT NULL,
+    issue_date DATE NOT NULL,
+    FOREIGN KEY (country_code) REFERENCES country (country_code)
 );
 
-create table IF NOT EXISTS room_type(
-	id bigint primary key auto_increment,
-    type varchar(20) unique not null
+CREATE TABLE IF NOT EXISTS room_type (
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    type VARCHAR(20) UNIQUE NOT NULL
 );
 
-create table IF NOT EXISTS room(
-	id bigint primary key auto_increment,
-    number varchar(20) unique not null,
-    price decimal(10,2) not null,
-    max_count_of_guests int not null,
-    room_type_id bigint not null,
-    foreign key (room_type_id) references room_type (id)
+CREATE TABLE IF NOT EXISTS room (
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    number VARCHAR(20) UNIQUE NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    max_count_of_guests INT NOT NULL,
+    room_type_id BIGINT NOT NULL,
+    FOREIGN KEY (room_type_id) REFERENCES room_type (id)
 );
 
-create table IF NOT EXISTS users(
-	id bigint primary key auto_increment,
-    first_name varchar(20) not null,
-	last_name varchar(20) not null,
-	phone_country_code varchar(3) not null,
-	phone_number varchar(12) unique not null,
-    email varchar(50) unique not null,
-    password VARCHAR(100) not null,
-    role VARCHAR(10) not null default 'USER',
-	passport_id bigint,
-	is_enabled BOOLEAN not null,
-	foreign key (passport_id) references passport (id),
-	foreign key (phone_country_code) references country (country_code)
+CREATE TABLE IF NOT EXISTS users (
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(20) NOT NULL,
+	last_name VARCHAR(20) NOT NULL,
+	phone_country_code VARCHAR(3) NOT NULL,
+	phone_number VARCHAR(12) UNIQUE NOT NULL,
+    email VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    role VARCHAR(10) NOT NULL DEFAULT 'USER',
+	passport_id BIGINT,
+	is_enabled BOOLEAN NOT NULL,
+	FOREIGN KEY (passport_id) REFERENCES passport (id),
+	FOREIGN KEY (phone_country_code) REFERENCES country (country_code)
 );
 
-create table IF NOT EXISTS reservation(
-	id bigint primary key auto_increment,
-    room_id bigint not null,
-	check_in_date date not null,
-	check_out_date date not null,
-	foreign key (room_id) references room (id)
+CREATE TABLE IF NOT EXISTS reservation (
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    room_id bigint NOT NULL,
+	check_in_date DATE NOT NULL,
+	check_out_date DATE NOT NULL,
+	FOREIGN KEY (room_id) REFERENCES room (id)
 );
 
-create table IF NOT EXISTS reservation_user(
-	reservation_id bigint not null,
-    user_id bigint not null,
-	foreign key (reservation_id) references reservation (id),
-    foreign key (user_id) references users (id)
+CREATE TABLE IF NOT EXISTS reservation_user (
+	reservation_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+	FOREIGN KEY (reservation_id) REFERENCES reservation (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
+CREATE TABLE IF NOT EXISTS confirmation_token (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    confirmed_at TIMESTAMP,
+    user_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS forgot_password_token (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    confirmed_at TIMESTAMP,
+    user_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
