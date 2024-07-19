@@ -4,7 +4,7 @@ import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEnoughInformationException;
 import com.robot.hotel.user.User;
 import com.robot.hotel.user.UserRepository;
-import com.robot.hotel.user.country.CountryRepository;
+import com.robot.hotel.country.CountryRepository;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

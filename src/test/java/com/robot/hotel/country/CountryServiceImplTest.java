@@ -1,6 +1,7 @@
-package com.robot.hotel.user.country;
+package com.robot.hotel.country;
 
 import com.robot.hotel.ContainerConfiguration;
+import com.robot.hotel.country.CountryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

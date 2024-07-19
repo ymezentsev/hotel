@@ -1,4 +1,4 @@
-package com.robot.hotel.user.country;
+package com.robot.hotel.country;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.robot.hotel.user.country;
+package com.robot.hotel.country;
 
 import com.robot.hotel.user.passport.Passport;
 import com.robot.hotel.user.User;

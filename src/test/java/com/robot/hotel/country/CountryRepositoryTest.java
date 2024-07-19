@@ -1,6 +1,7 @@
-package com.robot.hotel.user.country;
+package com.robot.hotel.country;
 
 import com.robot.hotel.ContainerConfiguration;
+import com.robot.hotel.country.CountryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;

@@ -9,7 +9,7 @@ import com.robot.hotel.roomtype.RoomTypeRepository;
 import com.robot.hotel.user.Role;
 import com.robot.hotel.user.User;
 import com.robot.hotel.user.UserRepository;
-import com.robot.hotel.user.country.CountryRepository;
+import com.robot.hotel.country.CountryRepository;
 import com.robot.hotel.user.passport.Passport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
