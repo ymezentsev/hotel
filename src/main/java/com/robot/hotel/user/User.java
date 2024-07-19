@@ -10,10 +10,10 @@ import java.util.Set;
 
 @Data
 @Builder
+@Entity
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
-@Entity()
 @EqualsAndHashCode(exclude = {"country", "passport", "reservations"})
 public class User {
     @Id
