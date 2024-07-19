@@ -6,7 +6,9 @@ import com.robot.hotel.user.User;
 public interface ConfirmationTokenService {
     String saveConfirmationToken(ConfirmationToken token);
 
-    ConfirmationToken getToken(String token);
+    ConfirmationToken getConfirmationToken(String token);
 
-    ConfirmationToken generateToken(User user);
+    ConfirmationToken generateConfirmationToken(User user);
+
+    void validateConfirmationToken(String token);
 }

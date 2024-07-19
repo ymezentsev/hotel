@@ -1,5 +1,6 @@
 package com.robot.hotel.user.service;
 
+import com.robot.hotel.exception.ConfirmationTokenException;
 import com.robot.hotel.user.ConfirmationToken;
 import com.robot.hotel.user.ConfirmationTokenRepository;
 import com.robot.hotel.user.User;
@@ -17,6 +18,8 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
 
     private static final String TOKEN_NOT_FOUND = "Token %s not found";
+    private static final String EMAIL_ALREADY_CONFIRMED = "Email %s is already confirmed";
+    private static final String TOKEN_EXPIRED = "Token %s has expired";
 
     @Value("${email.confirmation.token.lifetime}")
     private Long tokenLifetime;
@@ -27,19 +30,33 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
     }
 
     @Override
-    public ConfirmationToken getToken(String token) {
+    public ConfirmationToken getConfirmationToken(String token) {
         return confirmationTokenRepository
                 .findByToken(token)
                 .orElseThrow(() -> new NoSuchElementException(String.format(TOKEN_NOT_FOUND, token)));
     }
 
     @Override
-    public ConfirmationToken generateToken(User user) {
+    public ConfirmationToken generateConfirmationToken(User user) {
         return ConfirmationToken.builder()
                 .token(UUID.randomUUID().toString())
                 .createdAt(LocalDateTime.now())
                 .expiresAt(LocalDateTime.now().plusMinutes(tokenLifetime))
                 .user(user)
                 .build();
+    }
+
+    @Override
+    public void validateConfirmationToken(String token) {
+        ConfirmationToken confirmationToken = getConfirmationToken(token);
+
+        if (confirmationToken.getConfirmedAt() != null) {
+            throw new ConfirmationTokenException(String.format(EMAIL_ALREADY_CONFIRMED,
+                    confirmationToken.getUser().getEmail()));
+        }
+
+        if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new ConfirmationTokenException(String.format(TOKEN_EXPIRED, token));
+        }
     }
 }
