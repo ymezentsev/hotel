@@ -1,4 +1,4 @@
-package com.robot.hotel.user;
+package com.robot.hotel.user.controller;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;

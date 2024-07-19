@@ -1,4 +1,4 @@
-package com.robot.hotel.user;
+package com.robot.hotel.user.repository;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.user.repository.UserRepository;

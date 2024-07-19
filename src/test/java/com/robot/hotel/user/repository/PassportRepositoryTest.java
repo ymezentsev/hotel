@@ -1,4 +1,4 @@
-package com.robot.hotel.user.passport;
+package com.robot.hotel.user.repository;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.user.repository.PassportRepository;
