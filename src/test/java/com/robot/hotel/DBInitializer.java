@@ -1,17 +1,18 @@
 package com.robot.hotel;
 
+import com.robot.hotel.country.CountryRepository;
 import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.room.Room;
 import com.robot.hotel.room.RoomRepository;
 import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
+import com.robot.hotel.user.model.Passport;
 import com.robot.hotel.user.model.Role;
 import com.robot.hotel.user.model.User;
+import com.robot.hotel.user.repository.ConfirmationTokenRepository;
 import com.robot.hotel.user.repository.UserRepository;
-import com.robot.hotel.country.CountryRepository;
-import com.robot.hotel.user.model.Passport;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,24 +21,18 @@ import java.util.Collections;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class DBInitializer {
-    @Autowired
-    RoomTypeRepository roomTypeRepository;
-
-    @Autowired
-    RoomRepository roomRepository;
-
-    @Autowired
-    ReservationRepository reservationRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    CountryRepository countryRepository;
+    private final RoomTypeRepository roomTypeRepository;
+    private final RoomRepository roomRepository;
+    private final ReservationRepository reservationRepository;
+    private final UserRepository userRepository;
+    private final CountryRepository countryRepository;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
 
     public void populateDB() {
         reservationRepository.deleteAll();
+        confirmationTokenRepository.deleteAll();
         userRepository.deleteAll();
         roomRepository.deleteAll();
         roomTypeRepository.deleteAll();
