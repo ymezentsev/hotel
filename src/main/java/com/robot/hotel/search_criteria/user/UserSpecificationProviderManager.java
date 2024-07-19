@@ -2,7 +2,7 @@ package com.robot.hotel.search_criteria.user;
 
 import com.robot.hotel.search_criteria.SpecificationProvider;
 import com.robot.hotel.search_criteria.SpecificationProviderManager;
-import com.robot.hotel.user.User;
+import com.robot.hotel.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

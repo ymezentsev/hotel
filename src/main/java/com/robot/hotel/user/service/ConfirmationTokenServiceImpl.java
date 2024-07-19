@@ -1,9 +1,9 @@
 package com.robot.hotel.user.service;
 
 import com.robot.hotel.exception.ConfirmationTokenException;
-import com.robot.hotel.user.ConfirmationToken;
-import com.robot.hotel.user.ConfirmationTokenRepository;
-import com.robot.hotel.user.User;
+import com.robot.hotel.user.model.ConfirmationToken;
+import com.robot.hotel.user.repository.ConfirmationTokenRepository;
+import com.robot.hotel.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

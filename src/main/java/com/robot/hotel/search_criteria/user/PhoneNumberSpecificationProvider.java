@@ -1,7 +1,7 @@
 package com.robot.hotel.search_criteria.user;
 
 import com.robot.hotel.search_criteria.SpecificationProvider;
-import com.robot.hotel.user.User;
+import com.robot.hotel.user.model.User;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;

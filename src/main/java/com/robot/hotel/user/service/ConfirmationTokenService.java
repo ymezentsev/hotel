@@ -1,7 +1,7 @@
 package com.robot.hotel.user.service;
 
-import com.robot.hotel.user.ConfirmationToken;
-import com.robot.hotel.user.User;
+import com.robot.hotel.user.model.ConfirmationToken;
+import com.robot.hotel.user.model.User;
 
 public interface ConfirmationTokenService {
     String saveConfirmationToken(ConfirmationToken token);

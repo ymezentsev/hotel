@@ -1,5 +1,6 @@
-package com.robot.hotel.user;
+package com.robot.hotel.user.repository;
 
+import com.robot.hotel.user.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

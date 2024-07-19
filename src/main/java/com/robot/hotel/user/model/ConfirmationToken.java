@@ -1,5 +1,6 @@
-package com.robot.hotel.user;
+package com.robot.hotel.user.model;
 
+import com.robot.hotel.user.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,9 +1,11 @@
-package com.robot.hotel.user.passport;
+package com.robot.hotel.user.service;
 
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEnoughInformationException;
-import com.robot.hotel.user.User;
-import com.robot.hotel.user.UserRepository;
+import com.robot.hotel.user.model.Passport;
+import com.robot.hotel.user.model.User;
+import com.robot.hotel.user.repository.PassportRepository;
+import com.robot.hotel.user.repository.UserRepository;
 import com.robot.hotel.country.CountryRepository;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import lombok.RequiredArgsConstructor;

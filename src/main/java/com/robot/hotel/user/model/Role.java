@@ -1,4 +1,4 @@
-package com.robot.hotel.user;
+package com.robot.hotel.user.model;
 
 public enum Role {
     USER,

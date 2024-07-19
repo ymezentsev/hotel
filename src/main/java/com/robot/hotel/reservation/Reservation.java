@@ -1,7 +1,7 @@
 package com.robot.hotel.reservation;
 
 import com.robot.hotel.room.Room;
-import com.robot.hotel.user.User;
+import com.robot.hotel.user.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

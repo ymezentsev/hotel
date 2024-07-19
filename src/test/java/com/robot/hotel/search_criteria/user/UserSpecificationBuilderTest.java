@@ -1,7 +1,7 @@
 package com.robot.hotel.search_criteria.user;
 
 import com.robot.hotel.ContainerConfiguration;
-import com.robot.hotel.user.User;
+import com.robot.hotel.user.model.User;
 import com.robot.hotel.user.dto.UserSearchParameters;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

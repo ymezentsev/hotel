@@ -3,7 +3,7 @@ package com.robot.hotel.search_criteria.user;
 import com.robot.hotel.room.dto.RoomSearchParameters;
 import com.robot.hotel.search_criteria.SpecificationBuilder;
 import com.robot.hotel.search_criteria.SpecificationProviderManager;
-import com.robot.hotel.user.User;
+import com.robot.hotel.user.model.User;
 import com.robot.hotel.user.dto.UserSearchParameters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;

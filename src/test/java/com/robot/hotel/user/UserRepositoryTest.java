@@ -1,6 +1,7 @@
 package com.robot.hotel.user;
 
 import com.robot.hotel.ContainerConfiguration;
+import com.robot.hotel.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;

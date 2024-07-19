@@ -1,8 +1,8 @@
-package com.robot.hotel.user;
+package com.robot.hotel.user.mapper;
 
 import com.robot.hotel.config.MapperConfig;
 import com.robot.hotel.user.dto.UserDtoWithoutReservation;
-import com.robot.hotel.user.passport.PassportMapper;
+import com.robot.hotel.user.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

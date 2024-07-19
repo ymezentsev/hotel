@@ -1,8 +1,9 @@
-package com.robot.hotel.user;
+package com.robot.hotel.user.controller;
 
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

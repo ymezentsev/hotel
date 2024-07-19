@@ -4,7 +4,7 @@ import com.robot.hotel.config.MapperConfig;
 import com.robot.hotel.reservation.dto.ReservationDto;
 import com.robot.hotel.reservation.dto.ReservationDtoWithoutUserInfo;
 import com.robot.hotel.room.RoomMapper;
-import com.robot.hotel.user.UserWithoutReservationsMapper;
+import com.robot.hotel.user.mapper.UserWithoutReservationsMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

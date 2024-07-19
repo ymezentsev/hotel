@@ -1,6 +1,7 @@
 package com.robot.hotel.user.passport;
 
 import com.robot.hotel.ContainerConfiguration;
+import com.robot.hotel.user.repository.PassportRepository;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
