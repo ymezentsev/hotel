@@ -39,3 +39,9 @@ VALUES  (1, 2),
         (4, 2),
         (4, 3),
         (4, 6);
+
+INSERT INTO confirmation_token (token, created_at, expires_at, confirmed_at, user_id)
+VALUES ('ec410724-03b8-427a-a579-cbe965a543c7', NOW(), NOW() + interval 15 minute, null, 1),
+('6453fbfb-8ff9-4dea-b8c9-3c6807410cdb', NOW(), NOW() + interval 15 minute, NOW(), 2),
+('6453fbfb-8ff9-4dea-b8c9-expired', NOW() - interval 30 minute, NOW() - interval 15 minute, null, 2),
+('6453fbfb-8ff9-4dea-b8c9-notConfirmed', NOW(), NOW() + interval 15 minute, null, 5);
