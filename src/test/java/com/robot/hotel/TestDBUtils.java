@@ -3,24 +3,19 @@ package com.robot.hotel;
 import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.room.RoomRepository;
 import com.robot.hotel.roomtype.RoomTypeRepository;
+import com.robot.hotel.user.model.User;
 import com.robot.hotel.user.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class TestDBUtils {
-    @Autowired
-    RoomTypeRepository roomTypeRepository;
-
-    @Autowired
-    RoomRepository roomRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    ReservationRepository reservationRepository;
+    private final RoomTypeRepository roomTypeRepository;
+    private final RoomRepository roomRepository;
+    private final UserRepository userRepository;
+    private final  ReservationRepository reservationRepository;
 
     public Long getRoomTypeIdByType(String type) {
         return roomTypeRepository.findByType(type)
@@ -38,6 +33,11 @@ public class TestDBUtils {
         return userRepository.findByEmail(email)
                 .orElseThrow()
                 .getId();
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow();
     }
 
     public Long getReservationIdByRoom(String number) {

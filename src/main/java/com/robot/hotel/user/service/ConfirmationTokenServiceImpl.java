@@ -1,6 +1,7 @@
 package com.robot.hotel.user.service;
 
-import com.robot.hotel.exception.ConfirmationTokenException;
+import com.robot.hotel.exception.ConfirmationTokenAlreadyConfirmedException;
+import com.robot.hotel.exception.ConfirmationTokenExpiredException;
 import com.robot.hotel.user.model.ConfirmationToken;
 import com.robot.hotel.user.repository.ConfirmationTokenRepository;
 import com.robot.hotel.user.model.User;
@@ -51,12 +52,12 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
         ConfirmationToken confirmationToken = getConfirmationToken(token);
 
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new ConfirmationTokenException(String.format(EMAIL_ALREADY_CONFIRMED,
+            throw new ConfirmationTokenAlreadyConfirmedException(String.format(EMAIL_ALREADY_CONFIRMED,
                     confirmationToken.getUser().getEmail()));
         }
 
         if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new ConfirmationTokenException(String.format(TOKEN_EXPIRED, token));
+            throw new ConfirmationTokenExpiredException(String.format(TOKEN_EXPIRED, token));
         }
     }
 }

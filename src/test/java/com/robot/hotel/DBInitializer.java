@@ -7,6 +7,7 @@ import com.robot.hotel.room.Room;
 import com.robot.hotel.room.RoomRepository;
 import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
+import com.robot.hotel.user.model.ConfirmationToken;
 import com.robot.hotel.user.model.Passport;
 import com.robot.hotel.user.model.Role;
 import com.robot.hotel.user.model.User;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Set;
 
@@ -39,6 +41,7 @@ public class DBInitializer {
         populateRoomTypeTable();
         populateRoomTable();
         populateUserTable();
+        populateConfirmationTokenTable();
         populateReservationTable();
     }
 
@@ -116,6 +119,41 @@ public class DBInitializer {
                 .passport(passport)
                 .isEnabled(true)
                 .build());
+    }
+
+
+    private void populateConfirmationTokenTable() {
+        User user1 = userRepository.findByEmail("admin@gmail.com").orElseThrow();
+        User user2 = userRepository.findByEmail("sidor@gmail.com").orElseThrow();
+        User user5 = userRepository.findByEmail("kozlov@gmail.com").orElseThrow();
+
+        confirmationTokenRepository.save(new ConfirmationToken(null,
+                "ec410724-03b8-427a-a579-cbe965a543c7",
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                null,
+                user1));
+
+        confirmationTokenRepository.save(new ConfirmationToken(null,
+                "6453fbfb-8ff9-4dea-b8c9-3c6807410cdb",
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                LocalDateTime.now(),
+                user2));
+
+        confirmationTokenRepository.save(new ConfirmationToken(null,
+                "6453fbfb-8ff9-4dea-b8c9-expired",
+                LocalDateTime.now().minusMinutes(30),
+                LocalDateTime.now().minusMinutes(15),
+                null,
+                user2));
+
+        confirmationTokenRepository.save(new ConfirmationToken(null,
+                "6453fbfb-8ff9-4dea-b8c9-notConfirmed",
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                null,
+                user5));
     }
 
     private void populateReservationTable() {
