@@ -101,4 +101,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 e.getMessage()),
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(ConfirmationTokenAlreadyConfirmedException.class)
+    public ResponseEntity<AppError> catchConfirmationTokenAlreadyConfirmedException(
+            ConfirmationTokenAlreadyConfirmedException e) {
+        log.error(e.getMessage(), e);
+        return new ResponseEntity<>(new AppError(HttpStatus.CONFLICT.value(),
+                LocalDateTime.now(),
+                e.getMessage()),
+                HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ConfirmationTokenExpiredException.class)
+    public ResponseEntity<AppError> catchConfirmationTokenExpiredException(ConfirmationTokenExpiredException e) {
+        log.error(e.getMessage(), e);
+        return new ResponseEntity<>(new AppError(HttpStatus.CONFLICT.value(),
+                LocalDateTime.now(),
+                e.getMessage()),
+                HttpStatus.CONFLICT);
+    }
 }
