@@ -126,7 +126,7 @@ public class DBInitializer {
     private void populateConfirmationTokenTable() {
         User user1 = userRepository.findByEmail("admin@gmail.com").orElseThrow();
         User user2 = userRepository.findByEmail("sidor@gmail.com").orElseThrow();
-        User user5 = userRepository.findByEmail("kozlov@gmail.com").orElseThrow();
+        User user6 = userRepository.findByEmail("nikola@gmail.com").orElseThrow();
 
         confirmationTokenRepository.save(new ConfirmationToken(null,
                 "ec410724-03b8-427a-a579-cbe965a543c7",
@@ -154,7 +154,7 @@ public class DBInitializer {
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(15),
                 null,
-                user5));
+                user6));
     }
 
     private void populateReservationTable() {

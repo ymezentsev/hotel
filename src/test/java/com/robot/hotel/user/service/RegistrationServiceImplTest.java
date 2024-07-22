@@ -2,6 +2,7 @@ package com.robot.hotel.user.service;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
+import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,13 @@ class RegistrationServiceImplTest {
     UserService userService;
 
     @Autowired
+    ConfirmationTokenService confirmationTokenService;
+
+    @Autowired
     DBInitializer dbInitializer;
+
+    @Autowired
+    TestDBUtils testUtils;
 
     @BeforeEach
     void setUp() {
@@ -32,8 +39,8 @@ class RegistrationServiceImplTest {
     }
 
     @Test
-    @DisplayName("Successful create new user with passport")
-    void saveWithPassportTest() {
+    @DisplayName("Successful register new user with passport")
+    void registerWithPassportTest() {
         RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
                 "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "usa", LocalDate.of(2018, 3, 8));
@@ -44,8 +51,8 @@ class RegistrationServiceImplTest {
     }
 
     @Test
-    @DisplayName("Successful create new user without passport")
-    void saveWithoutPassportTest() {
+    @DisplayName("Successful register new user without passport")
+    void registerWithoutPassportTest() {
         RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
                 "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 null, null, null);
@@ -56,8 +63,8 @@ class RegistrationServiceImplTest {
     }
 
     @Test
-    @DisplayName("Fail create new user (throw DuplicateObjectException - wrong email)")
-    void saveThrowDuplicateObjectExceptionWrongEmailTest() {
+    @DisplayName("Fail register new user (throw DuplicateObjectException - wrong email)")
+    void registerThrowDuplicateObjectExceptionWrongEmailTest() {
         RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
                 "0953453434", "sidor@gmail.com", "Password1", "Password1",
                 "df123456", "USA", LocalDate.of(2018, 3, 8));
@@ -66,12 +73,29 @@ class RegistrationServiceImplTest {
     }
 
     @Test
-    @DisplayName("Fail create new user (throw DuplicateObjectException - wrong phone number)")
-    void saveThrowDuplicateObjectExceptionWrongPhoneTest() {
+    @DisplayName("Fail register new user (throw DuplicateObjectException - wrong phone number)")
+    void registerThrowDuplicateObjectExceptionWrongPhoneTest() {
         RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
                 "965467834", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "USA", LocalDate.of(2018, 3, 8));
         assertThrows(DuplicateObjectException.class,
                 () -> registrationService.register(registrationRequestDto));
+    }
+
+    @Test
+    @DisplayName("Successful confirm token")
+    void confirmTokenTest() {
+        assertAll(
+                () -> assertFalse(testUtils.getUserByEmail("nikola@gmail.com").isEnabled()),
+                () -> assertNull(confirmationTokenService
+                        .getConfirmationToken("6453fbfb-8ff9-4dea-b8c9-notConfirmed").getConfirmedAt())
+        );
+
+        registrationService.confirmToken("6453fbfb-8ff9-4dea-b8c9-notConfirmed");
+        assertAll(
+                () -> assertTrue(testUtils.getUserByEmail("nikola@gmail.com").isEnabled()),
+                () -> assertNotNull(confirmationTokenService
+                        .getConfirmationToken("6453fbfb-8ff9-4dea-b8c9-notConfirmed").getConfirmedAt())
+        );
     }
 }
