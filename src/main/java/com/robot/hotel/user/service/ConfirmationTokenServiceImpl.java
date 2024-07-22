@@ -6,6 +6,7 @@ import com.robot.hotel.user.model.ConfirmationToken;
 import com.robot.hotel.user.repository.ConfirmationTokenRepository;
 import com.robot.hotel.user.model.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
@@ -39,12 +41,15 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
     @Override
     public ConfirmationToken generateConfirmationToken(User user) {
-        return ConfirmationToken.builder()
+        ConfirmationToken token = ConfirmationToken.builder()
                 .token(UUID.randomUUID().toString())
                 .createdAt(LocalDateTime.now())
                 .expiresAt(LocalDateTime.now().plusMinutes(tokenLifetime))
                 .user(user)
                 .build();
+
+        log.info("Confirmation token for user with email: {} has successful generated", user.getEmail());
+        return token;
     }
 
     @Override
@@ -59,5 +64,6 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
         if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new ConfirmationTokenExpiredException(String.format(TOKEN_EXPIRED, token));
         }
+        log.info("Confirmation token - {} has successful validated", token);
     }
 }
