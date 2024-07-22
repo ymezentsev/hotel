@@ -36,7 +36,7 @@ class AuthenticationControllerTest {
 
         given().contentType(ContentType.JSON)
                 .body(registrationRequestDto)
-                .when().post()
+                .when().post("/register")
                 .then()
                 .statusCode(200)
                 .assertThat()
@@ -52,7 +52,7 @@ class AuthenticationControllerTest {
 
         given().contentType(ContentType.JSON)
                 .body(registrationRequestDto)
-                .when().post()
+                .when().post("/register")
                 .then()
                 .statusCode(400)
                 .assertThat()
