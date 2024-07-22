@@ -77,23 +77,23 @@ public class DBInitializer {
         Passport passport3 = saveNewPassport("ba345863", "ITA",
                 LocalDate.of(2021, 2, 12));
 
-        saveNewUser("admin", "admin", "UKR",
-                "991111111", "admin@gmail.com", "User1User1", Role.ADMIN, null);
+        saveNewUser("admin", "admin", "UKR", "991111111",
+                "admin@gmail.com", "User1User1", Role.ADMIN, null, true);
 
-        saveNewUser("denis", "sidorov", "UKR",
-                "965467834", "sidor@gmail.com", "123", Role.USER, null);
+        saveNewUser("denis", "sidorov", "UKR", "965467834",
+                "sidor@gmail.com", "123", Role.USER, null, true);
 
-        saveNewUser("andriy", "sidorov", "UKR",
-                "954375647", "sidor_andr@gmail.com", "123", Role.USER, passport1);
+        saveNewUser("andriy", "sidorov", "UKR", "954375647",
+                "sidor_andr@gmail.com", "123", Role.USER, passport1, true);
 
-        saveNewUser("mark", "dmitrenko", "UKR",
-                "505463213", "dmitr@gmail.com", "123", Role.USER, passport2);
+        saveNewUser("mark", "dmitrenko", "UKR", "505463213",
+                "dmitr@gmail.com", "123", Role.USER, passport2, true);
 
-        saveNewUser("evgen", "kozlov", "UKR",
-                "964569034", "kozlov@gmail.com", "123", Role.MANAGER, null);
+        saveNewUser("evgen", "kozlov", "UKR", "964569034",
+                "kozlov@gmail.com", "123", Role.MANAGER, null, true);
 
-        saveNewUser("andriy", "nikolaenko", "ITA",
-                "0934560912", "nikola@gmail.com", "123", Role.USER, passport3);
+        saveNewUser("andriy", "nikolaenko", "ITA", "0934560912",
+                "nikola@gmail.com", "123", Role.USER, passport3, false);
     }
 
     private Passport saveNewPassport(String serialNumber, String country, LocalDate issueDate) {
@@ -107,7 +107,8 @@ public class DBInitializer {
     private void saveNewUser(String firstName, String lastName,
                              String country, String phoneNumber,
                              String email, String password,
-                             Role role, Passport passport) {
+                             Role role, Passport passport,
+                             Boolean isEnabled) {
         userRepository.save(User.builder()
                 .firstName(firstName)
                 .lastName(lastName)
@@ -117,7 +118,7 @@ public class DBInitializer {
                 .password(password)
                 .role(role)
                 .passport(passport)
-                .isEnabled(true)
+                .isEnabled(isEnabled)
                 .build());
     }
 

@@ -7,7 +7,7 @@ import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
-import com.robot.hotel.user.service.UserService;
+import com.robot.hotel.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -197,5 +197,18 @@ class UserServiceImplTest {
 
         assertThrows(NotEmptyObjectException.class,
                 () -> userService.deleteById(id));
+    }
+
+    @Test
+    @DisplayName("Enable user")
+    void enableUser() {
+        User user = testDBUtils.getUserByEmail("nikola@gmail.com");
+        assertAll(
+                () -> assertFalse(user.isEnabled()),
+                () -> {
+                    userService.enableUser(user);
+                    assertTrue(user.isEnabled());
+                }
+        );
     }
 }

@@ -22,7 +22,7 @@ VALUES  ('admin', 'admin', 'UKR', '991111111', 'admin@gmail.com', 'User1User1', 
         ('andriy', 'sidorov', 'UKR', '954375647', 'sidor_andr@gmail.com', '123', 'USER', 1, true),
         ('mark', 'dmitrenko', 'UKR', '505463213', 'dmitr@gmail.com', '123', 'USER', 2, true),
         ('evgen', 'kozlov', 'UKR', '964569034', 'kozlov@gmail.com', '123', 'MANAGER', NULL, true),
-        ('andriy', 'nikolaenko', 'ITA', '0934560912', 'nikola@gmail.com', '123', 'USER', 3, true);
+        ('andriy', 'nikolaenko', 'ITA', '0934560912', 'nikola@gmail.com', '123', 'USER', 3, false);
 
 INSERT INTO reservation (room_id, check_in_date, check_out_date)
 VALUES  (5, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 4 DAY)),

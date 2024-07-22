@@ -1,15 +1,17 @@
-package com.robot.hotel.user;
+package com.robot.hotel.user.service;
 
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.search_criteria.SpecificationBuilder;
-import com.robot.hotel.user.country.Country;
-import com.robot.hotel.user.country.CountryService;
+import com.robot.hotel.user.model.User;
+import com.robot.hotel.user.mapper.UserMapper;
+import com.robot.hotel.user.repository.UserRepository;
+import com.robot.hotel.country.Country;
+import com.robot.hotel.country.CountryService;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
-import com.robot.hotel.user.passport.Passport;
-import com.robot.hotel.user.passport.PassportService;
+import com.robot.hotel.user.model.Passport;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +33,8 @@ public class UserServiceImpl implements UserService {
     private final PassportService passportService;
     private final SpecificationBuilder<User> specificationBuilder;
 
-    private static final String USER_IS_ALREADY_EXISTS = "User with such %s is already exists";
-    private static final String USER_IS_NOT_EXISTS = "Such user is not exists";
+    private static final String USER_IS_ALREADY_EXISTS = "User with such %s already exists";
+    private static final String USER_IS_NOT_EXISTS = "Such user not exists";
     private static final String RESERVATIONS_FOR_THIS_USER_ARE_EXISTS =
             "This user has reservations. At first delete reservations";
     private static final String SUCCESSFUL_ACTION_WITH_USER = "Successful %s user with id: {}";
@@ -107,5 +109,11 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new NotEmptyObjectException(RESERVATIONS_FOR_THIS_USER_ARE_EXISTS);
         }
+    }
+
+    @Override
+    public void enableUser(User user) {
+        user.setEnabled(true);
+        userRepository.save(user);
     }
 }

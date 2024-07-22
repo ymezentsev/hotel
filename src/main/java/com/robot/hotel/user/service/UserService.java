@@ -1,8 +1,9 @@
-package com.robot.hotel.user;
+package com.robot.hotel.user.service;
 
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,4 +17,6 @@ public interface UserService {
     void update(Long userId, RegistrationRequestDto registrationRequestDto);
 
     void deleteById(Long id);
+
+    void enableUser(User user);
 }

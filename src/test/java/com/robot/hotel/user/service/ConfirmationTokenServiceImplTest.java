@@ -5,6 +5,7 @@ import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.ConfirmationTokenAlreadyConfirmedException;
 import com.robot.hotel.exception.ConfirmationTokenExpiredException;
+import com.robot.hotel.user.model.ConfirmationToken;
 import com.robot.hotel.user.repository.ConfirmationTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -73,21 +74,27 @@ class ConfirmationTokenServiceImplTest {
     @Test
     @DisplayName("Successful validate confirmation token")
     void validateConfirmationTokenTest() {
+        ConfirmationToken confirmationToken = confirmationTokenService
+                .getConfirmationToken("6453fbfb-8ff9-4dea-b8c9-notConfirmed");
         assertDoesNotThrow(() -> confirmationTokenService
-                .validateConfirmationToken("6453fbfb-8ff9-4dea-b8c9-notConfirmed"));
+                .validateConfirmationToken(confirmationToken));
     }
 
     @Test
     @DisplayName("Failed validate confirmation token (throw ConfirmationTokenAlreadyConfirmedException)")
     void validateConfirmationTokenAlreadyConfirmedExceptionTest() {
+        ConfirmationToken confirmationToken = confirmationTokenService
+                .getConfirmationToken("6453fbfb-8ff9-4dea-b8c9-3c6807410cdb");
         assertThrows(ConfirmationTokenAlreadyConfirmedException.class,
-                () -> confirmationTokenService.validateConfirmationToken("6453fbfb-8ff9-4dea-b8c9-3c6807410cdb"));
+                () -> confirmationTokenService.validateConfirmationToken(confirmationToken));
     }
 
     @Test
     @DisplayName("Failed validate confirmation token (throw ConfirmationTokenExpiredException)")
     void validateConfirmationTokenThrowConfirmationTokenExpiredExceptionTest() {
+        ConfirmationToken confirmationToken = confirmationTokenService
+                .getConfirmationToken("6453fbfb-8ff9-4dea-b8c9-expired");
         assertThrows(ConfirmationTokenExpiredException.class,
-                () -> confirmationTokenService.validateConfirmationToken("6453fbfb-8ff9-4dea-b8c9-expired"));
+                () -> confirmationTokenService.validateConfirmationToken(confirmationToken));
     }
 }

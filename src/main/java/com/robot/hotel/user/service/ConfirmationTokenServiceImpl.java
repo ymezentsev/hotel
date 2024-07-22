@@ -53,17 +53,15 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
     }
 
     @Override
-    public void validateConfirmationToken(String token) {
-        ConfirmationToken confirmationToken = getConfirmationToken(token);
-
+    public void validateConfirmationToken(ConfirmationToken confirmationToken) {
         if (confirmationToken.getConfirmedAt() != null) {
             throw new ConfirmationTokenAlreadyConfirmedException(String.format(EMAIL_ALREADY_CONFIRMED,
                     confirmationToken.getUser().getEmail()));
         }
 
         if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new ConfirmationTokenExpiredException(String.format(TOKEN_EXPIRED, token));
+            throw new ConfirmationTokenExpiredException(String.format(TOKEN_EXPIRED, confirmationToken.getToken()));
         }
-        log.info("Confirmation token - {} has successful validated", token);
+        log.info("Confirmation token - {} has successful validated", confirmationToken.getToken());
     }
 }

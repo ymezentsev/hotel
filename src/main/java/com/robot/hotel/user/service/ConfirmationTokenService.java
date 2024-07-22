@@ -10,5 +10,5 @@ public interface ConfirmationTokenService {
 
     ConfirmationToken generateConfirmationToken(User user);
 
-    void validateConfirmationToken(String token);
+    void validateConfirmationToken(ConfirmationToken confirmationToken);
 }
