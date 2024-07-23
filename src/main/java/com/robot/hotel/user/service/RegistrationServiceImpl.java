@@ -4,6 +4,7 @@ import com.robot.hotel.country.Country;
 import com.robot.hotel.country.CountryService;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.FailedToSendEmailException;
+import com.robot.hotel.user.EmailUtil;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.mapper.UserMapper;
@@ -90,6 +91,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public void sendConfirmationEmail(String email) {
+        log.debug("Sending confirmation email to: {}", email);
+
         User user = userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new NoSuchElementException(String.format(USER_IS_NOT_EXISTS, email.toLowerCase())));
 
@@ -100,10 +103,11 @@ public class RegistrationServiceImpl implements RegistrationService {
         ConfirmationToken confirmationToken = confirmationTokenService.generateConfirmationToken(user);
         String token = confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-/*        String link = backendBaseUrl + TOKEN_CONFIRMATION_URL + token;
+        String link = backendBaseUrl + TOKEN_CONFIRMATION_URL + token;
         emailSenderService.send(
                 user.getEmail().toLowerCase(),
                 EmailUtil.buildEmailTokenConfirmationMessage(user.getFirstName(), link),
-                EMAIL_SUBJECT);*/
+                EMAIL_SUBJECT);
+        log.info("Confirmation email sent successfully to: {}", email);
     }
 }
