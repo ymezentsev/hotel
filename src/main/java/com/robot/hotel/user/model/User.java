@@ -50,5 +50,5 @@ public class User {
     private Set<Reservation> reservations;
 
     @Column(name = "is_enabled", nullable = false)
-    private boolean isEnabled = false;
+    private boolean isEnabled;
 }

@@ -68,6 +68,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .role(Role.USER)
                 .passport(passport)
                 .reservations(Collections.emptySet())
+                .isEnabled(false)
                 .build();
 
         User savedUser = userRepository.save(newUser);
