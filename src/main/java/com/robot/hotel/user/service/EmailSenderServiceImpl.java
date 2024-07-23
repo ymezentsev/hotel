@@ -26,7 +26,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     @Async
     public void send(String to, String email, String subject) {
         try {
-            log.info("Sending letter to {}", email.toLowerCase());
+            log.info("Sending letter to {}", to.toLowerCase());
 
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, MAIL_ENCODING);
@@ -36,7 +36,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             helper.setFrom(sender);
             mailSender.send(message);
 
-            log.info("Successful sent letter to {}", email.toLowerCase());
+            log.info("Successful sent letter to {}", to.toLowerCase());
         } catch (MessagingException e) {
             throw new FailedToSendEmailException("Failed to send email " + e);
         }

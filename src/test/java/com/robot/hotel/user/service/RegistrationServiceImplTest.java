@@ -4,7 +4,9 @@ import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
+import com.robot.hotel.exception.FailedToSendEmailException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
+import com.robot.hotel.user.repository.ConfirmationTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,6 +29,9 @@ class RegistrationServiceImplTest {
 
     @Autowired
     ConfirmationTokenService confirmationTokenService;
+
+    @Autowired
+    ConfirmationTokenRepository confirmationTokenRepository;
 
     @Autowired
     DBInitializer dbInitializer;
@@ -97,5 +103,26 @@ class RegistrationServiceImplTest {
                 () -> assertNotNull(confirmationTokenService
                         .getConfirmationToken("6453fbfb-8ff9-4dea-b8c9-notConfirmed").getConfirmedAt())
         );
+    }
+
+    @Test
+    @DisplayName("Successful send confirmation email")
+    void sendConfirmationEmailTest() {
+        registrationService.sendConfirmationEmail("nikola@gmail.com");
+        assertEquals(5, confirmationTokenRepository.findAll().size());
+    }
+
+    @Test
+    @DisplayName("Failed send confirmation email (throws NoSuchElementException)")
+    void sendConfirmationEmailThrowsUserNotFoundExceptionTest() {
+        assertThrows(NoSuchElementException.class,
+                () -> registrationService.sendConfirmationEmail("newTest@mail"));
+    }
+
+    @Test
+    @DisplayName("Failed send confirmation email (throws FailedToSendEmailException)")
+    void sendConfirmationEmailThrowsFailedToSendEmailExceptionTest() {
+        assertThrows(FailedToSendEmailException.class,
+                () -> registrationService.sendConfirmationEmail("admin@gmail.com"));
     }
 }

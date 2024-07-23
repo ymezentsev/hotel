@@ -71,7 +71,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .build();
 
         User savedUser = userRepository.save(newUser);
-        log.info("Successful register user with id: {}", savedUser.getId());
+        log.info("Successful registered user with id: {}", savedUser.getId());
 
         sendConfirmationEmail(registrationRequestDto.getEmail());
         return userMapper.toDto(savedUser);
@@ -91,7 +91,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public void sendConfirmationEmail(String email) {
-        log.debug("Sending confirmation email to: {}", email);
+        log.info("Sending confirmation email to: {}", email);
 
         User user = userRepository.findByEmail(email.toLowerCase())
                 .orElseThrow(() -> new NoSuchElementException(String.format(USER_IS_NOT_EXISTS, email.toLowerCase())));
