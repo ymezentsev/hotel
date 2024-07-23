@@ -115,9 +115,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ConfirmationTokenExpiredException.class)
     public ResponseEntity<AppError> catchConfirmationTokenExpiredException(ConfirmationTokenExpiredException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new AppError(HttpStatus.CONFLICT.value(),
+        return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(),
                 LocalDateTime.now(),
                 e.getMessage()),
-                HttpStatus.CONFLICT);
+                HttpStatus.UNAUTHORIZED);
     }
 }

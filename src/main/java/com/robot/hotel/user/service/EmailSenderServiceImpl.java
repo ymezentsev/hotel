@@ -38,7 +38,6 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
             log.info("Successful sent letter to {}", email.toLowerCase());
         } catch (MessagingException e) {
-            log.error("Failed to send email", e);
             throw new FailedToSendEmailException("Failed to send email " + e);
         }
     }
