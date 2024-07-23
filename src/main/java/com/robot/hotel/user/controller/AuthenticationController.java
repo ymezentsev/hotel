@@ -25,7 +25,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/resend-email-confirmation")
-    public void resendConfirmationEmail(@RequestBody EmailRequestDto emailRequestDto) {
+    public void resendConfirmationEmail(@Valid @RequestBody EmailRequestDto emailRequestDto) {
         registrationService.sendConfirmationEmail(emailRequestDto.getEmail());
     }
 }

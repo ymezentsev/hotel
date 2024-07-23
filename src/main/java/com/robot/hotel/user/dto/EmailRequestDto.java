@@ -2,10 +2,14 @@ package com.robot.hotel.user.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Schema(description = "Dto for resend email confirmation")
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmailRequestDto {
 
     @NotBlank(message = "Email is required")
