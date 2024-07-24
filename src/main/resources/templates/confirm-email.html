@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Registration confirmation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style
+    ="text/css">
+    body {
+      font-family: calibri, 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    }
+    a.link {
+      border: solid 1px #000;
+      background-color: blue;
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      display: block;
+      text-align: center;
+      padding: 10px 0;
+    }
+    </style>
+</head>
+<body>
+
+<table align="center">
+    <tr>
+        <td style="text-align: center;">
+
+            <h1>Welcome to Hotel application, <b th:text="${name}">name</b> !</h1>
+            <h3>Thank you for registering on our website!</h3>
+            <h3>To complete the registration process and activate your account,
+                <br/>
+                please verify your email address by clicking the following link</h3>
+
+            <p style="text-align: center;">
+                <a class="link" href="#" th:href="${url}">Verify Email</a>
+            </p>
+
+            <h3>
+                Regards, <br/>
+                &emsp; <em>The Hotel application Team</em>
+            </h3>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

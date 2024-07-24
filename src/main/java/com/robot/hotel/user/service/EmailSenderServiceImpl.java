@@ -29,7 +29,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             log.info("Sending letter to {}", to.toLowerCase());
 
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, MAIL_ENCODING);
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, MAIL_ENCODING);
             helper.setText(email, true);
             helper.setTo(to);
             helper.setSubject(subject);

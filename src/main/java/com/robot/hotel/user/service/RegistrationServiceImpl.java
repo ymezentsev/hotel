@@ -4,7 +4,6 @@ import com.robot.hotel.country.Country;
 import com.robot.hotel.country.CountryService;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.FailedToSendEmailException;
-import com.robot.hotel.user.EmailUtil;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.mapper.UserMapper;
@@ -17,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -33,12 +34,14 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final PassportService passportService;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
+    private final TemplateEngine htmlTemplateEngine;
 
     private static final String USER_IS_ALREADY_EXISTS = "User with such %s already exists";
     private static final String USER_IS_NOT_EXISTS = "User with email %s not exists";
     private static final String EMAIL_IS_ALREADY_VERIFIED = "User email is already verified";
     private static final String TOKEN_CONFIRMATION_URL = "/auth/confirm?token=";
     private static final String EMAIL_SUBJECT = "Email Confirmation";
+    private static final String TEMPLATE_NAME = "confirm-email";
 
     @Value("${backend.base.url}")
     private String backendBaseUrl;
@@ -104,11 +107,19 @@ public class RegistrationServiceImpl implements RegistrationService {
         ConfirmationToken confirmationToken = confirmationTokenService.generateConfirmationToken(user);
         String token = confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        String link = backendBaseUrl + TOKEN_CONFIRMATION_URL + token;
         emailSenderService.send(
                 user.getEmail().toLowerCase(),
-                EmailUtil.buildEmailTokenConfirmationMessage(user.getFirstName(), link),
+                getEmailContent(user.getFirstName(), token),
                 EMAIL_SUBJECT);
         log.info("Confirmation email sent successfully to: {}", email);
+    }
+
+    private String getEmailContent(String name, String token) {
+        String link = backendBaseUrl + TOKEN_CONFIRMATION_URL + token;
+
+        Context ctx = new Context();
+        ctx.setVariable("name", name);
+        ctx.setVariable("url", link);
+        return htmlTemplateEngine.process(TEMPLATE_NAME, ctx);
     }
 }
