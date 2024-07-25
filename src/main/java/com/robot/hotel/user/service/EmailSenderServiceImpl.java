@@ -33,6 +33,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     @Value("${email.sender.login}")
     private String sender;
 
+    //TODO add test
     @Override
     @Async
     public void send(String to, String email, String subject) {
