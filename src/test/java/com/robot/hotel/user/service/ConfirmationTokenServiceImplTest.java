@@ -3,8 +3,8 @@ package com.robot.hotel.user.service;
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
-import com.robot.hotel.exception.ConfirmationTokenAlreadyConfirmedException;
-import com.robot.hotel.exception.ConfirmationTokenExpiredException;
+import com.robot.hotel.exception.TokenAlreadyConfirmedException;
+import com.robot.hotel.exception.TokenExpiredException;
 import com.robot.hotel.user.model.ConfirmationToken;
 import com.robot.hotel.user.repository.ConfirmationTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,7 +85,7 @@ class ConfirmationTokenServiceImplTest {
     void validateConfirmationTokenAlreadyConfirmedExceptionTest() {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getConfirmationToken("6453fbfb-8ff9-4dea-b8c9-3c6807410cdb");
-        assertThrows(ConfirmationTokenAlreadyConfirmedException.class,
+        assertThrows(TokenAlreadyConfirmedException.class,
                 () -> confirmationTokenService.validateConfirmationToken(confirmationToken));
     }
 
@@ -94,7 +94,7 @@ class ConfirmationTokenServiceImplTest {
     void validateConfirmationTokenThrowConfirmationTokenExpiredExceptionTest() {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getConfirmationToken("6453fbfb-8ff9-4dea-b8c9-expired");
-        assertThrows(ConfirmationTokenExpiredException.class,
+        assertThrows(TokenExpiredException.class,
                 () -> confirmationTokenService.validateConfirmationToken(confirmationToken));
     }
 }
