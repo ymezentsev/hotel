@@ -54,7 +54,6 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         }
     }
 
-    //todo add test
     @Override
     public String buildEmailContent(String name, String token, EmailSubject subject) {
         String link;
