@@ -7,10 +7,7 @@ import com.robot.hotel.exception.FailedToSendEmailException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.mapper.UserMapper;
-import com.robot.hotel.user.model.ConfirmationToken;
-import com.robot.hotel.user.model.Passport;
-import com.robot.hotel.user.model.Role;
-import com.robot.hotel.user.model.User;
+import com.robot.hotel.user.model.*;
 import com.robot.hotel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +32,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     private static final String USER_IS_ALREADY_EXISTS = "User with such %s already exists";
     private static final String USER_IS_NOT_EXISTS = "User with email %s not exists";
     private static final String EMAIL_IS_ALREADY_VERIFIED = "User email is already verified";
-    private static final String EMAIL_SUBJECT = "Email Confirmation";
 
     @Override
     public UserDto register(RegistrationRequestDto registrationRequestDto) {
@@ -100,8 +96,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         emailSenderService.send(
                 user.getEmail().toLowerCase(),
-                emailSenderService.buildEmailContent(user.getFirstName(), token),
-                EMAIL_SUBJECT);
+                emailSenderService.buildEmailContent(user.getFirstName(), token, EmailSubject.CONFIRM_EMAIL),
+                EmailSubject.CONFIRM_EMAIL.getSubject());
         log.info("Confirmation email sent successfully to: {}", email);
     }
 }

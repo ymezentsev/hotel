@@ -1,6 +1,7 @@
 package com.robot.hotel.user.service;
 
 import com.robot.hotel.exception.FailedToSendEmailException;
+import com.robot.hotel.user.model.EmailSubject;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,9 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
     private static final String MAIL_ENCODING = "utf-8";
     private static final String TOKEN_CONFIRMATION_EMAIL_URL = "/auth/confirm?token=";
+    private static final String TOKEN_RESET_PASSWORD_URL = "/users/reset-password?token=";
     private static final String TEMPLATE_FOR_CONFIRM_EMAIL = "confirm-email";
+    private static final String TEMPLATE_FOR_FORGOT_PASSWORD_EMAIL = "forgot-password-email";
 
     @Value("${backend.base.url}")
     private String backendBaseUrl;
@@ -50,13 +53,26 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         }
     }
 
+    //todo add test
     @Override
-    public String buildEmailContent(String name, String token) {
-        String link = backendBaseUrl + TOKEN_CONFIRMATION_EMAIL_URL + token;
+    public String buildEmailContent(String name, String token, EmailSubject subject) {
+        String link;
+        String template;
+        switch(subject) {
+            case CONFIRM_EMAIL -> {
+                link = backendBaseUrl + TOKEN_CONFIRMATION_EMAIL_URL + token;
+                template = TEMPLATE_FOR_CONFIRM_EMAIL;
+            }
+            case FORGOT_PASSWORD -> {
+                link = backendBaseUrl + TOKEN_RESET_PASSWORD_URL + token;
+                template = TEMPLATE_FOR_FORGOT_PASSWORD_EMAIL;
+            }
+            default -> throw new IllegalArgumentException("Wrong email subject");
+        }
 
         Context ctx = new Context();
         ctx.setVariable("name", name);
         ctx.setVariable("url", link);
-        return htmlTemplateEngine.process(TEMPLATE_FOR_CONFIRM_EMAIL, ctx);
+        return htmlTemplateEngine.process(template, ctx);
     }
 }

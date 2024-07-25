@@ -120,4 +120,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 e.getMessage()),
                 HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<AppError> catchIllegalArgumentException(IllegalArgumentException e) {
+        log.error(e.getMessage(), e);
+        return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now(),
+                e.getMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
 }
