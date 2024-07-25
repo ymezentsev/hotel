@@ -81,8 +81,8 @@ class ConfirmationTokenServiceImplTest {
     }
 
     @Test
-    @DisplayName("Failed validate confirmation token (throw ConfirmationTokenAlreadyConfirmedException)")
-    void validateConfirmationTokenAlreadyConfirmedExceptionTest() {
+    @DisplayName("Failed validate confirmation token (throw TokenAlreadyConfirmedException)")
+    void validateConfirmationTokenThrowTokenAlreadyConfirmedExceptionTest() {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getConfirmationToken("6453fbfb-8ff9-4dea-b8c9-3c6807410cdb");
         assertThrows(TokenAlreadyConfirmedException.class,
@@ -90,8 +90,8 @@ class ConfirmationTokenServiceImplTest {
     }
 
     @Test
-    @DisplayName("Failed validate confirmation token (throw ConfirmationTokenExpiredException)")
-    void validateConfirmationTokenThrowConfirmationTokenExpiredExceptionTest() {
+    @DisplayName("Failed validate confirmation token (throw TokenExpiredException)")
+    void validateConfirmationTokenThrowTokenExpiredExceptionTest() {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getConfirmationToken("6453fbfb-8ff9-4dea-b8c9-expired");
         assertThrows(TokenExpiredException.class,

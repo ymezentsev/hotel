@@ -7,11 +7,9 @@ import com.robot.hotel.room.Room;
 import com.robot.hotel.room.RoomRepository;
 import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
-import com.robot.hotel.user.model.ConfirmationToken;
-import com.robot.hotel.user.model.Passport;
-import com.robot.hotel.user.model.Role;
-import com.robot.hotel.user.model.User;
+import com.robot.hotel.user.model.*;
 import com.robot.hotel.user.repository.ConfirmationTokenRepository;
+import com.robot.hotel.user.repository.ForgotPasswordTokenRepository;
 import com.robot.hotel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,9 +29,11 @@ public class DBInitializer {
     private final UserRepository userRepository;
     private final CountryRepository countryRepository;
     private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
 
     public void populateDB() {
         reservationRepository.deleteAll();
+        forgotPasswordTokenRepository.deleteAll();
         confirmationTokenRepository.deleteAll();
         userRepository.deleteAll();
         roomRepository.deleteAll();
@@ -42,6 +42,7 @@ public class DBInitializer {
         populateRoomTable();
         populateUserTable();
         populateConfirmationTokenTable();
+        populateForgotPasswordTokenTable();
         populateReservationTable();
     }
 
@@ -122,6 +123,31 @@ public class DBInitializer {
                 .build());
     }
 
+    private void populateForgotPasswordTokenTable() {
+        User user1 = userRepository.findByEmail("admin@gmail.com").orElseThrow();
+        User user2 = userRepository.findByEmail("sidor@gmail.com").orElseThrow();
+
+        forgotPasswordTokenRepository.save(new ForgotPasswordToken(null,
+                "51b1ec6c-2a57-4b42-b9f5-7efc5cc4a0f6",
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                LocalDateTime.now(),
+                user1));
+
+        forgotPasswordTokenRepository.save(new ForgotPasswordToken(null,
+                "8ac319b4-990f-466f-8a5a-7c2a028b430c",
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                null,
+                user2));
+
+        forgotPasswordTokenRepository.save(new ForgotPasswordToken(null,
+                "8ac319b4-990f-466f-8a5a-expired",
+                LocalDateTime.now().minusMinutes(30),
+                LocalDateTime.now().minusMinutes(15),
+                null,
+                user2));
+    }
 
     private void populateConfirmationTokenTable() {
         User user1 = userRepository.findByEmail("admin@gmail.com").orElseThrow();
