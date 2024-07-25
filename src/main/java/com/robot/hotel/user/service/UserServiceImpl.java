@@ -1,17 +1,19 @@
 package com.robot.hotel.user.service;
 
+import com.robot.hotel.country.Country;
+import com.robot.hotel.country.CountryService;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.search_criteria.SpecificationBuilder;
-import com.robot.hotel.user.model.User;
-import com.robot.hotel.user.mapper.UserMapper;
-import com.robot.hotel.user.repository.UserRepository;
-import com.robot.hotel.country.Country;
-import com.robot.hotel.country.CountryService;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.mapper.UserMapper;
+import com.robot.hotel.user.model.EmailSubject;
+import com.robot.hotel.user.model.ForgotPasswordToken;
 import com.robot.hotel.user.model.Passport;
+import com.robot.hotel.user.model.User;
+import com.robot.hotel.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,8 @@ public class UserServiceImpl implements UserService {
     private final CountryService countryService;
     private final PassportService passportService;
     private final SpecificationBuilder<User> specificationBuilder;
+    private final ForgotPasswordTokenService forgotPasswordTokenService;
+    private final EmailSenderService emailSenderService;
 
     private static final String USER_IS_ALREADY_EXISTS = "User with such %s already exists";
     private static final String USER_IS_NOT_EXISTS = "Such user not exists";
@@ -115,5 +119,22 @@ public class UserServiceImpl implements UserService {
     public void enableUser(User user) {
         user.setEnabled(true);
         userRepository.save(user);
+    }
+
+    @Override
+    public void sendForgotPasswordEmail(String email) {
+        log.info("Sending forgot password email to: {}", email);
+
+        User user = userRepository.findByEmail(email.toLowerCase())
+                .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS));
+
+        ForgotPasswordToken forgotPasswordToken = forgotPasswordTokenService.generateForgotPasswordToken(user);
+        String token = forgotPasswordTokenService.saveForgotPasswordToken(forgotPasswordToken);
+
+        emailSenderService.send(
+                user.getEmail().toLowerCase(),
+                emailSenderService.buildEmailContent(user.getFirstName(), token, EmailSubject.FORGOT_PASSWORD),
+                EmailSubject.FORGOT_PASSWORD.getSubject());
+        log.info("Forgot password email sent successfully to: {}", email);
     }
 }

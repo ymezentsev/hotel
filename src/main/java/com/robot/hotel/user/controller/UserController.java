@@ -1,7 +1,8 @@
 package com.robot.hotel.user.controller;
 
-import com.robot.hotel.user.dto.UserDto;
+import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
+import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
 import com.robot.hotel.user.service.UserService;
 import jakarta.validation.Valid;
@@ -39,5 +40,11 @@ public class UserController implements UserControllerOpenApi {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         userService.deleteById(id);
+    }
+
+    //TODO add test and openapi
+    @PostMapping("/forgot-password")
+    public void forgotPassword(@Valid @RequestBody EmailRequestDto emailRequestDto) {
+        userService.sendForgotPasswordEmail(emailRequestDto.getEmail());
     }
 }

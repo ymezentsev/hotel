@@ -19,4 +19,6 @@ public interface UserService {
     void deleteById(Long id);
 
     void enableUser(User user);
+
+    void sendForgotPasswordEmail(String email);
 }
