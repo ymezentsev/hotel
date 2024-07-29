@@ -1,5 +1,6 @@
 package com.robot.hotel.user.controller;
 
+import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
@@ -89,4 +90,21 @@ public interface UserControllerOpenApi {
                     description = "Such user is not exists")
     })
     void deleteById(@PathVariable Long id);
+
+    @Operation(summary = "Send forgot password email")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successfully sent forgot password email",
+                    content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = EmailRequestDto.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Failed to send email message"),
+    })
+    void forgotPassword(@Valid @RequestBody EmailRequestDto emailRequestDto);
 }

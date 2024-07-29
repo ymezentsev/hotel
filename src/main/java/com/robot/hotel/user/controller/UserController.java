@@ -42,7 +42,7 @@ public class UserController implements UserControllerOpenApi {
         userService.deleteById(id);
     }
 
-    //TODO add test and openapi
+    @Override
     @PostMapping("/forgot-password")
     public void forgotPassword(@Valid @RequestBody EmailRequestDto emailRequestDto) {
         userService.sendForgotPasswordEmail(emailRequestDto.getEmail());
