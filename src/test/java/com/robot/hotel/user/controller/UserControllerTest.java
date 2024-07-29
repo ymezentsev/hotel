@@ -3,6 +3,7 @@ package com.robot.hotel.user.controller;
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
+import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -110,5 +111,27 @@ class UserControllerTest {
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);
+    }
+
+    @Test
+    @DisplayName("Successful send forgot password email")
+    void forgotPasswordTest() {
+        given().contentType(ContentType.JSON)
+                .body(new EmailRequestDto("sidor@gmail.com"))
+                .when().post("/forgot-password")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    @DisplayName("Fail send forgot password email (incorrect user input)")
+    void forgotPasswordWithIncorrectDataTest() {
+        given().contentType(ContentType.JSON)
+                .body(new EmailRequestDto("sidor@gmailcom"))
+                .when().post("/forgot-password")
+                .then()
+                .statusCode(400)
+                .assertThat()
+                .body(containsString("Not valid email"));
     }
 }
