@@ -21,4 +21,6 @@ public interface UserService {
     void enableUser(User user);
 
     void sendForgotPasswordEmail(String email);
+
+    void forgotPassword(String newPassword, String token);
 }

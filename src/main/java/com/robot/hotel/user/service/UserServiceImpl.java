@@ -9,10 +9,7 @@ import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
 import com.robot.hotel.user.mapper.UserMapper;
-import com.robot.hotel.user.model.EmailSubject;
-import com.robot.hotel.user.model.ForgotPasswordToken;
-import com.robot.hotel.user.model.Passport;
-import com.robot.hotel.user.model.User;
+import com.robot.hotel.user.model.*;
 import com.robot.hotel.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -36,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private final SpecificationBuilder<User> specificationBuilder;
     private final ForgotPasswordTokenService forgotPasswordTokenService;
     private final EmailSenderService emailSenderService;
+   // private final PasswordEncoder passwordEncoder;
 
     private static final String USER_IS_ALREADY_EXISTS = "User with such %s already exists";
     private static final String USER_IS_NOT_EXISTS = "Such user not exists";
@@ -137,4 +136,33 @@ public class UserServiceImpl implements UserService {
                 EmailSubject.FORGOT_PASSWORD.getSubject());
         log.info("Forgot password email sent successfully to: {}", email);
     }
+
+
+    @Override
+    //TODO add password encoder
+    //todo add tests
+    public void forgotPassword(String newPassword, String token) {
+        log.info("Changing user's password by token: {}", token);
+        ForgotPasswordToken forgotPasswordToken = forgotPasswordTokenService.getForgotPasswordToken(token);
+        forgotPasswordTokenService.validateForgotPasswordToken(forgotPasswordToken);
+
+        forgotPasswordToken.setConfirmedAt(LocalDateTime.now());
+        forgotPasswordTokenService.saveForgotPasswordToken(forgotPasswordToken);
+
+        User user = forgotPasswordToken.getUser();
+        //user.setPassword(passwordEncoder.encode(newPassword));
+        user.setPassword(newPassword);
+        userRepository.save(user);
+        log.info("User with email: {} has successful changed password", user.getEmail());
+    }
+
+/*    @Override
+    public void changePassword(ChangePasswordRequestDto request) {
+        User user = getCurrentAuthenticatedUser();
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new InvalidPasswordException("Old password field do not match user password");
+        }
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+    }*/
 }
