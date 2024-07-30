@@ -8,6 +8,7 @@ import com.robot.hotel.search_criteria.SpecificationBuilder;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.mapper.UserMapper;
 import com.robot.hotel.user.model.*;
 import com.robot.hotel.user.repository.UserRepository;
@@ -137,7 +138,6 @@ public class UserServiceImpl implements UserService {
         log.info("Forgot password email sent successfully to: {}", email);
     }
 
-
     @Override
     //TODO add password encoder
     //todo add tests
@@ -156,13 +156,14 @@ public class UserServiceImpl implements UserService {
         log.info("User with email: {} has successful changed password", user.getEmail());
     }
 
-/*    @Override
+    @Override
+    //todo add tests, add implementation after adding login
     public void changePassword(ChangePasswordRequestDto request) {
-        User user = getCurrentAuthenticatedUser();
+/*        User user = getCurrentAuthenticatedUser();
         if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
             throw new InvalidPasswordException("Old password field do not match user password");
         }
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-        userRepository.save(user);
-    }*/
+        userRepository.save(user);*/
+    }
 }

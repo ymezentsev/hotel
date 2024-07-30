@@ -6,11 +6,16 @@ import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.dto.password.ForgotPasswordRequestDto;
+import com.robot.hotel.user.service.ForgotPasswordTokenService;
 import com.robot.hotel.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController implements UserControllerOpenApi {
     private final UserService userService;
+    private final ForgotPasswordTokenService forgotPasswordTokenService;
 
     @GetMapping()
     public Page<UserDto> findAll(Pageable pageable) {
@@ -49,22 +55,16 @@ public class UserController implements UserControllerOpenApi {
         userService.sendForgotPasswordEmail(emailRequestDto.getEmail());
     }
 
-/*    @GetMapping("/reset-password")
-    public void getResetPassword(@RequestParam("token") String token) {
+    @GetMapping("/reset-password")
+    //todo add page for set new password
+    public ResponseEntity<Void> getResetPassword(@RequestParam("token") String token) {
         HttpHeaders headers = new HttpHeaders();
 
-        try {
-            forgotPasswordTokenService.validateForgotPasswordToken(token);
-            headers.add("Location", frontendBaseUrl + TOKEN_CONFIRMATION_URL + token);
-        } catch (ForgotConfirmationTokenExpiredException e) {
-            headers.add("Location",
-                    frontendBaseUrl + AUTH_ERROR_PAGE_URL + e.getMessage().substring(14));
-        } catch (IllegalStateException e) {
-            headers.add("Location", frontendBaseUrl + LOGIN_PAGE_URL);
-        }
-
+        forgotPasswordTokenService.validateForgotPasswordToken(
+                forgotPasswordTokenService.getForgotPasswordToken(token));
+       // headers.add("Location", frontendBaseUrl + TOKEN_RESET_PASSWORD_URL + token);
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
-    }*/
+    }
 
     @PutMapping("/reset-password")
     //todo add tests
