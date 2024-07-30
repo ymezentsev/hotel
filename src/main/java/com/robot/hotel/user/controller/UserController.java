@@ -4,6 +4,7 @@ import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.dto.password.ForgotPasswordRequestDto;
 import com.robot.hotel.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,9 +43,38 @@ public class UserController implements UserControllerOpenApi {
         userService.deleteById(id);
     }
 
-    @Override
     @PostMapping("/forgot-password")
     public void forgotPassword(@Valid @RequestBody EmailRequestDto emailRequestDto) {
         userService.sendForgotPasswordEmail(emailRequestDto.getEmail());
     }
+
+/*    @GetMapping("/reset-password")
+    public void getResetPassword(@RequestParam("token") String token) {
+        HttpHeaders headers = new HttpHeaders();
+
+        try {
+            forgotPasswordTokenService.validateForgotPasswordToken(token);
+            headers.add("Location", frontendBaseUrl + TOKEN_CONFIRMATION_URL + token);
+        } catch (ForgotConfirmationTokenExpiredException e) {
+            headers.add("Location",
+                    frontendBaseUrl + AUTH_ERROR_PAGE_URL + e.getMessage().substring(14));
+        } catch (IllegalStateException e) {
+            headers.add("Location", frontendBaseUrl + LOGIN_PAGE_URL);
+        }
+
+        return new ResponseEntity<>(headers, HttpStatus.FOUND);
+    }*/
+
+    @PutMapping("/reset-password")
+    //todo add tests
+    public void resetPassword(@RequestBody @Valid ForgotPasswordRequestDto request,
+                              @RequestParam("token") String token) {
+        userService.forgotPassword(request.getNewPassword(), token);
+    }
+
+/*    @PutMapping("/change-password")
+    @ResponseStatus(HttpStatus.OK)
+    public void changePassword(@RequestBody @Valid ChangePasswordRequestDto request) {
+        userService.changePassword(request);
+    }*/
 }

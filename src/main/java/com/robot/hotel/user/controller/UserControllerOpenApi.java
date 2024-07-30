@@ -4,6 +4,7 @@ import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.dto.password.ForgotPasswordRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,11 +13,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "Users Controller", description = "API to work with Users")
 public interface UserControllerOpenApi {
@@ -107,4 +110,16 @@ public interface UserControllerOpenApi {
                     description = "Failed to send email message"),
     })
     void forgotPassword(@Valid @RequestBody EmailRequestDto emailRequestDto);
+
+    @Operation(summary = "Reset user password and set new one")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Password successfully changed"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid password")
+    })
+    void resetPassword(@RequestBody @Valid ForgotPasswordRequestDto request,
+                       @RequestParam("token") String token);
 }
