@@ -4,6 +4,7 @@ import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.dto.password.ForgotPasswordRequestDto;
 import com.robot.hotel.user.service.UserService;
 import jakarta.validation.Valid;
@@ -72,9 +73,8 @@ public class UserController implements UserControllerOpenApi {
         userService.forgotPassword(request.getNewPassword(), token);
     }
 
-/*    @PutMapping("/change-password")
-    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/change-password")
     public void changePassword(@RequestBody @Valid ChangePasswordRequestDto request) {
         userService.changePassword(request);
-    }*/
+    }
 }

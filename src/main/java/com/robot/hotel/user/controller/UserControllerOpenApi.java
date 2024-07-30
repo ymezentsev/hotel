@@ -4,6 +4,7 @@ import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.dto.password.ForgotPasswordRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -122,4 +123,19 @@ public interface UserControllerOpenApi {
     })
     void resetPassword(@RequestBody @Valid ForgotPasswordRequestDto request,
                        @RequestParam("token") String token);
+
+    @Operation(summary = "Change password",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Password successfully changed"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid old password"),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized")
+    })
+    void changePassword(@RequestBody ChangePasswordRequestDto request);
 }
