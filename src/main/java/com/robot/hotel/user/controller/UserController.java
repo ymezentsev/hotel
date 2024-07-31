@@ -10,7 +10,6 @@ import com.robot.hotel.user.service.ForgotPasswordTokenService;
 import com.robot.hotel.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -70,7 +69,7 @@ public class UserController implements UserControllerOpenApi {
     //todo add tests
     public void resetPassword(@RequestBody @Valid ForgotPasswordRequestDto request,
                               @RequestParam("token") String token) {
-        userService.forgotPassword(request.getNewPassword(), token);
+        userService.resetPassword(request.getNewPassword(), token);
     }
 
     @PutMapping("/change-password")

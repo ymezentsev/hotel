@@ -211,4 +211,13 @@ class UserServiceImplTest {
                 }
         );
     }
+
+    @Test
+    @DisplayName("Successful replace forgotten password")
+    void resetPasswordTest() {
+        userService.resetPassword("newPassword", "8ac319b4-990f-466f-8a5a-7c2a028b430c");
+
+        //assertTrue(passwordEncoder.matches("newPassword",
+        assertEquals("newPassword", testDBUtils.getUserByEmail("sidor@gmail.com").getPassword());
+    }
 }

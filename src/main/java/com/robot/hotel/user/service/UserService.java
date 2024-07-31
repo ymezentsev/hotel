@@ -23,7 +23,7 @@ public interface UserService {
 
     void sendForgotPasswordEmail(String email);
 
-    void forgotPassword(String newPassword, String token);
+    void resetPassword(String newPassword, String token);
 
     void changePassword(ChangePasswordRequestDto request);
 }

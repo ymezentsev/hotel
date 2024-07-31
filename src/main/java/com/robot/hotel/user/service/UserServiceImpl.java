@@ -140,8 +140,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     //TODO add password encoder
-    //todo add tests
-    public void forgotPassword(String newPassword, String token) {
+    public void resetPassword(String newPassword, String token) {
         log.info("Changing user's password by token: {}", token);
         ForgotPasswordToken forgotPasswordToken = forgotPasswordTokenService.getForgotPasswordToken(token);
         forgotPasswordTokenService.validateForgotPasswordToken(forgotPasswordToken);
