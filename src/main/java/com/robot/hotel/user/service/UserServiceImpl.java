@@ -10,7 +10,10 @@ import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.mapper.UserMapper;
-import com.robot.hotel.user.model.*;
+import com.robot.hotel.user.model.EmailSubject;
+import com.robot.hotel.user.model.ForgotPasswordToken;
+import com.robot.hotel.user.model.Passport;
+import com.robot.hotel.user.model.User;
 import com.robot.hotel.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +38,7 @@ public class UserServiceImpl implements UserService {
     private final SpecificationBuilder<User> specificationBuilder;
     private final ForgotPasswordTokenService forgotPasswordTokenService;
     private final EmailSenderService emailSenderService;
-   // private final PasswordEncoder passwordEncoder;
+    // private final PasswordEncoder passwordEncoder;
 
     private static final String USER_IS_ALREADY_EXISTS = "User with such %s already exists";
     private static final String USER_IS_NOT_EXISTS = "Such user not exists";

@@ -114,7 +114,7 @@ class RegistrationServiceImplTest {
 
     @Test
     @DisplayName("Failed send confirmation email (throws NoSuchElementException)")
-    void sendConfirmationEmailThrowsUserNotFoundExceptionTest() {
+    void sendConfirmationEmailThrowsNoSuchElementExceptionTest() {
         assertThrows(NoSuchElementException.class,
                 () -> registrationService.sendConfirmationEmail("newTest@mail"));
     }

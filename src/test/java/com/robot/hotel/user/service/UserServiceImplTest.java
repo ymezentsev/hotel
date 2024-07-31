@@ -8,6 +8,7 @@ import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserSearchParameters;
 import com.robot.hotel.user.model.User;
+import com.robot.hotel.user.repository.ForgotPasswordTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,9 @@ class UserServiceImplTest {
 
     @Autowired
     TestDBUtils testDBUtils;
+
+    @Autowired
+    ForgotPasswordTokenRepository forgotPasswordTokenRepository;
 
     @BeforeEach
     void setUp() {
@@ -210,6 +214,20 @@ class UserServiceImplTest {
                     assertTrue(user.isEnabled());
                 }
         );
+    }
+
+    @Test
+    @DisplayName("Successful send forgot password email")
+    void sendForgotPasswordEmailTest() {
+        userService.sendForgotPasswordEmail("sidor@gmail.com");
+        assertEquals(4, forgotPasswordTokenRepository.findAll().size());
+    }
+
+    @Test
+    @DisplayName("Failed send confirmation email (throws NoSuchElementException)")
+    void sendForgotPasswordEmailThrowsNoSuchElementExceptionTest() {
+        assertThrows(NoSuchElementException.class,
+                () -> userService.sendForgotPasswordEmail("newTest@mail"));
     }
 
     @Test

@@ -56,6 +56,7 @@ public class UserController implements UserControllerOpenApi {
 
     @GetMapping("/reset-password")
     //todo add page for set new password
+    //todo add tests
     public ResponseEntity<Void> getResetPassword(@RequestParam("token") String token) {
         HttpHeaders headers = new HttpHeaders();
 
