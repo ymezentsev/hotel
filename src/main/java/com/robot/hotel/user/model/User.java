@@ -1,7 +1,7 @@
 package com.robot.hotel.user.model;
 
-import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.country.Country;
+import com.robot.hotel.reservation.Reservation;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
