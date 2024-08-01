@@ -36,7 +36,7 @@ class AuthenticationControllerTest {
     @DisplayName("Successful register new user")
     void registerTest() {
         RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
+                "0953453434", "semenov12345@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
@@ -78,7 +78,7 @@ class AuthenticationControllerTest {
     @DisplayName("Successful resend new confirmation email")
     void resendConfirmationEmailTest() {
         given().contentType(ContentType.JSON)
-                .body(new EmailRequestDto("nikola@gmail.com"))
+                .body(new EmailRequestDto("sidor@gmail.com"))
                 .when().post("/resend-email-confirmation")
                 .then()
                 .statusCode(200);

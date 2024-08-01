@@ -82,7 +82,7 @@ public class DBInitializer {
                 "admin@gmail.com", "User1User1", Role.ADMIN, null, true);
 
         saveNewUser("denis", "sidorov", "UKR", "965467834",
-                "sidor@gmail.com", "123", Role.USER, null, true);
+                "sidor@gmail.com", "123", Role.USER, null, false);
 
         saveNewUser("andriy", "sidorov", "UKR", "954375647",
                 "sidor_andr@gmail.com", "123", Role.USER, passport1, true);

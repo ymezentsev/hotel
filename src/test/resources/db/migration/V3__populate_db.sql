@@ -18,7 +18,7 @@ VALUES  ('bb345678', 'UKR', "2020-01-15"),
 
 INSERT INTO users (first_name, last_name, phone_country_code, phone_number, email, password, role, passport_id, is_enabled)
 VALUES  ('admin', 'admin', 'UKR', '991111111', 'admin@gmail.com', 'User1User1', 'ADMIN', NULL, true),
-        ('denis', 'sidorov', 'UKR', '965467834', 'sidor@gmail.com', '123', 'USER', NULL, true),
+        ('denis', 'sidorov', 'UKR', '965467834', 'sidor@gmail.com', '123', 'USER', NULL, false),
         ('andriy', 'sidorov', 'UKR', '954375647', 'sidor_andr@gmail.com', '123', 'USER', 1, true),
         ('mark', 'dmitrenko', 'UKR', '505463213', 'dmitr@gmail.com', '123', 'USER', 2, true),
         ('evgen', 'kozlov', 'UKR', '964569034', 'kozlov@gmail.com', '123', 'MANAGER', NULL, true),

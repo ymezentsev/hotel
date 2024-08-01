@@ -48,7 +48,7 @@ class RegistrationServiceImplTest {
     @DisplayName("Successful register new user with passport")
     void registerWithPassportTest() {
         RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
+                "0953453434", "semenov12345@gmail.com", "Password1", "Password1",
                 "df123456", "usa", LocalDate.of(2018, 3, 8));
         assertAll(
                 () -> assertNotNull(registrationService.register(registrationRequestDto).id()),
@@ -60,7 +60,7 @@ class RegistrationServiceImplTest {
     @DisplayName("Successful register new user without passport")
     void registerWithoutPassportTest() {
         RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
+                "0953453434", "semenov12345@gmail.com", "Password1", "Password1",
                 null, null, null);
         assertAll(
                 () -> assertNotNull(registrationService.register(registrationRequestDto).id()),
@@ -108,7 +108,7 @@ class RegistrationServiceImplTest {
     @Test
     @DisplayName("Successful send confirmation email")
     void sendConfirmationEmailTest() {
-        registrationService.sendConfirmationEmail("nikola@gmail.com");
+        registrationService.sendConfirmationEmail("sidor@gmail.com");
         assertEquals(5, confirmationTokenRepository.findAll().size());
     }
 
