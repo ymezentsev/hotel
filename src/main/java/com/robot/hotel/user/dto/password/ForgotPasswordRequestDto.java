@@ -5,7 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @FieldMatch.List({
@@ -13,6 +15,8 @@ import lombok.Data;
                 second = "repeatNewPassword",
                 message = "Passwords do not match")
 })
+@NoArgsConstructor
+@AllArgsConstructor
 public class ForgotPasswordRequestDto {
     @NotBlank(message = "Password is required")
     @Size(min = 8, max = 100, message = "The password size must be from 8 to 100 characters long")

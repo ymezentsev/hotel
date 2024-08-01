@@ -67,7 +67,6 @@ public class UserController implements UserControllerOpenApi {
     }
 
     @PutMapping("/reset-password")
-    //todo add tests
     public void resetPassword(@RequestBody @Valid ForgotPasswordRequestDto request,
                               @RequestParam("token") String token) {
         userService.resetPassword(request.getNewPassword(), token);

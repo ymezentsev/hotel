@@ -5,6 +5,7 @@ import com.robot.hotel.DBInitializer;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
+import com.robot.hotel.user.dto.password.ForgotPasswordRequestDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -133,5 +134,29 @@ class UserControllerTest {
                 .statusCode(400)
                 .assertThat()
                 .body(containsString("Not valid email"));
+    }
+
+    @Test
+    @DisplayName("Successful reset password and set new one")
+    void resetPasswordTest() {
+        given().contentType(ContentType.JSON)
+                .body(new ForgotPasswordRequestDto("newPassword1", "newPassword1"))
+                .param("token", "8ac319b4-990f-466f-8a5a-7c2a028b430c")
+                .when().put("/reset-password")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    @DisplayName("Fail reset password and set new one (incorrect user input)")
+    void resetPasswordWithIncorrectDataTest() {
+        given().contentType(ContentType.JSON)
+                .body(new ForgotPasswordRequestDto("password", "newPassword1"))
+                .param("token", "8ac319b4-990f-466f-8a5a-7c2a028b430c")
+                .when().put("/reset-password")
+                .then()
+                .statusCode(400)
+                .assertThat()
+                .body(containsString("Passwords do not match"));
     }
 }
