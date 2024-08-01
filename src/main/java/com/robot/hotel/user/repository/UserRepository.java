@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -20,17 +21,19 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     boolean existsByPassportSerialNumber(String passportSerialNumber);
 
     @Override
+    @NonNull
     @Query("""
             SELECT DISTINCT u FROM User u
             LEFT JOIN FETCH u.reservations r""")
-    Page<User> findAll(Pageable pageable);
+    Page<User> findAll(@NonNull Pageable pageable);
 
     @Override
+    @NonNull
     @Query("""
             SELECT DISTINCT u FROM User u
             LEFT JOIN FETCH u.reservations r
             WHERE u.id = :id""")
-    Optional<User> findById(Long id);
+    Optional<User> findById(@NonNull Long id);
 
     @Query("""
             SELECT DISTINCT u FROM User u
