@@ -11,6 +11,7 @@ import com.robot.hotel.user.model.*;
 import com.robot.hotel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final PassportService passportService;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
+    private final PasswordEncoder passwordEncoder;
 
     private static final String USER_IS_ALREADY_EXISTS = "User with such %s already exists";
     private static final String USER_IS_NOT_EXISTS = "User with email %s not exists";
@@ -54,7 +56,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .country(country)
                 .phoneNumber(registrationRequestDto.getPhoneNumber())
                 .email(registrationRequestDto.getEmail().toLowerCase())
-                .password(registrationRequestDto.getPassword())
+                .password(passwordEncoder.encode(registrationRequestDto.getPassword()))
                 .role(Role.USER)
                 .passport(passport)
                 .reservations(Collections.emptySet())
