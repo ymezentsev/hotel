@@ -5,12 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
+@Schema(description = "Dto for login user")
 public class LoginRequestDto {
     @NotBlank
-    @Schema(description = "User Email", example = "johndoe@gmail.com")
+    @Schema(description = "User email", example = "johndoe@gmail.com")
     private String email;
 
     @NotBlank
-    @Schema(description = "User Password", example = "Qwerty123456")
+    @Schema(description = "User password", example = "Qwerty123456")
     private String password;
 }
