@@ -4,7 +4,7 @@ import com.robot.hotel.room.dto.RoomSearchParameters;
 import com.robot.hotel.search_criteria.SpecificationBuilder;
 import com.robot.hotel.search_criteria.SpecificationProviderManager;
 import com.robot.hotel.user.model.User;
-import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.dto.UserSearchParametersDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ public class UserSpecificationBuilder implements SpecificationBuilder<User> {
     private final SpecificationProviderManager<User> specificationProviderManager;
 
     @Override
-    public Specification<User> build(UserSearchParameters searchParameters) {
+    public Specification<User> build(UserSearchParametersDto searchParameters) {
         Specification<User> spec = Specification.where(null);
 
         if (searchParameters != null

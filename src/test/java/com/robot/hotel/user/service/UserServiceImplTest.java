@@ -6,7 +6,7 @@ import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
-import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.model.User;
 import com.robot.hotel.user.repository.ForgotPasswordTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,8 +63,8 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful search users")
     void searchTest() {
-        UserSearchParameters searchFirstname =
-                new UserSearchParameters(new String[]{"andriy"},
+        UserSearchParametersDto searchFirstname =
+                new UserSearchParametersDto(new String[]{"andriy"},
                         new String[]{},
                         new String[]{},
                         new String[]{},
@@ -72,8 +72,8 @@ class UserServiceImplTest {
                         new String[]{},
                         new String[]{},
                         new String[]{});
-        UserSearchParameters searchLastname =
-                new UserSearchParameters(new String[]{},
+        UserSearchParametersDto searchLastname =
+                new UserSearchParametersDto(new String[]{},
                         new String[]{"sidor"},
                         new String[]{},
                         new String[]{},
@@ -81,8 +81,8 @@ class UserServiceImplTest {
                         new String[]{},
                         new String[]{},
                         new String[]{});
-        UserSearchParameters searchPhoneNumber =
-                new UserSearchParameters(new String[]{},
+        UserSearchParametersDto searchPhoneNumber =
+                new UserSearchParametersDto(new String[]{},
                         new String[]{},
                         new String[]{"+380"},
                         new String[]{},
@@ -90,8 +90,8 @@ class UserServiceImplTest {
                         new String[]{},
                         new String[]{},
                         new String[]{});
-        UserSearchParameters searchRole =
-                new UserSearchParameters(new String[]{},
+        UserSearchParametersDto searchRole =
+                new UserSearchParametersDto(new String[]{},
                         new String[]{},
                         new String[]{},
                         new String[]{},
@@ -99,8 +99,8 @@ class UserServiceImplTest {
                         new String[]{},
                         new String[]{},
                         new String[]{});
-        UserSearchParameters searchReservation =
-                new UserSearchParameters(new String[]{},
+        UserSearchParametersDto searchReservation =
+                new UserSearchParametersDto(new String[]{},
                         new String[]{},
                         new String[]{},
                         new String[]{},
@@ -109,8 +109,8 @@ class UserServiceImplTest {
                         new String[]{testDBUtils.getReservationIdByRoom("101").toString(),
                                 testDBUtils.getReservationIdByRoom("203").toString()},
                         new String[]{});
-        UserSearchParameters searchCountry =
-                new UserSearchParameters(new String[]{},
+        UserSearchParametersDto searchCountry =
+                new UserSearchParametersDto(new String[]{},
                         new String[]{},
                         new String[]{},
                         new String[]{},

@@ -3,7 +3,7 @@ package com.robot.hotel.user.controller;
 import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
-import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.dto.password.ForgotPasswordRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,7 +54,7 @@ public interface UserControllerOpenApi {
                     responseCode = "500",
                     description = "No property found for 'User'")
     })
-    Page<UserDto> search(UserSearchParameters parameters, Pageable pageable);
+    Page<UserDto> search(UserSearchParametersDto parameters, Pageable pageable);
 
     @Operation(summary = "Update user")
     @ApiResponses(value = {

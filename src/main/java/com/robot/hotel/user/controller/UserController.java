@@ -3,7 +3,7 @@ package com.robot.hotel.user.controller;
 import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
-import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.dto.password.ForgotPasswordRequestDto;
 import com.robot.hotel.user.service.ForgotPasswordTokenService;
@@ -35,7 +35,7 @@ public class UserController implements UserControllerOpenApi {
     }
 
     @GetMapping("/search")
-    public Page<UserDto> search(UserSearchParameters parameters, Pageable pageable) {
+    public Page<UserDto> search(UserSearchParametersDto parameters, Pageable pageable) {
         return userService.search(parameters, pageable);
     }
 

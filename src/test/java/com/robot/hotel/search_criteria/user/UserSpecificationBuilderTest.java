@@ -2,7 +2,7 @@ package com.robot.hotel.search_criteria.user;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.user.model.User;
-import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.dto.UserSearchParametersDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ class UserSpecificationBuilderTest {
     void buildTest() {
         Specification<User> originalSpec = Specification.where(null);
 
-        UserSearchParameters searchParameters = new UserSearchParameters(
+        UserSearchParametersDto searchParameters = new UserSearchParametersDto(
                 new String[]{"Dmitro"},
                 new String[]{"Andreev"},
                 new String[]{"+380503456737"},
@@ -31,7 +31,7 @@ class UserSpecificationBuilderTest {
                 new String[]{"1"},
                 new String[]{"UKR"});
         assertAll(
-                () -> assertEquals(originalSpec, userSpecificationBuilder.build((UserSearchParameters) null)),
+                () -> assertEquals(originalSpec, userSpecificationBuilder.build((UserSearchParametersDto) null)),
                 () -> assertNotEquals(originalSpec, userSpecificationBuilder.build(searchParameters))
         );
     }

@@ -7,7 +7,7 @@ import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.search_criteria.SpecificationBuilder;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
-import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.mapper.UserMapper;
 import com.robot.hotel.user.model.EmailSubject;
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Page<UserDto> search(UserSearchParameters params, Pageable pageable) {
+    public Page<UserDto> search(UserSearchParametersDto params, Pageable pageable) {
         Specification<User> userSpecification = specificationBuilder.build(params);
         return userRepository.findAll(userSpecification, pageable)
                 .map(userMapper::toDto);

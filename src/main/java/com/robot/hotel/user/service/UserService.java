@@ -2,7 +2,7 @@ package com.robot.hotel.user.service;
 
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
-import com.robot.hotel.user.dto.UserSearchParameters;
+import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.model.User;
 import org.springframework.data.domain.Page;
@@ -13,7 +13,7 @@ public interface UserService {
 
     UserDto findById(Long id);
 
-    Page<UserDto> search(UserSearchParameters params, Pageable pageable);
+    Page<UserDto> search(UserSearchParametersDto params, Pageable pageable);
 
     void update(Long userId, RegistrationRequestDto registrationRequestDto);
 
