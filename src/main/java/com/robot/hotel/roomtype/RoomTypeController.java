@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/roomTypes")
+@RequestMapping("/api/v1/roomTypes")
 public class RoomTypeController implements RoomTypeControllerOpenApi {
     private final RoomTypeService roomTypeService;
 

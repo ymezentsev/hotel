@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/reservations")
+@RequestMapping("/api/v1/reservations")
 public class ReservationController implements ReservationControllerOpenApi {
     private final ReservationService reservationService;
 

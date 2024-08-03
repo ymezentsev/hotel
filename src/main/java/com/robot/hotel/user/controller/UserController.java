@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 public class UserController implements UserControllerOpenApi {
     private final UserService userService;
     private final ForgotPasswordTokenService forgotPasswordTokenService;
