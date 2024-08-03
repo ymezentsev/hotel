@@ -24,7 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Tag(name = "Users Controller", description = "API to work with Users")
 public interface UserControllerOpenApi {
 
-    @Operation(summary = "Get all users")
+    @Operation(summary = "Get all users",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -32,7 +33,8 @@ public interface UserControllerOpenApi {
     })
     Page<UserDto> findAll(Pageable pageable);
 
-    @Operation(summary = "Get user by id")
+    @Operation(summary = "Get user by id",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -56,7 +58,8 @@ public interface UserControllerOpenApi {
     })
     Page<UserDto> search(UserSearchParametersDto parameters, Pageable pageable);
 
-    @Operation(summary = "Update user")
+    @Operation(summary = "Update user",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -79,7 +82,8 @@ public interface UserControllerOpenApi {
     })
     void update(@PathVariable Long id, @Valid @RequestBody RegistrationRequestDto registrationRequestDto);
 
-    @Operation(summary = "Delete user")
+    @Operation(summary = "Delete user",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
