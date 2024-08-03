@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,11 +29,20 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     //private final CustomOAuth2UserService customOAuth2UserService;
-   // private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    // private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
 
     @Bean
@@ -43,21 +54,20 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/auth/**",
                                         "/api/v1/users/forgot-password/**",
                                         "/api/v1/users/reset-password/**",
-                                        "/api/v1/users/current/**",
+                                        //"/api/v1/users/current/**",
                                         "/v3/api-docs/**",
-                                        "/swagger-ui/**",
-                                        "/api/v1/news/**",
-                                        "/heart-of-ukraine.com/auth/**")
+                                        "/swagger-ui/**")
                                 .permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/rooms/**").permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
                 .httpBasic(withDefaults())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class)
-                .userDetailsService(userDetailsService)
 /*                .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(infoEndpoint -> infoEndpoint.userService(customOAuth2UserService))
                         .successHandler(oAuth2LoginSuccessHandler)
