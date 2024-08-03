@@ -34,7 +34,7 @@ class UserControllerTest {
     @BeforeEach
     void setUp() {
         dbInitializer.populateDB();
-        RestAssured.baseURI = "http://localhost:" + port + "/users";
+        RestAssured.baseURI = "http://localhost:" + port + "/api/v1/users";
     }
 
     @Test

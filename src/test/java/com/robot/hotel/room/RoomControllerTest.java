@@ -34,7 +34,7 @@ class RoomControllerTest {
     @BeforeEach
     void setUp() {
         dbInitializer.populateDB();
-        RestAssured.baseURI = "http://localhost:" + port + "/rooms";
+        RestAssured.baseURI = "http://localhost:" + port + "/api/v1/rooms";
     }
 
     @Test

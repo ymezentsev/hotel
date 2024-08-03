@@ -33,7 +33,7 @@ class ReservationControllerTest {
     @BeforeEach
     void setUp() {
         dbInitializer.populateDB();
-        RestAssured.baseURI = "http://localhost:" + port + "/reservations";
+        RestAssured.baseURI = "http://localhost:" + port + "/api/v1/reservations";
     }
 
     @Test

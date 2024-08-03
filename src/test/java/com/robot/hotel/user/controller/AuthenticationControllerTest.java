@@ -28,7 +28,7 @@ class AuthenticationControllerTest {
 
     @BeforeEach
     void setUp() {
-        RestAssured.baseURI = "http://localhost:" + port + "/auth";
+        RestAssured.baseURI = "http://localhost:" + port + "/api/v1/auth";
         dbInitializer.populateDB();
     }
 
