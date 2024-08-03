@@ -12,6 +12,7 @@ import com.robot.hotel.user.repository.ConfirmationTokenRepository;
 import com.robot.hotel.user.repository.ForgotPasswordTokenRepository;
 import com.robot.hotel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -30,6 +31,7 @@ public class DBInitializer {
     private final CountryRepository countryRepository;
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public void populateDB() {
         reservationRepository.deleteAll();
@@ -79,22 +81,22 @@ public class DBInitializer {
                 LocalDate.of(2021, 2, 12));
 
         saveNewUser("admin", "admin", "UKR", "991111111",
-                "admin@gmail.com", "User1User1", Role.ADMIN, null, true);
+                "admin@gmail.com", "Admin123", Role.ADMIN, null, true);
 
         saveNewUser("denis", "sidorov", "UKR", "965467834",
-                "sidor@gmail.com", "123", Role.USER, null, false);
+                "sidor@gmail.com", "Qwerty123", Role.USER, null, false);
 
         saveNewUser("andriy", "sidorov", "UKR", "954375647",
-                "sidor_andr@gmail.com", "123", Role.USER, passport1, true);
+                "sidor_andr@gmail.com", "Qwerty123", Role.USER, passport1, true);
 
         saveNewUser("mark", "dmitrenko", "UKR", "505463213",
-                "dmitr@gmail.com", "123", Role.USER, passport2, true);
+                "dmitr@gmail.com", "Qwerty123", Role.USER, passport2, true);
 
         saveNewUser("evgen", "kozlov", "UKR", "964569034",
-                "kozlov@gmail.com", "123", Role.MANAGER, null, true);
+                "kozlov@gmail.com", "Qwerty123", Role.MANAGER, null, true);
 
         saveNewUser("andriy", "nikolaenko", "ITA", "0934560912",
-                "nikola@gmail.com", "123", Role.USER, passport3, false);
+                "nikola@gmail.com", "Qwerty123", Role.USER, passport3, false);
     }
 
     private Passport saveNewPassport(String serialNumber, String country, LocalDate issueDate) {
@@ -116,7 +118,7 @@ public class DBInitializer {
                 .country(countryRepository.findById(country).orElseThrow())
                 .phoneNumber(phoneNumber)
                 .email(email)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .role(role)
                 .passport(passport)
                 .isEnabled(isEnabled)
