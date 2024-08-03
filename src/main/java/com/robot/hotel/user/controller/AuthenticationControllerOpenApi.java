@@ -3,6 +3,8 @@ package com.robot.hotel.user.controller;
 import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
+import com.robot.hotel.user.dto.login.LoginRequestDto;
+import com.robot.hotel.user.dto.login.LoginResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -65,4 +67,21 @@ public interface AuthenticationControllerOpenApi {
                     description = "Failed to send email message"),
     })
     void resendConfirmationEmail(@RequestBody EmailRequestDto request);
+
+    @Operation(summary = "Sign In")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "User successfully authorized",
+                    content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = LoginRequestDto.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Wrong email or password")
+    })
+    LoginResponseDto login(@RequestBody LoginRequestDto request);
 }
