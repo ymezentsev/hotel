@@ -1,5 +1,6 @@
 package com.robot.hotel.config;
 
+import com.robot.hotel.security.AuthEntryPointJwt;
 import com.robot.hotel.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AuthEntryPointJwt unauthorizedHandler;
     //private final CustomOAuth2UserService customOAuth2UserService;
     // private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
@@ -49,6 +51,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers("/api/v1/auth/**",
