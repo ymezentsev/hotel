@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
     private final SpecificationBuilder<User> specificationBuilder;
     private final ForgotPasswordTokenService forgotPasswordTokenService;
     private final EmailSenderService emailSenderService;
-    // private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     private static final String USER_IS_ALREADY_EXISTS = "User with such %s already exists";
     private static final String USER_IS_NOT_EXISTS = "Such user not exists";
@@ -142,7 +143,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //TODO add password encoder
     public void resetPassword(String newPassword, String token) {
         log.info("Changing user's password by token: {}", token);
         ForgotPasswordToken forgotPasswordToken = forgotPasswordTokenService.getForgotPasswordToken(token);
@@ -152,14 +152,14 @@ public class UserServiceImpl implements UserService {
         forgotPasswordTokenService.saveForgotPasswordToken(forgotPasswordToken);
 
         User user = forgotPasswordToken.getUser();
-        //user.setPassword(passwordEncoder.encode(newPassword));
-        user.setPassword(newPassword);
+        user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         log.info("User with email: {} has successful changed password", user.getEmail());
     }
 
     @Override
     //todo add tests, add implementation after adding login
+    //todo add logger
     public void changePassword(ChangePasswordRequestDto request) {
 /*        User user = getCurrentAuthenticatedUser();
         if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {

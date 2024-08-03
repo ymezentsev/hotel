@@ -17,6 +17,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     //todo add test
+    //todo add logger
     @Override
     public LoginResponseDto authenticate(LoginRequestDto request) {
         Authentication authentication = authenticationManager

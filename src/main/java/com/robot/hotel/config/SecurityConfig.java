@@ -3,7 +3,6 @@ package com.robot.hotel.config;
 import com.robot.hotel.security.AuthEntryPointJwt;
 import com.robot.hotel.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,7 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@Slf4j
 @RequiredArgsConstructor
 @Configuration
 @EnableMethodSecurity

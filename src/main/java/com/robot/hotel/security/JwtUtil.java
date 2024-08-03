@@ -14,6 +14,7 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.function.Function;
 
+//todo add logger
 @Component
 public class JwtUtil {
     @Value("${jwt.expiration}")
