@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
@@ -16,7 +17,8 @@ import java.util.List;
 
 @Tag(name = "RoomTypes Controller", description = "API to work with RoomTypes")
 public interface RoomTypeControllerOpenApi {
-    @Operation(summary = "Create new room type")
+    @Operation(summary = "Create new room type",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
@@ -33,7 +35,8 @@ public interface RoomTypeControllerOpenApi {
     })
     RoomTypeDto save(@Valid @RequestBody RoomTypeRequest roomTypeRequest);
 
-    @Operation(summary = "Get all room types")
+    @Operation(summary = "Get all room types",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -41,7 +44,8 @@ public interface RoomTypeControllerOpenApi {
     })
     List<RoomTypeDto> findAll();
 
-    @Operation(summary = "Get room type by type")
+    @Operation(summary = "Get room type by type",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -52,7 +56,8 @@ public interface RoomTypeControllerOpenApi {
     })
     RoomTypeDto findByType(@PathVariable String type);
 
-    @Operation(summary = "Get room type by id")
+    @Operation(summary = "Get room type by id",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -63,7 +68,8 @@ public interface RoomTypeControllerOpenApi {
     })
     RoomTypeDto findById(@PathVariable Long id);
 
-    @Operation(summary = "Update room type")
+    @Operation(summary = "Update room type",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -83,7 +89,8 @@ public interface RoomTypeControllerOpenApi {
     })
     void update(@PathVariable Long id, @Valid @RequestBody RoomTypeRequest roomTypeRequest);
 
-    @Operation(summary = "Delete room type")
+    @Operation(summary = "Delete room type",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",

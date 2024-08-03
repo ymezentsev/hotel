@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -17,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "Reservations Controller", description = "API to work with Reservations")
 public interface ReservationControllerOpenApi {
-    @Operation(summary = "Get all reservations")
+    @Operation(summary = "Get all reservations",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -25,7 +27,8 @@ public interface ReservationControllerOpenApi {
     })
     Page<ReservationDto> findAll(Pageable pageable);
 
-    @Operation(summary = "Get reservation by id")
+    @Operation(summary = "Get reservation by id",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -36,7 +39,8 @@ public interface ReservationControllerOpenApi {
     })
     ReservationDto findById(@PathVariable Long id);
 
-    @Operation(summary = "Create new reservation")
+    @Operation(summary = "Create new reservation",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
@@ -71,7 +75,8 @@ public interface ReservationControllerOpenApi {
     })
     ReservationDto save(@Valid @RequestBody ReservationRequest reservationRequest);
 
-    @Operation(summary = "Get reservations by user id")
+    @Operation(summary = "Get reservations by user id",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -79,7 +84,8 @@ public interface ReservationControllerOpenApi {
     })
     Page<ReservationDto> findReservationsByUserId(@PathVariable Long id, Pageable pageable);
 
-    @Operation(summary = "Get reservations by room's number")
+    @Operation(summary = "Get reservations by room's number",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -90,7 +96,8 @@ public interface ReservationControllerOpenApi {
     })
     Page<ReservationDto> findReservationsByRoom(@PathVariable String roomNumber, Pageable pageable);
 
-    @Operation(summary = "Get all current reservations")
+    @Operation(summary = "Get all current reservations",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -98,7 +105,8 @@ public interface ReservationControllerOpenApi {
     })
     Page<ReservationDto> findCurrentReservations(Pageable pageable);
 
-    @Operation(summary = "Get all current reservations for a specific room")
+    @Operation(summary = "Get all current reservations for a specific room",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -109,7 +117,8 @@ public interface ReservationControllerOpenApi {
     })
     Page<ReservationDto> findCurrentReservationsForSpecificRoom(@PathVariable String roomNumber, Pageable pageable);
 
-    @Operation(summary = "Delete reservation")
+    @Operation(summary = "Delete reservation",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",

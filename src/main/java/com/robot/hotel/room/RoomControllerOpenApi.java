@@ -29,7 +29,8 @@ public interface RoomControllerOpenApi {
     })
     Page<RoomDto> findAll(Pageable pageable);
 
-    @Operation(summary = "Create new room")
+    @Operation(summary = "Create new room",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
@@ -71,8 +72,7 @@ public interface RoomControllerOpenApi {
     })
     RoomDto findByNumber(@PathVariable String number);
 
-    @Operation(summary = "Get all rooms filtered by types, min and max price, guests count",
-            security = @SecurityRequirement(name = "Bearer Authentication"))
+    @Operation(summary = "Get all rooms filtered by types, min and max price, guests count")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -100,7 +100,8 @@ public interface RoomControllerOpenApi {
     })
     Page<RoomDto> findFreeRooms(@Valid @RequestBody FreeRoomRequest freeRoomRequest, Pageable pageable);
 
-    @Operation(summary = "Update room")
+    @Operation(summary = "Update room",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -123,7 +124,8 @@ public interface RoomControllerOpenApi {
     })
     void update(@PathVariable Long id, @Valid @RequestBody RoomRequest roomRequest);
 
-    @Operation(summary = "Delete room")
+    @Operation(summary = "Delete room",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
