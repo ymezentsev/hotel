@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
@@ -34,6 +35,9 @@ class UserServiceImplTest {
 
     @Autowired
     ForgotPasswordTokenRepository forgotPasswordTokenRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {
@@ -235,7 +239,7 @@ class UserServiceImplTest {
     void resetPasswordTest() {
         userService.resetPassword("newPassword", "8ac319b4-990f-466f-8a5a-7c2a028b430c");
 
-        //assertTrue(passwordEncoder.matches("newPassword",
-        assertEquals("newPassword", testDBUtils.getUserByEmail("sidor@gmail.com").getPassword());
+        assertTrue(passwordEncoder.matches("newPassword",
+                testDBUtils.getUserByEmail("sidor@gmail.com").getPassword()));
     }
 }
