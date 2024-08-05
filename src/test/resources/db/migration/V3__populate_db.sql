@@ -30,7 +30,7 @@ values  ('admin', 'admin', 'UKR', '991111111', 'admin@gmail.com',
         ('andriy', 'nikolaenko', 'ITA', '0934560912', 'nikola@gmail.com',
 '$2a$10$3ihcnQMi14khuO1wKxc3v.IwION2eN4L2bpwl6Udm/ghoZ74pqqmO', 'USER', 3, false);
 -- admin@gmail.com          |   password: Admin123
--- other users              |   password: Qwerty123
+-- other users              |   password: Qwerty123456
 
 
 INSERT INTO reservation (room_id, check_in_date, check_out_date)
