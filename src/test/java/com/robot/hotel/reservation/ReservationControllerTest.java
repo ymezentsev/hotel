@@ -2,6 +2,7 @@ package com.robot.hotel.reservation;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
+import com.robot.hotel.TestDBAuthentication;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.reservation.dto.ReservationRequest;
 import io.restassured.RestAssured;
@@ -19,7 +20,7 @@ import java.util.Set;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,  classes = ContainerConfiguration.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ContainerConfiguration.class)
 class ReservationControllerTest {
     @LocalServerPort
     Integer port;
@@ -30,9 +31,13 @@ class ReservationControllerTest {
     @Autowired
     TestDBUtils testDBUtils;
 
+    @Autowired
+    TestDBAuthentication testDBAuthentication;
+
     @BeforeEach
     void setUp() {
         dbInitializer.populateDB();
+        testDBAuthentication.loginUser();
         RestAssured.baseURI = "http://localhost:" + port + "/api/v1/reservations";
     }
 
@@ -40,6 +45,7 @@ class ReservationControllerTest {
     @DisplayName("Find all reservations")
     void findAllTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .when().get()
                 .then()
                 .statusCode(200)
@@ -52,6 +58,7 @@ class ReservationControllerTest {
     @DisplayName("Find reservation by id")
     void findByIdTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .pathParam("id", testDBUtils.getReservationIdByRoom("203"))
                 .when().get("/{id}")
                 .then()
@@ -67,6 +74,7 @@ class ReservationControllerTest {
                 LocalDate.now().plusDays(1), Set.of("sidor@gmail.com", "sidor_andr@gmail.com"));
 
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .body(reservationRequest)
                 .when().post()
                 .then()
@@ -82,6 +90,7 @@ class ReservationControllerTest {
                 LocalDate.now().plusDays(1), Set.of());
 
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .body(reservationRequest)
                 .when().post()
                 .then()
@@ -94,6 +103,7 @@ class ReservationControllerTest {
     @DisplayName("Find reservations by user id")
     void findReservationsByUserIdTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .pathParam("id", testDBUtils.getUserIdByEmail("sidor_andr@gmail.com"))
                 .when().get("/user/{id}")
                 .then()
@@ -106,6 +116,7 @@ class ReservationControllerTest {
     @DisplayName("Find reservations by room")
     void findReservationsByRoomTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .pathParam("roomNumber", "204")
                 .when().get("/room/{roomNumber}")
                 .then()
@@ -118,6 +129,7 @@ class ReservationControllerTest {
     @DisplayName("Find all current reservations")
     void findCurrentReservationsTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .when().get("/current")
                 .then()
                 .statusCode(200)
@@ -129,6 +141,7 @@ class ReservationControllerTest {
     @DisplayName("Find all current reservations for a specific room")
     void findCurrentReservationsForSpecificRoomTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .pathParam("roomNumber", "204")
                 .when().get("/current/room/{roomNumber}")
                 .then()
@@ -141,6 +154,7 @@ class ReservationControllerTest {
     @DisplayName("Delete reservation")
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .pathParam("id", testDBUtils.getReservationIdByRoom("101"))
                 .when().delete("/{id}")
                 .then()
