@@ -84,19 +84,19 @@ public class DBInitializer {
                 "admin@gmail.com", "Admin123", Role.ADMIN, null, true);
 
         saveNewUser("denis", "sidorov", "UKR", "965467834",
-                "sidor@gmail.com", "Qwerty123", Role.USER, null, false);
+                "sidor@gmail.com", "Qwerty123456", Role.USER, null, false);
 
         saveNewUser("andriy", "sidorov", "UKR", "954375647",
-                "sidor_andr@gmail.com", "Qwerty123", Role.USER, passport1, true);
+                "sidor_andr@gmail.com", "Qwerty123456", Role.USER, passport1, true);
 
         saveNewUser("mark", "dmitrenko", "UKR", "505463213",
-                "dmitr@gmail.com", "Qwerty123", Role.USER, passport2, true);
+                "dmitr@gmail.com", "Qwerty123456", Role.USER, passport2, true);
 
         saveNewUser("evgen", "kozlov", "UKR", "964569034",
-                "kozlov@gmail.com", "Qwerty123", Role.MANAGER, null, true);
+                "kozlov@gmail.com", "Qwerty123456", Role.MANAGER, null, true);
 
         saveNewUser("andriy", "nikolaenko", "ITA", "0934560912",
-                "nikola@gmail.com", "Qwerty123", Role.USER, passport3, false);
+                "nikola@gmail.com", "Qwerty123456", Role.USER, passport3, false);
     }
 
     private Passport saveNewPassport(String serialNumber, String country, LocalDate issueDate) {
