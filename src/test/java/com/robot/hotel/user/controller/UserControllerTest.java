@@ -2,6 +2,7 @@ package com.robot.hotel.user.controller;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
+import com.robot.hotel.TestDBAuthentication;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
@@ -31,9 +32,13 @@ class UserControllerTest {
     @Autowired
     TestDBUtils testDBUtils;
 
+    @Autowired
+    TestDBAuthentication testDBAuthentication;
+
     @BeforeEach
     void setUp() {
         dbInitializer.populateDB();
+        testDBAuthentication.loginUser();
         RestAssured.baseURI = "http://localhost:" + port + "/api/v1/users";
     }
 
@@ -41,6 +46,7 @@ class UserControllerTest {
     @DisplayName("Find all users")
     void findAllTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .when().get()
                 .then()
                 .statusCode(200)
@@ -52,6 +58,7 @@ class UserControllerTest {
     @DisplayName("Find user by id")
     void findByIdTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .pathParam("id", testDBUtils.getUserIdByEmail("sidor@gmail.com"))
                 .when().get("/{id}")
                 .then()
@@ -64,6 +71,7 @@ class UserControllerTest {
     @DisplayName("Successful search users")
     void searchTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .params("lastnames", "sidor")
                 .when().get("/search")
                 .then()
@@ -80,6 +88,7 @@ class UserControllerTest {
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .body(registrationRequestDto)
                 .pathParam("id", testDBUtils.getUserIdByEmail("kozlov@gmail.com"))
                 .when().put("/{id}")
@@ -95,6 +104,7 @@ class UserControllerTest {
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .body(registrationRequestDto)
                 .pathParam("id", testDBUtils.getUserIdByEmail("sidor@gmail.com"))
                 .when().put("/{id}")
@@ -108,6 +118,7 @@ class UserControllerTest {
     @DisplayName("Delete user")
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .pathParam("id", testDBUtils.getUserIdByEmail("dmitr@gmail.com"))
                 .when().delete("/{id}")
                 .then()
