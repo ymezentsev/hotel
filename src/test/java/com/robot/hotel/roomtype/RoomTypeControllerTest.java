@@ -2,6 +2,7 @@ package com.robot.hotel.roomtype;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
+import com.robot.hotel.TestDBAuthentication;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.roomtype.dto.RoomTypeRequest;
 import io.restassured.RestAssured;
@@ -27,9 +28,13 @@ class RoomTypeControllerTest {
     @Autowired
     TestDBUtils testDBUtils;
 
+    @Autowired
+    TestDBAuthentication testDBAuthentication;
+
     @BeforeEach
     void setUp() {
         dbInitializer.populateDB();
+        testDBAuthentication.loginUser();
         RestAssured.baseURI = "http://localhost:" + port + "/api/v1/roomTypes";
     }
 
@@ -39,6 +44,7 @@ class RoomTypeControllerTest {
         RoomTypeRequest roomTypeRequest = new RoomTypeRequest("new lux");
 
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .body(roomTypeRequest)
                 .when().post()
                 .then()
@@ -53,6 +59,7 @@ class RoomTypeControllerTest {
         RoomTypeRequest roomTypeRequest = new RoomTypeRequest("  ");
 
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .body(roomTypeRequest)
                 .when().post()
                 .then()
@@ -65,6 +72,7 @@ class RoomTypeControllerTest {
     @DisplayName("Find all room types")
     void findAllTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .when().get()
                 .then()
                 .statusCode(200)
@@ -76,6 +84,7 @@ class RoomTypeControllerTest {
     @DisplayName("Find room type by type")
     void findByTypeTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .pathParam("type", "lux")
                 .when().get("/type/{type}")
                 .then()
@@ -88,6 +97,7 @@ class RoomTypeControllerTest {
     @DisplayName("Find room type by id")
     void findByIdTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .pathParam("id", testDBUtils.getRoomTypeIdByType("lux"))
                 .when().get("/{id}")
                 .then()
@@ -102,6 +112,7 @@ class RoomTypeControllerTest {
         RoomTypeRequest roomTypeRequest = new RoomTypeRequest("new lux");
 
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .body(roomTypeRequest)
                 .pathParam("id", testDBUtils.getRoomTypeIdByType("lux"))
                 .when().put("/{id}")
@@ -115,6 +126,7 @@ class RoomTypeControllerTest {
         RoomTypeRequest roomTypeRequest = new RoomTypeRequest("  ");
 
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .body(roomTypeRequest)
                 .pathParam("id", testDBUtils.getRoomTypeIdByType("lux"))
                 .when().put("/{id}")
@@ -128,6 +140,7 @@ class RoomTypeControllerTest {
     @DisplayName("Delete room type")
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
                 .pathParam("id", testDBUtils.getRoomTypeIdByType("king"))
                 .when().delete("/{id}")
                 .then()
