@@ -149,4 +149,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 e.getMessage()),
                 HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(UserNotAuthenticatedException.class)
+    public ResponseEntity<AppError> catchUserNotAuthenticatedException(UserNotAuthenticatedException e) {
+        log.error(e.getMessage(), e);
+        return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(),
+                LocalDateTime.now(),
+                e.getMessage()),
+                HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<AppError> catchInvalidPasswordException(InvalidPasswordException e) {
+        log.error(e.getMessage(), e);
+        return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now(),
+                e.getMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
 }
