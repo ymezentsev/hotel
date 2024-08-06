@@ -168,17 +168,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     //todo add tests
-    //todo add logger
     public void changePassword(ChangePasswordRequestDto request) {
+        log.info("Changing password method");
         User user = getCurrentAuthenticatedUser();
+        log.info("Changing password for user with email: {}", user.getEmail());
+
         if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
             throw new InvalidPasswordException(INVALID_PASSWORD);
         }
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
+        log.info("User with email: {} has successful changed password", user.getEmail());
     }
 
-    //todo add tests and logger
+    //todo add tests
     @Override
     public User getCurrentAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
