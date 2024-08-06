@@ -26,4 +26,6 @@ public interface UserService {
     void resetPassword(String newPassword, String token);
 
     void changePassword(ChangePasswordRequestDto request);
+
+    User getCurrentAuthenticatedUser();
 }

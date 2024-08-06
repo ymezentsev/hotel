@@ -3,7 +3,9 @@ package com.robot.hotel.user.service;
 import com.robot.hotel.country.Country;
 import com.robot.hotel.country.CountryService;
 import com.robot.hotel.exception.DuplicateObjectException;
+import com.robot.hotel.exception.InvalidPasswordException;
 import com.robot.hotel.exception.NotEmptyObjectException;
+import com.robot.hotel.exception.UserNotAuthenticatedException;
 import com.robot.hotel.search_criteria.SpecificationBuilder;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
@@ -18,9 +20,14 @@ import com.robot.hotel.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +53,8 @@ public class UserServiceImpl implements UserService {
     private static final String RESERVATIONS_FOR_THIS_USER_ARE_EXISTS =
             "This user has reservations. At first delete reservations";
     private static final String SUCCESSFUL_ACTION_WITH_USER = "Successful %s user with id: {}";
+    private static final String USER_NOT_AUTHENTICATED = "User is not authenticated";
+    private static final String INVALID_PASSWORD = "Old password field do not match user password";
 
     @Override
     public Page<UserDto> findAll(Pageable pageable) {
@@ -158,14 +167,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //todo add tests, add implementation after adding login
+    //todo add tests
     //todo add logger
     public void changePassword(ChangePasswordRequestDto request) {
-/*        User user = getCurrentAuthenticatedUser();
+        User user = getCurrentAuthenticatedUser();
         if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
-            throw new InvalidPasswordException("Old password field do not match user password");
+            throw new InvalidPasswordException(INVALID_PASSWORD);
         }
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-        userRepository.save(user);*/
+        userRepository.save(user);
+    }
+
+    //todo add tests and logger
+    @Override
+    public User getCurrentAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email;
+            if (authentication.getPrincipal() instanceof UserDetails userDetails) {
+                email = userDetails.getUsername();
+            } /*else if (authentication.getPrincipal() instanceof CustomOAuth2User customOAuth2User) {
+                email = customOAuth2User.getEmail();
+            }*/ else {
+                email = null;
+            }
+
+            if (email != null) {
+                return userRepository
+                        .findByEmail(email.toLowerCase())
+                        .orElseThrow(() -> new UsernameNotFoundException(USER_IS_NOT_EXISTS));
+            }
+        }
+        throw new UserNotAuthenticatedException(USER_NOT_AUTHENTICATED);
     }
 }
