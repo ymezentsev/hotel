@@ -19,7 +19,8 @@
 									"\r",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -27,12 +28,69 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/rooms",
+							"raw": "{{url}}/api/v1/rooms",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"rooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search rooms",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/rooms/search?types=LUx&minPrice=10&maxPrice=10000&guestsCount=1&sort=number,desc",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rooms",
+								"search"
+							],
+							"query": [
+								{
+									"key": "types",
+									"value": "LUx"
+								},
+								{
+									"key": "minPrice",
+									"value": "10"
+								},
+								{
+									"key": "maxPrice",
+									"value": "10000"
+								},
+								{
+									"key": "guestsCount",
+									"value": "1"
+								},
+								{
+									"key": "sort",
+									"value": "number,desc"
+								}
 							]
 						}
 					},
@@ -48,7 +106,8 @@
 									"pm.collectionVariables.set(\"url\", \"variable_value\");\r",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -57,7 +116,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"number\": \"505\",\r\n    \"price\": 4000.00,\r\n    \"maxCountOfGuests\": 2,\r\n    \"roomType\": \"lux\"\r\n}",
+							"raw": "{\r\n    \"number\": \"106\",\r\n    \"price\": 4000.00,\r\n    \"maxCountOfGuests\": 2,\r\n    \"roomType\": \"lux2e\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -65,11 +124,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/rooms",
+							"raw": "{{url}}/api/v1/rooms",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"rooms"
 							]
 						}
@@ -82,13 +143,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/rooms/2",
+							"raw": "{{url}}/api/v1/rooms/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"rooms",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -159,25 +222,6 @@
 					"response": []
 				},
 				{
-					"name": "find rooms by type",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/rooms/type/Lux",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"rooms",
-								"type",
-								"Lux"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "find free rooms",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -206,63 +250,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "find rooms with price more than",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/rooms/price>/4000",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"rooms",
-								"price>",
-								"4000"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "find rooms with price less than",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/rooms/price</3000",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"rooms",
-								"price<",
-								"3000"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "find rooms by guests count",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/rooms/guestsCount/1",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"rooms",
-								"guestsCount",
-								"1"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -278,7 +265,8 @@
 								"exec": [
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -298,11 +286,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/roomTypes",
+							"raw": "{{url}}/api/v1/roomTypes",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"roomTypes"
 							]
 						}
@@ -324,11 +314,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/roomTypes",
+							"raw": "{{url}}/api/v1/roomTypes",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"roomTypes"
 							]
 						}
@@ -341,14 +333,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/roomTypes/type/LUx",
+							"raw": "{{url}}/api/v1/roomTypes/type/LUx2e",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"roomTypes",
 								"type",
-								"LUx"
+								"LUx2e"
 							]
 						}
 					},
@@ -360,11 +354,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/roomTypes/1",
+							"raw": "{{url}}/api/v1/roomTypes/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"roomTypes",
 								"1"
 							]
@@ -387,11 +383,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/roomTypes/1",
+							"raw": "{{url}}/api/v1/roomTypes/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"roomTypes",
 								"1"
 							]
@@ -405,13 +403,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/roomTypes/2",
+							"raw": "{{url}}/api/v1/roomTypes/4",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"roomTypes",
-								"2"
+								"4"
 							]
 						}
 					},
@@ -423,16 +423,110 @@
 			"name": "users",
 			"item": [
 				{
+					"name": "authentication",
+					"item": [
+						{
+							"name": "register new user",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\r\n        \"firstName\": \"Petr\",\r\n        \"lastName\": \"Зв'язлів\",\r\n        \"phoneCode\": \"+39\",\r\n        \"phoneNumber\": \"503465458\",\r\n        \"email\": \"meyv8231@gmail.com\",\r\n        \"password\": \"User1User1\",\r\n        \"repeatPassword\": \"User1User1\",\r\n        \"passportSerialNumber\": \"e37274235\",\r\n        \"countryCode\": \"ita\",\r\n        \"issueDate\": \"2023-05-15\"\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/auth/register",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "resend confirmation token",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"meyv81@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/auth/resend-email-confirmation",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"resend-email-confirmation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login user",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"Admin123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/auth/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "find all users",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/users",
+							"raw": "{{url}}/api/v1/users",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"users"
 							]
 						}
@@ -440,26 +534,47 @@
 					"response": []
 				},
 				{
-					"name": "add new user",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "    {\r\n        \"firstName\": \"Andriy\",\r\n        \"lastName\": \"Fedorov\",\r\n        \"telNumber\": \"0973483644\",\r\n        \"email\": \"s14w2f@f.d\",\r\n        \"passportSerialNumber\": \"e234235\"\r\n    }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+					"name": "search users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
-						},
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
 						"url": {
-							"raw": "{{url}}/users",
+							"raw": "{{url}}/api/v1/users/search?lastnames=adm&firstnames=adm&sort=email,desc",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"users"
+								"api",
+								"v1",
+								"users",
+								"search"
+							],
+							"query": [
+								{
+									"key": "lastnames",
+									"value": "adm"
+								},
+								{
+									"key": "firstnames",
+									"value": "adm"
+								},
+								{
+									"key": "sort",
+									"value": "email,desc"
+								}
 							]
 						}
 					},
@@ -472,7 +587,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \"firstName\": \"Andriy\",\r\n        \"lastName\": \"Fedorov\",\r\n        \"telNumber\": \"0563534434\",\r\n        \"email\": \"sergserg@gmail.com\",\r\n        \"passportSerialNumber\": \"bd325643\"\r\n    }",
+							"raw": "    {\r\n        \"firstName\": \"Andriy\",\r\n        \"lastName\": \"Fedorov\",\r\n        \"telCode\": \"+39\",\r\n        \"telNumber\": \"5036455458\",\r\n        \"email\": \"s14w32wf@f.d\",\r\n        \"password\": \"User1User1\",\r\n        \"passportSerialNumber\": \"ed334235\",\r\n        \"countryCode\": \"ita\",\r\n        \"issueDate\": \"2023-05-15\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -480,13 +595,15 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/users/4",
+							"raw": "{{url}}/api/v1/users/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"users",
-								"4"
+								"1"
 							]
 						}
 					},
@@ -498,13 +615,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/users/8",
+							"raw": "{{url}}/api/v1/users/5",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"users",
-								"8"
+								"5"
 							]
 						}
 					},
@@ -516,108 +635,118 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/users/1",
+							"raw": "{{url}}/api/v1/users/3",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"users",
-								"1"
+								"3"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "find users by reservations",
+					"name": "send forgot password email",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"meyv81@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{url}}/users/reservations/12",
+							"raw": "{{url}}/api/v1/users/forgot-password",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"users",
-								"reservations",
-								"12"
+								"forgot-password"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "find user by email",
+					"name": "reset password",
 					"request": {
-						"method": "GET",
+						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"newPassword\": \"Admin1234\",\r\n    \"repeatNewPassword\": \"Admin1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{url}}/users/email/sergse@gmail.com",
+							"raw": "{{url}}/api/v1/users/reset-password?token=71e199c9-bef6-4120-b3b2-e68e355a053a",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"users",
-								"email",
-								"sergse@gmail.com"
+								"reset-password"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "71e199c9-bef6-4120-b3b2-e68e355a053a"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "find user by tel number",
+					"name": "change password",
 					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/users/telNumber/64",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"users",
-								"telNumber",
-								"64"
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjI5MzU1MzIsImV4cCI6MTcyMzI4MTEzMn0.mbPjhaYk5lnG_52EpCZd5qdkVpFe2WBIoriVBj7h_RU",
+									"type": "string"
+								}
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "find user by passport",
-					"request": {
-						"method": "GET",
+						},
+						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\": \"Admin1234\",\r\n    \"newPassword\": \"Admin123\",\r\n    \"repeatNewPassword\": \"Admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{url}}/users/passport/bd325443",
+							"raw": "{{url}}/api/v1/users/change-password",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"users",
-								"passport",
-								"bd325443"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "find user by lastName",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/users/lastName/sidorov",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"users",
-								"lastName",
-								"sidorov"
+								"change-password"
 							]
 						}
 					},
@@ -634,11 +763,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/reservations",
+							"raw": "{{url}}/api/v1/reservations",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"reservations"
 							]
 						}
@@ -652,7 +783,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \"roomNumber\": \"204\",\r\n        \"checkInDate\": \"2024-03-03\",\r\n        \"checkOutDate\": \"2024-03-22\",\r\n        \"users\": [1, 3, 1] \r\n    }",
+							"raw": "    {\r\n        \"roomNumber\": \"105\",\r\n        \"checkInDate\": \"2024-09-03\",\r\n        \"checkOutDate\": \"2024-09-22\",\r\n        \"userEmails\": [\"admin@gmail.com\", \"s12ew332f@f.d\"] \r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -660,11 +791,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/reservations",
+							"raw": "{{url}}/api/v1/reservations",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"reservations"
 							]
 						}
@@ -677,13 +810,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/reservations/guest/11",
+							"raw": "{{url}}/api/v1/reservations/user/11",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"reservations",
-								"guest",
+								"user",
 								"11"
 							]
 						}
@@ -696,11 +831,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/reservations/11",
+							"raw": "{{url}}/api/v1/reservations/11",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"reservations",
 								"11"
 							]
@@ -714,11 +851,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/reservations/5",
+							"raw": "{{url}}/api/v1/reservations/5",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"reservations",
 								"5"
 							]
@@ -732,11 +871,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/reservations/room/203",
+							"raw": "{{url}}/api/v1/reservations/room/203",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"reservations",
 								"room",
 								"203"
@@ -751,11 +892,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/reservations/current",
+							"raw": "{{url}}/api/v1/reservations/current",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"reservations",
 								"current"
 							]
@@ -769,11 +912,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/reservations/current/room/2033",
+							"raw": "{{url}}/api/v1/reservations/current/room/2033",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"reservations",
 								"current",
 								"room",
