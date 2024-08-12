@@ -2,13 +2,17 @@ package com.robot.hotel.user.service;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
+import com.robot.hotel.TestDBAuthentication;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
+import com.robot.hotel.exception.InvalidPasswordException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserSearchParametersDto;
+import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.model.User;
 import com.robot.hotel.user.repository.ForgotPasswordTokenRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +42,9 @@ class UserServiceImplTest {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    TestDBAuthentication testDBAuthentication;
 
     @BeforeEach
     void setUp() {
@@ -242,4 +249,43 @@ class UserServiceImplTest {
         assertTrue(passwordEncoder.matches("newPassword",
                 testDBUtils.getUserByEmail("sidor@gmail.com").getPassword()));
     }
+
+    @Test
+    @DisplayName("Successful change password")
+    void changePasswordTest() {
+        testDBAuthentication.loginUser();
+        ChangePasswordRequestDto changePasswordRequestDto = new ChangePasswordRequestDto();
+        changePasswordRequestDto.setOldPassword("Qwerty123456");
+        changePasswordRequestDto.setNewPassword("newPassword");
+        changePasswordRequestDto.setRepeatNewPassword("newPassword");
+
+        userService.changePassword(changePasswordRequestDto);
+        assertTrue(passwordEncoder.matches("newPassword",
+                testDBUtils.getUserByEmail("sidor_andr@gmail.com").getPassword()));
+    }
+
+    @Test
+    @DisplayName("Failed change password (throws InvalidPasswordException)")
+    void changePasswordThrowsInvalidPasswordExceptionTest() {
+        testDBAuthentication.loginUser();
+        ChangePasswordRequestDto changePasswordRequestDto = new ChangePasswordRequestDto();
+        changePasswordRequestDto.setOldPassword("Qwerty");
+        changePasswordRequestDto.setNewPassword("newPassword");
+        changePasswordRequestDto.setRepeatNewPassword("newPassword");
+
+        assertThrows(InvalidPasswordException.class, () -> userService.changePassword(changePasswordRequestDto));
+    }
+
+  /*  @Test
+    @DisplayName("Successful get current authenticated user")
+    void getCurrentAuthenticatedUserTest() {
+        testUtils.setAuthenticationUser();
+        assertEquals("johndoe@gmail.com", userService.getCurrentAuthenticatedUser().getEmail());
+    }
+
+    @Test
+    @DisplayName("Failed get current authenticated user (throws UserNotAuthenticatedException)")
+    void getCurrentAuthenticatedUserThrowsUserNotAuthenticatedExceptionTest() {
+        assertThrows(UserNotAuthenticatedException.class, () -> userService.getCurrentAuthenticatedUser());
+    }*/
 }

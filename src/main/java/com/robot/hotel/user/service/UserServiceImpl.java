@@ -167,7 +167,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //todo add tests
     public void changePassword(ChangePasswordRequestDto request) {
         log.info("Changing password method");
         User user = getCurrentAuthenticatedUser();
