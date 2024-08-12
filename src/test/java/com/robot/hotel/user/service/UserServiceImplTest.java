@@ -7,12 +7,12 @@ import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.InvalidPasswordException;
 import com.robot.hotel.exception.NotEmptyObjectException;
+import com.robot.hotel.exception.UserNotAuthenticatedException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.model.User;
 import com.robot.hotel.user.repository.ForgotPasswordTokenRepository;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -202,7 +202,7 @@ class UserServiceImplTest {
     @DisplayName("Fail delete user (throw NoSuchElementException)")
     void deleteByIdThrowNoSuchElementExceptionTest() {
         assertThrows(NoSuchElementException.class,
-                () -> userService.deleteById(100L));
+                () -> userService.deleteById(1000L));
     }
 
     @Test
@@ -276,16 +276,16 @@ class UserServiceImplTest {
         assertThrows(InvalidPasswordException.class, () -> userService.changePassword(changePasswordRequestDto));
     }
 
-  /*  @Test
+    @Test
     @DisplayName("Successful get current authenticated user")
     void getCurrentAuthenticatedUserTest() {
-        testUtils.setAuthenticationUser();
-        assertEquals("johndoe@gmail.com", userService.getCurrentAuthenticatedUser().getEmail());
+        testDBAuthentication.loginUser();
+        assertEquals("sidor_andr@gmail.com", userService.getCurrentAuthenticatedUser().getEmail());
     }
 
     @Test
     @DisplayName("Failed get current authenticated user (throws UserNotAuthenticatedException)")
     void getCurrentAuthenticatedUserThrowsUserNotAuthenticatedExceptionTest() {
         assertThrows(UserNotAuthenticatedException.class, () -> userService.getCurrentAuthenticatedUser());
-    }*/
+    }
 }

@@ -20,7 +20,6 @@ import com.robot.hotel.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -180,7 +179,6 @@ public class UserServiceImpl implements UserService {
         log.info("User with email: {} has successful changed password", user.getEmail());
     }
 
-    //todo add tests
     @Override
     public User getCurrentAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
