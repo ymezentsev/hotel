@@ -33,7 +33,6 @@ public class AuthenticationController {
         registrationService.sendConfirmationEmail(emailRequestDto.getEmail());
     }
 
-    //todo add tests
     @PostMapping("/login")
     public LoginResponseDto login(@Valid @RequestBody LoginRequestDto request) {
         return authenticationService.authenticate(request);

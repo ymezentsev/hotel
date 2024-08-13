@@ -4,6 +4,7 @@ import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
+import com.robot.hotel.user.dto.login.LoginRequestDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -94,5 +95,27 @@ class AuthenticationControllerTest {
                 .statusCode(400)
                 .assertThat()
                 .body(containsString("Not valid email"));
+    }
+
+    @Test
+    @DisplayName("Successful login user")
+    void loginTest() {
+        given().contentType(ContentType.JSON)
+                .body(new LoginRequestDto("sidor_andr@gmail.com", "Qwerty123456"))
+                .when().post("/login")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    @DisplayName("Fail login user (incorrect user input)")
+    void loginWithIncorrectDataTest() {
+        given().contentType(ContentType.JSON)
+                .body(new LoginRequestDto("sidor_andr@gmail.com", ""))
+                .when().post("/login")
+                .then()
+                .statusCode(400)
+                .assertThat()
+                .body(containsString("password не должно быть пустым"));
     }
 }
