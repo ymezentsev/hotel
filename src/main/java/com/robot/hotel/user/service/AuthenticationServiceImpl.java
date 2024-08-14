@@ -18,7 +18,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
 
-    //todo add test
     @Override
     public LoginResponseDto authenticate(LoginRequestDto request) {
         log.info("Authenticating user with email: {}", request.getEmail());
