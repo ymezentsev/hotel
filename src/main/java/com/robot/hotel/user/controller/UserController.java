@@ -73,7 +73,6 @@ public class UserController implements UserControllerOpenApi {
     }
 
     @PutMapping("/change-password")
-    //todo add tests
     public void changePassword(@RequestBody @Valid ChangePasswordRequestDto request) {
         userService.changePassword(request);
     }

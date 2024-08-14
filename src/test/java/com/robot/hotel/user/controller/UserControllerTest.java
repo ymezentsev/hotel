@@ -6,6 +6,7 @@ import com.robot.hotel.TestDBAuthentication;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
+import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.dto.password.ForgotPasswordRequestDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -165,6 +166,34 @@ class UserControllerTest {
                 .body(new ForgotPasswordRequestDto("password", "newPassword1"))
                 .param("token", "8ac319b4-990f-466f-8a5a-7c2a028b430c")
                 .when().put("/reset-password")
+                .then()
+                .statusCode(400)
+                .assertThat()
+                .body(containsString("Passwords do not match"));
+    }
+
+    @Test
+    @DisplayName("Successful change password")
+    void changePasswordTest() {
+        given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
+                .body(new ChangePasswordRequestDto("Qwerty123456",
+                        "newPassword1",
+                        "newPassword1"))
+                .when().put("/change-password")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    @DisplayName("Fail change password (incorrect user input)")
+    void changePasswordWithIncorrectDataTest() {
+        given().contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
+                .body(new ChangePasswordRequestDto("Qwerty123456",
+                        "newPassword",
+                        "Password"))
+                .when().put("/change-password")
                 .then()
                 .statusCode(400)
                 .assertThat()
