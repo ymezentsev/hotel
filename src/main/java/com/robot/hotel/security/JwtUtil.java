@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.function.Function;
 
-//todo add logger
+@Slf4j
 @Component
 public class JwtUtil {
     @Value("${jwt.expiration}")
@@ -27,12 +28,16 @@ public class JwtUtil {
     }
 
     public String generateToken(String username) {
-        return Jwts.builder()
+        log.info("Generating JWT token for user {}", username);
+        String token = Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration.toMillis()))
                 .signWith(secret)
                 .compact();
+
+        log.info("JWT token for user {} successfully generated", username);
+        return token;
     }
 
     public boolean isValidToken(String token) {
