@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (token != null && jwtUtil.isValidToken(token)) {
             log.info("JWT token is valid. Retrieving username...");
-            String username = jwtUtil.getUsername(token);
+            String username = jwtUtil.getUsernameFromJwtToken(token);
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     userDetails,
