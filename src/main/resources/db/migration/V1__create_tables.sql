@@ -34,11 +34,23 @@ CREATE TABLE IF NOT EXISTS users (
 	phone_number VARCHAR(12) UNIQUE NOT NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
-    role VARCHAR(10) NOT NULL DEFAULT 'USER',
 	passport_id BIGINT,
 	is_enabled BOOLEAN NOT NULL,
 	FOREIGN KEY (passport_id) REFERENCES passport (id),
 	FOREIGN KEY (phone_country_code) REFERENCES country (country_code)
+);
+
+CREATE TABLE IF NOT EXISTS roles (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    role_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS users_roles (
+    user_id BIGINT NOT NULL,
+    role_id BIGINT NOT NULL,
+    PRIMARY KEY (user_id, role_id),
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (role_id) REFERENCES roles (id)
 );
 
 CREATE TABLE IF NOT EXISTS reservation (
