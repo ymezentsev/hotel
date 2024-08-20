@@ -8,6 +8,9 @@ import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.mapper.UserMapper;
 import com.robot.hotel.user.model.*;
+import com.robot.hotel.user.model.enums.EmailSubject;
+import com.robot.hotel.user.model.enums.RoleName;
+import com.robot.hotel.user.repository.RoleRepository;
 import com.robot.hotel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +33,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     private static final String USER_IS_ALREADY_EXISTS = "User with such %s already exists";
     private static final String USER_IS_NOT_EXISTS = "User with email %s not exists";
@@ -49,6 +53,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
 
         Passport passport = passportService.getPassportFromUserRequest(registrationRequestDto, null);
+        Role roleUser = roleRepository.findByName(RoleName.USER).orElseThrow();
 
         User newUser = User.builder()
                 .firstName(registrationRequestDto.getFirstName().toLowerCase())
@@ -57,8 +62,8 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .phoneNumber(registrationRequestDto.getPhoneNumber())
                 .email(registrationRequestDto.getEmail().toLowerCase())
                 .password(passwordEncoder.encode(registrationRequestDto.getPassword()))
-                .role(Role.USER)
                 .passport(passport)
+                .roles(Collections.singleton(roleUser))
                 .reservations(Collections.emptySet())
                 .isEnabled(false)
                 .build();

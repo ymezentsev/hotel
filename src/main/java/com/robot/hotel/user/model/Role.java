@@ -1,5 +1,6 @@
 package com.robot.hotel.user.model;
 
+import com.robot.hotel.user.model.enums.RoleName;
 import jakarta.persistence.*;
 import lombok.Data;
 

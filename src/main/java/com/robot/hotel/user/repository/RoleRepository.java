@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
     //todo add tests
-    Optional<Role> findByRoleName(RoleName role);
+    Optional<Role> findByName(RoleName role);
 }
