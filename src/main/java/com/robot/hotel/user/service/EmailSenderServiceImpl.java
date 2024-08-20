@@ -1,7 +1,7 @@
 package com.robot.hotel.user.service;
 
 import com.robot.hotel.exception.FailedToSendEmailException;
-import com.robot.hotel.user.model.EmailSubject;
+import com.robot.hotel.user.model.enums.EmailSubject;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +22,8 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     private final TemplateEngine htmlTemplateEngine;
 
     private static final String MAIL_ENCODING = "utf-8";
-    private static final String TOKEN_CONFIRMATION_EMAIL_URL = "/auth/confirm?token=";
-    private static final String TOKEN_RESET_PASSWORD_URL = "/users/reset-password?token=";
+    private static final String TOKEN_CONFIRMATION_EMAIL_URL = "/api/v1/auth/confirm?token=";
+    private static final String TOKEN_RESET_PASSWORD_URL = "/api/v1/users/reset-password?token=";
     private static final String TEMPLATE_FOR_CONFIRM_EMAIL = "confirm-email";
     private static final String TEMPLATE_FOR_FORGOT_PASSWORD_EMAIL = "forgot-password-email";
 

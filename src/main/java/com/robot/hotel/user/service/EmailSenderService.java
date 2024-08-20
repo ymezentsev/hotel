@@ -1,6 +1,6 @@
 package com.robot.hotel.user.service;
 
-import com.robot.hotel.user.model.EmailSubject;
+import com.robot.hotel.user.model.enums.EmailSubject;
 
 public interface EmailSenderService {
 
