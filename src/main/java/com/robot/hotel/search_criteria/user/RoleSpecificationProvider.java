@@ -17,7 +17,8 @@ public class RoleSpecificationProvider implements SpecificationProvider<User> {
     @Override
     public Specification<User> getSpecification(String[] params) {
         return (root, query, criteriaBuilder) -> root
-                .get("role")
+                .get("roles")
+                .get("name")
                 .in(Arrays.stream(params)
                         .map(name -> name.toUpperCase().strip())
                         .toArray());
