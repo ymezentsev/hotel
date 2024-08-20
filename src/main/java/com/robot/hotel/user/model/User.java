@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"country", "passport", "reservations"})
+@EqualsAndHashCode(exclude = {"country", "passport", "reservations", "roles"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

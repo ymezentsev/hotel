@@ -1,4 +1,4 @@
-REATE TABLE IF NOT EXISTS country (
+CREATE TABLE IF NOT EXISTS country (
 	country_code VARCHAR(3) PRIMARY KEY,
     country_name VARCHAR(60) UNIQUE NOT NULL,
     phone_code VARCHAR(5) NOT NULL

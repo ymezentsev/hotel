@@ -8,8 +8,10 @@ import com.robot.hotel.room.RoomRepository;
 import com.robot.hotel.roomtype.RoomType;
 import com.robot.hotel.roomtype.RoomTypeRepository;
 import com.robot.hotel.user.model.*;
+import com.robot.hotel.user.model.enums.RoleName;
 import com.robot.hotel.user.repository.ConfirmationTokenRepository;
 import com.robot.hotel.user.repository.ForgotPasswordTokenRepository;
+import com.robot.hotel.user.repository.RoleRepository;
 import com.robot.hotel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +34,7 @@ public class DBInitializer {
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     public void populateDB() {
         reservationRepository.deleteAll();
@@ -40,12 +43,20 @@ public class DBInitializer {
         userRepository.deleteAll();
         roomRepository.deleteAll();
         roomTypeRepository.deleteAll();
+        roleRepository.deleteAll();
+        populateRoleTable();
         populateRoomTypeTable();
         populateRoomTable();
         populateUserTable();
         populateConfirmationTokenTable();
         populateForgotPasswordTokenTable();
         populateReservationTable();
+    }
+
+    private void populateRoleTable() {
+        roleRepository.save(new Role(null, RoleName.USER));
+        roleRepository.save(new Role(null, RoleName.MANAGER));
+        roleRepository.save(new Role(null, RoleName.ADMIN));
     }
 
     private void populateRoomTypeTable() {
@@ -81,22 +92,22 @@ public class DBInitializer {
                 LocalDate.of(2021, 2, 12));
 
         saveNewUser("admin", "admin", "UKR", "991111111",
-                "admin@gmail.com", "Admin123", Role.ADMIN, null, true);
+                "admin@gmail.com", "Admin123", RoleName.ADMIN, null, true);
 
         saveNewUser("denis", "sidorov", "UKR", "965467834",
-                "sidor@gmail.com", "Qwerty123456", Role.USER, null, false);
+                "sidor@gmail.com", "Qwerty123456", RoleName.USER, null, false);
 
         saveNewUser("andriy", "sidorov", "UKR", "954375647",
-                "sidor_andr@gmail.com", "Qwerty123456", Role.USER, passport1, true);
+                "sidor_andr@gmail.com", "Qwerty123456", RoleName.USER, passport1, true);
 
         saveNewUser("mark", "dmitrenko", "UKR", "505463213",
-                "dmitr@gmail.com", "Qwerty123456", Role.USER, passport2, true);
+                "dmitr@gmail.com", "Qwerty123456", RoleName.USER, passport2, true);
 
         saveNewUser("evgen", "kozlov", "UKR", "964569034",
-                "kozlov@gmail.com", "Qwerty123456", Role.MANAGER, null, true);
+                "kozlov@gmail.com", "Qwerty123456", RoleName.MANAGER, null, true);
 
         saveNewUser("andriy", "nikolaenko", "ITA", "0934560912",
-                "nikola@gmail.com", "Qwerty123456", Role.USER, passport3, false);
+                "nikola@gmail.com", "Qwerty123456", RoleName.USER, passport3, false);
     }
 
     private Passport saveNewPassport(String serialNumber, String country, LocalDate issueDate) {
@@ -110,7 +121,7 @@ public class DBInitializer {
     private void saveNewUser(String firstName, String lastName,
                              String country, String phoneNumber,
                              String email, String password,
-                             Role role, Passport passport,
+                             RoleName roleName, Passport passport,
                              Boolean isEnabled) {
         userRepository.save(User.builder()
                 .firstName(firstName)
@@ -119,7 +130,7 @@ public class DBInitializer {
                 .phoneNumber(phoneNumber)
                 .email(email)
                 .password(passwordEncoder.encode(password))
-                .role(role)
+                .roles(Collections.singleton(roleRepository.findByName(roleName).orElseThrow()))
                 .passport(passport)
                 .isEnabled(isEnabled)
                 .build());
