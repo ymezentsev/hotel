@@ -14,10 +14,10 @@ public class TestDBAuthentication {
 
     public void loginUser() {
         //  if (Objects.isNull(token.get())) {
-            token.set(authenticationService
-                    .authenticate(new LoginRequestDto("sidor_andr@gmail.com", "Qwerty123456"))
-                    .token());
-      //  }
+        token.set(authenticationService
+                .authenticate(new LoginRequestDto("sidor_andr@gmail.com", "Qwerty123456"))
+                .token());
+        //  }
     }
 
     public String getToken() {
