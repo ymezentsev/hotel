@@ -12,7 +12,7 @@ import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.mapper.UserMapper;
-import com.robot.hotel.user.model.EmailSubject;
+import com.robot.hotel.user.model.enums.EmailSubject;
 import com.robot.hotel.user.model.ForgotPasswordToken;
 import com.robot.hotel.user.model.Passport;
 import com.robot.hotel.user.model.User;

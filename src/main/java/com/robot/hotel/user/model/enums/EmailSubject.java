@@ -1,4 +1,4 @@
-package com.robot.hotel.user.model;
+package com.robot.hotel.user.model.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
