@@ -16,22 +16,34 @@ values  ('bb345678', 'UKR', "2020-01-15"),
         ('va123456', 'UKR', "2021-03-23"),
         ('ba345863', 'ITA', "2021-02-12");
 
-insert into users (first_name, last_name, phone_country_code, phone_number, email, password, role, passport_id, is_enabled)
+insert into users (first_name, last_name, phone_country_code, phone_number, email, password, passport_id, is_enabled)
 values  ('admin', 'admin', 'UKR', '991111111', 'admin@gmail.com',
-'$2a$12$owtTS8Q5teMgBiUMju1cy.NNDMGUhEKnelNJ8uL2Q/4FsvFg7/6Yq', 'ADMIN', null, true),
+'$2a$12$owtTS8Q5teMgBiUMju1cy.NNDMGUhEKnelNJ8uL2Q/4FsvFg7/6Yq', null, true),
         ('denis', 'sidorov', 'UKR', '965467834', 'sidor@gmail.com',
-'$2a$10$3ihcnQMi14khuO1wKxc3v.IwION2eN4L2bpwl6Udm/ghoZ74pqqmO', 'USER', null, false),
+'$2a$10$3ihcnQMi14khuO1wKxc3v.IwION2eN4L2bpwl6Udm/ghoZ74pqqmO', null, false),
         ('andriy', 'sidorov', 'UKR', '954375647', 'sidor_andr@gmail.com',
-'$2a$10$3ihcnQMi14khuO1wKxc3v.IwION2eN4L2bpwl6Udm/ghoZ74pqqmO', 'USER', 1, true),
+'$2a$10$3ihcnQMi14khuO1wKxc3v.IwION2eN4L2bpwl6Udm/ghoZ74pqqmO',1, true),
         ('mark', 'dmitrenko', 'UKR', '505463213', 'dmitr@gmail.com',
-'$2a$10$3ihcnQMi14khuO1wKxc3v.IwION2eN4L2bpwl6Udm/ghoZ74pqqmO', 'USER', 2, true),
+'$2a$10$3ihcnQMi14khuO1wKxc3v.IwION2eN4L2bpwl6Udm/ghoZ74pqqmO', 2, true),
         ('evgen', 'kozlov', 'UKR', '964569034', 'kozlov@gmail.com',
-'$2a$10$3ihcnQMi14khuO1wKxc3v.IwION2eN4L2bpwl6Udm/ghoZ74pqqmO', 'MANAGER', null, true),
+'$2a$10$3ihcnQMi14khuO1wKxc3v.IwION2eN4L2bpwl6Udm/ghoZ74pqqmO', null, true),
         ('andriy', 'nikolaenko', 'ITA', '0934560912', 'nikola@gmail.com',
-'$2a$10$3ihcnQMi14khuO1wKxc3v.IwION2eN4L2bpwl6Udm/ghoZ74pqqmO', 'USER', 3, false);
+'$2a$10$3ihcnQMi14khuO1wKxc3v.IwION2eN4L2bpwl6Udm/ghoZ74pqqmO', 3, false);
 -- admin@gmail.com          |   password: Admin123
 -- other users              |   password: Qwerty123456
 
+INSERT INTO roles (role_name)
+VALUES ('USER'),
+       ('MANAGER'),
+       ('ADMIN');
+
+INSERT INTO users_roles (user_id, role_id)
+VALUES (1, 3),
+       (2, 1),
+       (3, 1),
+       (4, 1),
+       (5, 2),
+       (6, 1);
 
 INSERT INTO reservation (room_id, check_in_date, check_out_date)
 VALUES  (5, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 4 DAY)),
