@@ -1,4 +1,4 @@
-package com.robot.hotel.user.service.impl;
+package com.robot.hotel.user.service;
 
 import com.robot.hotel.security.JwtUtil;
 import com.robot.hotel.user.dto.login.LoginRequestDto;

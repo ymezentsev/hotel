@@ -1,4 +1,4 @@
-package com.robot.hotel.user.service.impl;
+package com.robot.hotel.user.service;
 
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEnoughInformationException;
