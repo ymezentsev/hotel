@@ -1,4 +1,4 @@
-package com.robot.hotel.user.service;
+package com.robot.hotel.user.service.impl;
 
 import com.robot.hotel.country.Country;
 import com.robot.hotel.country.CountryService;
@@ -17,6 +17,10 @@ import com.robot.hotel.user.model.ForgotPasswordToken;
 import com.robot.hotel.user.model.Passport;
 import com.robot.hotel.user.model.User;
 import com.robot.hotel.user.repository.UserRepository;
+import com.robot.hotel.user.service.EmailSenderService;
+import com.robot.hotel.user.service.ForgotPasswordTokenService;
+import com.robot.hotel.user.service.PassportService;
+import com.robot.hotel.user.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

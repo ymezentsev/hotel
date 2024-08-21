@@ -1,8 +1,9 @@
-package com.robot.hotel.user.service;
+package com.robot.hotel.user.service.impl;
 
 import com.robot.hotel.security.JwtUtil;
 import com.robot.hotel.user.dto.login.LoginRequestDto;
 import com.robot.hotel.user.dto.login.LoginResponseDto;
+import com.robot.hotel.user.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

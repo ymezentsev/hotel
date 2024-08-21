@@ -2,6 +2,7 @@ package com.robot.hotel.user.service;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.user.model.enums.EmailSubject;
+import com.robot.hotel.user.service.impl.EmailSenderServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

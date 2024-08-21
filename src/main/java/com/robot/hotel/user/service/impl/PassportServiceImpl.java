@@ -1,4 +1,4 @@
-package com.robot.hotel.user.service;
+package com.robot.hotel.user.service.impl;
 
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEnoughInformationException;
@@ -8,6 +8,7 @@ import com.robot.hotel.user.repository.PassportRepository;
 import com.robot.hotel.user.repository.UserRepository;
 import com.robot.hotel.country.CountryRepository;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
+import com.robot.hotel.user.service.PassportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
