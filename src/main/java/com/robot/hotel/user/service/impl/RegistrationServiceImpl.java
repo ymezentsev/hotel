@@ -1,4 +1,4 @@
-package com.robot.hotel.user.service;
+package com.robot.hotel.user.service.impl;
 
 import com.robot.hotel.country.Country;
 import com.robot.hotel.country.CountryService;

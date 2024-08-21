@@ -1,4 +1,4 @@
-package com.robot.hotel.user.service;
+package com.robot.hotel.user.service.impl;
 
 import com.robot.hotel.exception.TokenAlreadyConfirmedException;
 import com.robot.hotel.exception.TokenExpiredException;
