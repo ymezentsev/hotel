@@ -18,10 +18,10 @@ class RoomSpecificationProviderManagerTest {
     @ParameterizedTest
     @DisplayName("Successful get specification provider")
     @CsvSource(value = {
-            "type, com.robot.hotel.search_criteria.room.TypeSpecificationProvider",
-            "minPrice, com.robot.hotel.search_criteria.room.MinPriceSpecificationProvider",
-            "maxPrice, com.robot.hotel.search_criteria.room.MaxPriceSpecificationProvider",
-            "guestsCount, com.robot.hotel.search_criteria.room.GuestCountSpecificationProvider",
+            "type, com.robot.hotel.search_criteria.room.specification_providers.TypeSpecificationProvider",
+            "minPrice, com.robot.hotel.search_criteria.room.specification_providers.MinPriceSpecificationProvider",
+            "maxPrice, com.robot.hotel.search_criteria.room.specification_providers.MaxPriceSpecificationProvider",
+            "guestsCount, com.robot.hotel.search_criteria.room.specification_providers.GuestCountSpecificationProvider",
     })
     void getSpecificationProviderTest(String key, String className) throws ClassNotFoundException {
         assertInstanceOf(Class.forName(className),

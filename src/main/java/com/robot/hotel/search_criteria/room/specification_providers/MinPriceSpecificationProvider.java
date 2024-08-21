@@ -1,4 +1,4 @@
-package com.robot.hotel.search_criteria.room;
+package com.robot.hotel.search_criteria.room.specification_providers;
 
 import com.robot.hotel.room.Room;
 import com.robot.hotel.search_criteria.SpecificationProvider;
