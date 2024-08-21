@@ -35,6 +35,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final EmailSenderService emailSenderService;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final EmailContentBuilderService emailContentBuilderService;
 
     private static final String USER_IS_ALREADY_EXISTS = "User with such %s already exists";
     private static final String USER_IS_NOT_EXISTS = "User with email %s not exists";
@@ -104,7 +105,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         emailSenderService.send(
                 user.getEmail().toLowerCase(),
-                emailSenderService.buildEmailContent(user.getFirstName(), token, EmailSubject.CONFIRM_EMAIL),
+                emailContentBuilderService.buildEmailContent(user.getFirstName(), token, EmailSubject.CONFIRM_EMAIL),
                 EmailSubject.CONFIRM_EMAIL.getSubject());
         log.info("Confirmation email sent successfully to: {}", email);
     }

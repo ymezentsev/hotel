@@ -17,10 +17,7 @@ import com.robot.hotel.user.model.ForgotPasswordToken;
 import com.robot.hotel.user.model.Passport;
 import com.robot.hotel.user.model.User;
 import com.robot.hotel.user.repository.UserRepository;
-import com.robot.hotel.user.service.EmailSenderService;
-import com.robot.hotel.user.service.ForgotPasswordTokenService;
-import com.robot.hotel.user.service.PassportService;
-import com.robot.hotel.user.service.UserService;
+import com.robot.hotel.user.service.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +47,7 @@ public class UserServiceImpl implements UserService {
     private final ForgotPasswordTokenService forgotPasswordTokenService;
     private final EmailSenderService emailSenderService;
     private final PasswordEncoder passwordEncoder;
+    private final EmailContentBuilderService emailContentBuilderService;
 
     private static final String USER_IS_ALREADY_EXISTS = "User with such %s already exists";
     private static final String USER_IS_NOT_EXISTS = "Such user not exists";
@@ -149,7 +147,7 @@ public class UserServiceImpl implements UserService {
 
         emailSenderService.send(
                 user.getEmail().toLowerCase(),
-                emailSenderService.buildEmailContent(user.getFirstName(), token, EmailSubject.FORGOT_PASSWORD),
+                emailContentBuilderService.buildEmailContent(user.getFirstName(), token, EmailSubject.FORGOT_PASSWORD),
                 EmailSubject.FORGOT_PASSWORD.getSubject());
         log.info("Forgot password email sent successfully to: {}", email);
     }
