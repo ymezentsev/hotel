@@ -18,14 +18,14 @@ class UserSpecificationProviderManagerTest {
     @ParameterizedTest
     @DisplayName("Successful get specification provider")
     @CsvSource(value = {
-            "firstname, com.robot.hotel.search_criteria.user.FirstnameSpecificationProvider",
-            "lastname, com.robot.hotel.search_criteria.user.LastnameSpecificationProvider",
-            "phoneNumber, com.robot.hotel.search_criteria.user.PhoneNumberSpecificationProvider",
-            "email, com.robot.hotel.search_criteria.user.EmailSpecificationProvider",
-            "role, com.robot.hotel.search_criteria.user.RoleSpecificationProvider",
-            "passportSerialNumber, com.robot.hotel.search_criteria.user.PassportSerialNumberSpecificationProvider",
-            "reservation, com.robot.hotel.search_criteria.user.ReservationSpecificationProvider",
-            "countryCode, com.robot.hotel.search_criteria.user.CountryCodeSpecificationProvider",
+            "firstname, com.robot.hotel.search_criteria.user.specification_providers.FirstnameSpecificationProvider",
+            "lastname, com.robot.hotel.search_criteria.user.specification_providers.LastnameSpecificationProvider",
+            "phoneNumber, com.robot.hotel.search_criteria.user.specification_providers.PhoneNumberSpecificationProvider",
+            "email, com.robot.hotel.search_criteria.user.specification_providers.EmailSpecificationProvider",
+            "role, com.robot.hotel.search_criteria.user.specification_providers.RoleSpecificationProvider",
+            "passportSerialNumber, com.robot.hotel.search_criteria.user.specification_providers.PassportSerialNumberSpecificationProvider",
+            "reservation, com.robot.hotel.search_criteria.user.specification_providers.ReservationSpecificationProvider",
+            "countryCode, com.robot.hotel.search_criteria.user.specification_providers.CountryCodeSpecificationProvider",
     })
     void getSpecificationProviderTest(String key, String className) throws ClassNotFoundException {
         assertInstanceOf(Class.forName(className),

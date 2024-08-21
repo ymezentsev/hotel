@@ -1,4 +1,4 @@
-package com.robot.hotel.search_criteria.user;
+package com.robot.hotel.search_criteria.user.specification_providers;
 
 import com.robot.hotel.search_criteria.SpecificationProvider;
 import com.robot.hotel.user.model.User;
@@ -10,17 +10,17 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class FirstnameSpecificationProvider implements SpecificationProvider<User> {
+public class LastnameSpecificationProvider implements SpecificationProvider<User> {
     @Override
     public String getKey() {
-        return "firstname";
+        return "lastname";
     }
 
     @Override
     public Specification<User> getSpecification(String[] params) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = Arrays.stream(params)
-                    .map(param -> criteriaBuilder.like(root.get("firstName"),
+                    .map(param -> criteriaBuilder.like(root.get("lastName"),
                             "%" + param.toLowerCase().strip() + "%"))
                     .toList();
             return criteriaBuilder.or(predicates.toArray(new Predicate[0]));

@@ -1,4 +1,4 @@
-package com.robot.hotel.search_criteria.user;
+package com.robot.hotel.search_criteria.user.specification_providers;
 
 import com.robot.hotel.search_criteria.SpecificationProvider;
 import com.robot.hotel.user.model.User;
@@ -8,20 +8,18 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 @Component
-public class CountryCodeSpecificationProvider implements SpecificationProvider<User> {
+public class EmailSpecificationProvider implements SpecificationProvider<User> {
     @Override
     public String getKey() {
-        return "countryCode";
+        return "email";
     }
 
     @Override
     public Specification<User> getSpecification(String[] params) {
         return (root, query, criteriaBuilder) -> root
-                .get("passport")
-                .get("country")
-                .get("countryCode")
+                .get("email")
                 .in(Arrays.stream(params)
-                        .map(name -> name.toUpperCase().strip())
+                        .map(name -> name.toLowerCase().strip())
                         .toArray());
     }
 }

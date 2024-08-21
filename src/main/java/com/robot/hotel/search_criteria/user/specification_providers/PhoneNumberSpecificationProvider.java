@@ -1,4 +1,4 @@
-package com.robot.hotel.search_criteria.user;
+package com.robot.hotel.search_criteria.user.specification_providers;
 
 import com.robot.hotel.search_criteria.SpecificationProvider;
 import com.robot.hotel.user.model.User;
