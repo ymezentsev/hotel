@@ -13,8 +13,8 @@ public interface UserMapper {
 
     @Mappings({
             @Mapping(target = "phoneNumber",
-                    expression = "java(user.getCountry().getPhoneCode() + user.getPhoneNumber())")
+                    expression = "java(user.getCountry().getPhoneCode() + user.getPhoneNumber())"),
+            @Mapping(target = "isEnabled", source = "enabled")
     })
     UserDto toDto(User user);
-
 }
