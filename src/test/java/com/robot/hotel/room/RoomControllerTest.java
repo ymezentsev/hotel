@@ -2,7 +2,7 @@ package com.robot.hotel.room;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
-import com.robot.hotel.TestDBAuthentication;
+import com.robot.hotel.DBAuthentication;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomRequest;
@@ -33,12 +33,12 @@ class RoomControllerTest {
     TestDBUtils testDBUtils;
 
     @Autowired
-    TestDBAuthentication testDBAuthentication;
+    DBAuthentication DBAuthentication;
 
     @BeforeEach
     void setUp() {
         dbInitializer.populateDB();
-        testDBAuthentication.loginUser();
+        DBAuthentication.loginUser();
         RestAssured.baseURI = "http://localhost:" + port + "/api/v1/rooms";
     }
 
@@ -59,7 +59,7 @@ class RoomControllerTest {
         RoomRequest roomRequest = new RoomRequest("105", BigDecimal.valueOf(1000), 3, "lux");
 
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
+                .header("Authorization", "Bearer " + DBAuthentication.getToken())
                 .body(roomRequest)
                 .when().post()
                 .then()
@@ -74,7 +74,7 @@ class RoomControllerTest {
         RoomRequest roomRequest = new RoomRequest("", BigDecimal.valueOf(1000), 3, "lux");
 
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
+                .header("Authorization", "Bearer " + DBAuthentication.getToken())
                 .body(roomRequest)
                 .when().post()
                 .then()
@@ -155,7 +155,7 @@ class RoomControllerTest {
         RoomRequest roomRequest = new RoomRequest("104", BigDecimal.valueOf(1000), 3, "lux");
 
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
+                .header("Authorization", "Bearer " + DBAuthentication.getToken())
                 .body(roomRequest)
                 .pathParam("id", testDBUtils.getRoomIdByNumber("101"))
                 .when().put("/{id}")
@@ -169,7 +169,7 @@ class RoomControllerTest {
         RoomRequest roomRequest = new RoomRequest("", BigDecimal.valueOf(1000), 3, "lux");
 
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
+                .header("Authorization", "Bearer " + DBAuthentication.getToken())
                 .body(roomRequest)
                 .pathParam("id", testDBUtils.getRoomIdByNumber("101"))
                 .when().put("/{id}")
@@ -183,7 +183,7 @@ class RoomControllerTest {
     @DisplayName("Delete room type")
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + testDBAuthentication.getToken())
+                .header("Authorization", "Bearer " + DBAuthentication.getToken())
                 .pathParam("id", testDBUtils.getRoomIdByNumber("201"))
                 .when().delete("/{id}")
                 .then()

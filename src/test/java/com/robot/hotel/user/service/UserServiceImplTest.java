@@ -2,7 +2,7 @@ package com.robot.hotel.user.service;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
-import com.robot.hotel.TestDBAuthentication;
+import com.robot.hotel.DBAuthentication;
 import com.robot.hotel.TestDBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.InvalidPasswordException;
@@ -44,7 +44,7 @@ class UserServiceImplTest {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    TestDBAuthentication testDBAuthentication;
+    DBAuthentication DBAuthentication;
 
     @BeforeEach
     void setUp() {
@@ -253,7 +253,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful change password")
     void changePasswordTest() {
-        testDBAuthentication.loginUser();
+        DBAuthentication.loginUser();
         ChangePasswordRequestDto changePasswordRequestDto = new ChangePasswordRequestDto();
         changePasswordRequestDto.setOldPassword("Qwerty123456");
         changePasswordRequestDto.setNewPassword("newPassword");
@@ -267,7 +267,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Failed change password (throws InvalidPasswordException)")
     void changePasswordThrowsInvalidPasswordExceptionTest() {
-        testDBAuthentication.loginUser();
+        DBAuthentication.loginUser();
         ChangePasswordRequestDto changePasswordRequestDto = new ChangePasswordRequestDto();
         changePasswordRequestDto.setOldPassword("Qwerty");
         changePasswordRequestDto.setNewPassword("newPassword");
@@ -279,7 +279,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful get current authenticated user")
     void getCurrentAuthenticatedUserTest() {
-        testDBAuthentication.loginUser();
+        DBAuthentication.loginUser();
         assertEquals("sidor_andr@gmail.com", userService.getCurrentAuthenticatedUser().getEmail());
     }
 

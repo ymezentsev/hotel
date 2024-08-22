@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TestDBAuthentication {
+public class DBAuthentication {
     private final AuthenticationService authenticationService;
 
     private static final ThreadLocal<String> token = new ThreadLocal<>();
