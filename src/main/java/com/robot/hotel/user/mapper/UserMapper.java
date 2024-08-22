@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-@Mapper(config = MapperConfig.class, uses = {PassportMapper.class, ReservationMapper.class})
+@Mapper(config = MapperConfig.class, uses = {PassportMapper.class, ReservationMapper.class, RoleMapper.class})
 public interface UserMapper {
 
     @Mappings({
