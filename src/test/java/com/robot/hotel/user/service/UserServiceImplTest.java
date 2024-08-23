@@ -3,7 +3,7 @@ package com.robot.hotel.user.service;
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBAuthentication;
-import com.robot.hotel.TestDBUtils;
+import com.robot.hotel.DBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.InvalidPasswordException;
 import com.robot.hotel.exception.NotEmptyObjectException;
@@ -35,7 +35,7 @@ class UserServiceImplTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    TestDBUtils testDBUtils;
+    DBUtils DBUtils;
 
     @Autowired
     ForgotPasswordTokenRepository forgotPasswordTokenRepository;
@@ -60,7 +60,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful find user by id")
     void findByIdTest() {
-        Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long id = DBUtils.getUserIdByEmail("sidor@gmail.com");
         assertEquals("+380965467834", userService.findById(id).phoneNumber());
     }
 
@@ -117,8 +117,8 @@ class UserServiceImplTest {
                         new String[]{},
                         new String[]{},
                         new String[]{},
-                        new String[]{testDBUtils.getReservationIdByRoom("101").toString(),
-                                testDBUtils.getReservationIdByRoom("203").toString()},
+                        new String[]{DBUtils.getReservationIdByRoom("101").toString(),
+                                DBUtils.getReservationIdByRoom("203").toString()},
                         new String[]{});
         UserSearchParametersDto searchCountry =
                 new UserSearchParametersDto(new String[]{},
@@ -143,7 +143,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful update user")
     void updateTest() {
-        Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long id = DBUtils.getUserIdByEmail("sidor@gmail.com");
         RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
                 "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
@@ -169,7 +169,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Fail update user (throw DuplicateObjectException - wrong email)")
     void updateThrowDuplicateObjectExceptionWrongEmailTest() {
-        Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long id = DBUtils.getUserIdByEmail("sidor@gmail.com");
         RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
                 "0953453434", "kozlov@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
@@ -181,7 +181,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Fail update user (throw DuplicateObjectException - wrong phone number)")
     void updateThrowDuplicateObjectExceptionWrongPhoneTest() {
-        Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long id = DBUtils.getUserIdByEmail("sidor@gmail.com");
         RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
                 "505463213", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
@@ -193,7 +193,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful delete user")
     void deleteByIdTest() {
-        Long id = testDBUtils.getUserIdByEmail("dmitr@gmail.com");
+        Long id = DBUtils.getUserIdByEmail("dmitr@gmail.com");
         userService.deleteById(id);
         assertEquals(5, userService.findAll(Pageable.unpaged()).getTotalElements());
     }
@@ -208,7 +208,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Fail delete user (throw NotEmptyObjectException)")
     void deleteByIdThrowNotEmptyObjectExceptionTest() {
-        Long id = testDBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long id = DBUtils.getUserIdByEmail("sidor@gmail.com");
 
         assertThrows(NotEmptyObjectException.class,
                 () -> userService.deleteById(id));
@@ -217,7 +217,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Enable user")
     void enableUser() {
-        User user = testDBUtils.getUserByEmail("nikola@gmail.com");
+        User user = DBUtils.getUserByEmail("nikola@gmail.com");
         assertAll(
                 () -> assertFalse(user.isEnabled()),
                 () -> {
@@ -247,7 +247,7 @@ class UserServiceImplTest {
         userService.resetPassword("newPassword", "8ac319b4-990f-466f-8a5a-7c2a028b430c");
 
         assertTrue(passwordEncoder.matches("newPassword",
-                testDBUtils.getUserByEmail("sidor@gmail.com").getPassword()));
+                DBUtils.getUserByEmail("sidor@gmail.com").getPassword()));
     }
 
     @Test
@@ -261,7 +261,7 @@ class UserServiceImplTest {
 
         userService.changePassword(changePasswordRequestDto);
         assertTrue(passwordEncoder.matches("newPassword",
-                testDBUtils.getUserByEmail("sidor_andr@gmail.com").getPassword()));
+                DBUtils.getUserByEmail("sidor_andr@gmail.com").getPassword()));
     }
 
     @Test

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TestDBUtils {
+public class DBUtils {
     private final RoomTypeRepository roomTypeRepository;
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;

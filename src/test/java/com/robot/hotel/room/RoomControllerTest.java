@@ -3,7 +3,7 @@ package com.robot.hotel.room;
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBAuthentication;
-import com.robot.hotel.TestDBUtils;
+import com.robot.hotel.DBUtils;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomRequest;
 import io.restassured.RestAssured;
@@ -30,7 +30,7 @@ class RoomControllerTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    TestDBUtils testDBUtils;
+    DBUtils DBUtils;
 
     @Autowired
     DBAuthentication DBAuthentication;
@@ -87,7 +87,7 @@ class RoomControllerTest {
     @DisplayName("Find room by id")
     void findByIdTest() {
         given().contentType(ContentType.JSON)
-                .pathParam("id", testDBUtils.getRoomIdByNumber("101"))
+                .pathParam("id", DBUtils.getRoomIdByNumber("101"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -157,7 +157,7 @@ class RoomControllerTest {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
                 .body(roomRequest)
-                .pathParam("id", testDBUtils.getRoomIdByNumber("101"))
+                .pathParam("id", DBUtils.getRoomIdByNumber("101"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(200);
@@ -171,7 +171,7 @@ class RoomControllerTest {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
                 .body(roomRequest)
-                .pathParam("id", testDBUtils.getRoomIdByNumber("101"))
+                .pathParam("id", DBUtils.getRoomIdByNumber("101"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(400)
@@ -184,7 +184,7 @@ class RoomControllerTest {
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
-                .pathParam("id", testDBUtils.getRoomIdByNumber("201"))
+                .pathParam("id", DBUtils.getRoomIdByNumber("201"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);

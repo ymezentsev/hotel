@@ -2,7 +2,7 @@ package com.robot.hotel.room;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
-import com.robot.hotel.TestDBUtils;
+import com.robot.hotel.DBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.WrongDatesException;
@@ -33,7 +33,7 @@ class RoomServiceImplTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    TestDBUtils testDBUtils;
+    DBUtils DBUtils;
 
     @BeforeEach
     void setUp() {
@@ -75,7 +75,7 @@ class RoomServiceImplTest {
     @Test
     @DisplayName("Successful find room by id")
     void findByIdTest() {
-        Long id = testDBUtils.getRoomIdByNumber("101");
+        Long id = DBUtils.getRoomIdByNumber("101");
         assertEquals(4, roomService.findById(id).maxCountOfGuests());
     }
 
@@ -133,7 +133,7 @@ class RoomServiceImplTest {
     @Test
     @DisplayName("Successful update room")
     void updateTest() {
-        Long id = testDBUtils.getRoomIdByNumber("101");
+        Long id = DBUtils.getRoomIdByNumber("101");
         RoomRequest roomRequest = new RoomRequest("105", BigDecimal.valueOf(1000), 3, "lux");
 
         roomService.update(id, roomRequest);
@@ -155,7 +155,7 @@ class RoomServiceImplTest {
     @Test
     @DisplayName("Fail update room (throw NoSuchElementException, wrong type)")
     void updateThrowNoSuchElementExceptionWrongITypeTest() {
-        Long id = testDBUtils.getRoomIdByNumber("101");
+        Long id = DBUtils.getRoomIdByNumber("101");
         RoomRequest roomRequest = new RoomRequest("105", BigDecimal.valueOf(1000), 3, "new lux");
 
         assertThrows(NoSuchElementException.class,
@@ -165,7 +165,7 @@ class RoomServiceImplTest {
     @Test
     @DisplayName("Fail update room (throw DuplicateObjectException)")
     void updateThrowDuplicateObjectExceptionTest() {
-        Long id = testDBUtils.getRoomIdByNumber("101");
+        Long id = DBUtils.getRoomIdByNumber("101");
         RoomRequest roomRequest = new RoomRequest("201", BigDecimal.valueOf(1000), 3, "lux");
 
         assertThrows(DuplicateObjectException.class,
@@ -175,7 +175,7 @@ class RoomServiceImplTest {
     @Test
     @DisplayName("Successful delete room")
     void deleteByIdTest() {
-        Long id = testDBUtils.getRoomIdByNumber("201");
+        Long id = DBUtils.getRoomIdByNumber("201");
         roomService.deleteById(id);
         assertEquals(4, roomService.findAll(Pageable.unpaged()).getTotalElements());
     }
@@ -190,7 +190,7 @@ class RoomServiceImplTest {
     @Test
     @DisplayName("Fail delete room (throw NotEmptyObjectException)")
     void deleteByIdThrowNotEmptyObjectExceptionTest() {
-        Long id = testDBUtils.getRoomIdByNumber("204");
+        Long id = DBUtils.getRoomIdByNumber("204");
         assertThrows(NotEmptyObjectException.class,
                 () -> roomService.deleteById(id));
     }

@@ -2,7 +2,7 @@ package com.robot.hotel.user.service;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
-import com.robot.hotel.TestDBUtils;
+import com.robot.hotel.DBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.FailedToSendEmailException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
@@ -37,7 +37,7 @@ class RegistrationServiceImplTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    TestDBUtils testUtils;
+    DBUtils testUtils;
 
     @BeforeEach
     void setUp() {

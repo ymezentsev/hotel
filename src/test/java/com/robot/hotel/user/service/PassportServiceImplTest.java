@@ -2,7 +2,7 @@ package com.robot.hotel.user.service;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
-import com.robot.hotel.TestDBUtils;
+import com.robot.hotel.DBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEnoughInformationException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
@@ -26,7 +26,7 @@ class PassportServiceImplTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    TestDBUtils testDBUtils;
+    DBUtils DBUtils;
 
     @BeforeEach
     void setUp() {
@@ -80,7 +80,7 @@ class PassportServiceImplTest {
                 "bb345678", "USA", LocalDate.of(2018, 3, 8));
         assertThrows(DuplicateObjectException.class,
                 () -> passportService.getPassportFromUserRequest(registrationRequestDto,
-                        testDBUtils.getUserIdByEmail("dmitr@gmail.com")));
+                        DBUtils.getUserIdByEmail("dmitr@gmail.com")));
     }
 
     @Test

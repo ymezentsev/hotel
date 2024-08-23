@@ -2,7 +2,7 @@ package com.robot.hotel.roomtype;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
-import com.robot.hotel.TestDBUtils;
+import com.robot.hotel.DBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.roomtype.dto.RoomTypeRequest;
@@ -25,7 +25,7 @@ class RoomTypeServiceImplTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    TestDBUtils testDBUtils;
+    DBUtils DBUtils;
 
     @BeforeEach
     void setUp() {
@@ -57,7 +57,7 @@ class RoomTypeServiceImplTest {
     @Test
     @DisplayName("Successful find room type by type")
     void findByTypeTest() {
-        Long id = testDBUtils.getRoomTypeIdByType("lux");
+        Long id = DBUtils.getRoomTypeIdByType("lux");
         assertEquals(id, roomTypeService.findByType("lux").id());
     }
 
@@ -71,7 +71,7 @@ class RoomTypeServiceImplTest {
     @Test
     @DisplayName("Successful find room type by id")
     void findByIdTest() {
-        Long id = testDBUtils.getRoomTypeIdByType("lux");
+        Long id = DBUtils.getRoomTypeIdByType("lux");
         assertEquals("lux", roomTypeService.findById(id).type());
     }
 
@@ -85,7 +85,7 @@ class RoomTypeServiceImplTest {
     @Test
     @DisplayName("Successful update room type")
     void updateTest() {
-        Long id = testDBUtils.getRoomTypeIdByType("lux");
+        Long id = DBUtils.getRoomTypeIdByType("lux");
         roomTypeService.update(id, new RoomTypeRequest("new LUx"));
         assertAll(
                 () -> assertNotNull(roomTypeService.findByType("new lux")),
@@ -103,7 +103,7 @@ class RoomTypeServiceImplTest {
     @Test
     @DisplayName("Fail update room type (throw DuplicateObjectException)")
     void updateThrowDuplicateObjectExceptionTest() {
-        Long id = testDBUtils.getRoomTypeIdByType("standart single");
+        Long id = DBUtils.getRoomTypeIdByType("standart single");
         assertThrows(DuplicateObjectException.class,
                 () -> roomTypeService.update(id, new RoomTypeRequest("lux")));
     }
@@ -111,7 +111,7 @@ class RoomTypeServiceImplTest {
     @Test
     @DisplayName("Successful delete room type")
     void deleteByIdTest() {
-        Long id = testDBUtils.getRoomTypeIdByType("king");
+        Long id = DBUtils.getRoomTypeIdByType("king");
         roomTypeService.deleteById(id);
         assertEquals(3, roomTypeService.findAll().size());
     }
@@ -126,7 +126,7 @@ class RoomTypeServiceImplTest {
     @Test
     @DisplayName("Fail delete room type (throw NotEmptyObjectException)")
     void deleteByIdThrowNotEmptyObjectExceptionTest() {
-        Long id = testDBUtils.getRoomTypeIdByType("standart single");
+        Long id = DBUtils.getRoomTypeIdByType("standart single");
         assertThrows(NotEmptyObjectException.class,
                 () -> roomTypeService.deleteById(id));
     }

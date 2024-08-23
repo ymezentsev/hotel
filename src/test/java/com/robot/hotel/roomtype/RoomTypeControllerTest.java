@@ -3,7 +3,7 @@ package com.robot.hotel.roomtype;
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBAuthentication;
-import com.robot.hotel.TestDBUtils;
+import com.robot.hotel.DBUtils;
 import com.robot.hotel.roomtype.dto.RoomTypeRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -26,7 +26,7 @@ class RoomTypeControllerTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    TestDBUtils testDBUtils;
+    DBUtils DBUtils;
 
     @Autowired
     DBAuthentication DBAuthentication;
@@ -98,7 +98,7 @@ class RoomTypeControllerTest {
     void findByIdTest() {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
-                .pathParam("id", testDBUtils.getRoomTypeIdByType("lux"))
+                .pathParam("id", DBUtils.getRoomTypeIdByType("lux"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -114,7 +114,7 @@ class RoomTypeControllerTest {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
                 .body(roomTypeRequest)
-                .pathParam("id", testDBUtils.getRoomTypeIdByType("lux"))
+                .pathParam("id", DBUtils.getRoomTypeIdByType("lux"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(200);
@@ -128,7 +128,7 @@ class RoomTypeControllerTest {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
                 .body(roomTypeRequest)
-                .pathParam("id", testDBUtils.getRoomTypeIdByType("lux"))
+                .pathParam("id", DBUtils.getRoomTypeIdByType("lux"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(400)
@@ -141,7 +141,7 @@ class RoomTypeControllerTest {
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
-                .pathParam("id", testDBUtils.getRoomTypeIdByType("king"))
+                .pathParam("id", DBUtils.getRoomTypeIdByType("king"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);

@@ -3,7 +3,7 @@ package com.robot.hotel.user.controller;
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBAuthentication;
-import com.robot.hotel.TestDBUtils;
+import com.robot.hotel.DBUtils;
 import com.robot.hotel.user.dto.EmailRequestDto;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
@@ -31,7 +31,7 @@ class UserControllerTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    TestDBUtils testDBUtils;
+    DBUtils DBUtils;
 
     @Autowired
     DBAuthentication DBAuthentication;
@@ -60,7 +60,7 @@ class UserControllerTest {
     void findByIdTest() {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
-                .pathParam("id", testDBUtils.getUserIdByEmail("sidor@gmail.com"))
+                .pathParam("id", DBUtils.getUserIdByEmail("sidor@gmail.com"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -91,7 +91,7 @@ class UserControllerTest {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
                 .body(registrationRequestDto)
-                .pathParam("id", testDBUtils.getUserIdByEmail("kozlov@gmail.com"))
+                .pathParam("id", DBUtils.getUserIdByEmail("kozlov@gmail.com"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(200);
@@ -107,7 +107,7 @@ class UserControllerTest {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
                 .body(registrationRequestDto)
-                .pathParam("id", testDBUtils.getUserIdByEmail("sidor@gmail.com"))
+                .pathParam("id", DBUtils.getUserIdByEmail("sidor@gmail.com"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(400)
@@ -120,7 +120,7 @@ class UserControllerTest {
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
-                .pathParam("id", testDBUtils.getUserIdByEmail("dmitr@gmail.com"))
+                .pathParam("id", DBUtils.getUserIdByEmail("dmitr@gmail.com"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);

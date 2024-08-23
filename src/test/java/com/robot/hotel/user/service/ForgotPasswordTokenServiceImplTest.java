@@ -2,7 +2,7 @@ package com.robot.hotel.user.service;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
-import com.robot.hotel.TestDBUtils;
+import com.robot.hotel.DBUtils;
 import com.robot.hotel.exception.TokenAlreadyConfirmedException;
 import com.robot.hotel.exception.TokenExpiredException;
 import com.robot.hotel.user.model.ForgotPasswordToken;
@@ -29,7 +29,7 @@ class ForgotPasswordTokenServiceImplTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    TestDBUtils testUtils;
+    DBUtils testUtils;
 
     @BeforeEach
     void setUp() {

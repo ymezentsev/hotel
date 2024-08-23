@@ -3,7 +3,7 @@ package com.robot.hotel.reservation;
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBAuthentication;
-import com.robot.hotel.TestDBUtils;
+import com.robot.hotel.DBUtils;
 import com.robot.hotel.reservation.dto.ReservationRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -29,7 +29,7 @@ class ReservationControllerTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    TestDBUtils testDBUtils;
+    DBUtils DBUtils;
 
     @Autowired
     DBAuthentication DBAuthentication;
@@ -59,7 +59,7 @@ class ReservationControllerTest {
     void findByIdTest() {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
-                .pathParam("id", testDBUtils.getReservationIdByRoom("203"))
+                .pathParam("id", DBUtils.getReservationIdByRoom("203"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -104,7 +104,7 @@ class ReservationControllerTest {
     void findReservationsByUserIdTest() {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
-                .pathParam("id", testDBUtils.getUserIdByEmail("sidor_andr@gmail.com"))
+                .pathParam("id", DBUtils.getUserIdByEmail("sidor_andr@gmail.com"))
                 .when().get("/user/{id}")
                 .then()
                 .statusCode(200)
@@ -155,7 +155,7 @@ class ReservationControllerTest {
     void deleteByIdTest() {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + DBAuthentication.getToken())
-                .pathParam("id", testDBUtils.getReservationIdByRoom("101"))
+                .pathParam("id", DBUtils.getReservationIdByRoom("101"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);
