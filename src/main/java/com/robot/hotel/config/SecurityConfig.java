@@ -2,6 +2,8 @@ package com.robot.hotel.config;
 
 import com.robot.hotel.security.AuthEntryPointJwt;
 import com.robot.hotel.security.JwtAuthenticationFilter;
+import com.robot.hotel.security.oauth2.CustomOAuth2UserService;
+import com.robot.hotel.security.oauth2.OAuth2LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +30,8 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthEntryPointJwt unauthorizedHandler;
-    //private final CustomOAuth2UserService customOAuth2UserService;
-    // private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -68,13 +70,13 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class)
-/*                .oauth2Login(oauth2 -> oauth2
+                .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(infoEndpoint -> infoEndpoint.userService(customOAuth2UserService))
                         .successHandler(oAuth2LoginSuccessHandler)
                         .authorizationEndpoint(authEndpoint ->
                                 authEndpoint.baseUri("/api/v1/login/oauth2/authorization"))
                         .redirectionEndpoint(redEndpoint ->
-                                redEndpoint.baseUri("/api/v1/login/oauth2/code/*")))*/
+                                redEndpoint.baseUri("/api/v1/login/oauth2/code/*")))
                 .logout(logout -> logout.clearAuthentication(true)
                         .logoutUrl("/logout"))
                 .build();
