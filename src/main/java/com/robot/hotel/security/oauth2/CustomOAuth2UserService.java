@@ -22,11 +22,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final RoleRepository roleRepository;
 
     @Override
+    //todo add logger
+    //todo add test
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User user = super.loadUser(userRequest);
         return new CustomOAuth2User(user);
     }
 
+    //todo add logger
+    //todo add test
     public User registerNewUserAfterOAuthLogin(CustomOAuth2User oAuth2User) {
         Role roleUser = roleRepository.findByName(RoleName.USER).orElseThrow();
 
