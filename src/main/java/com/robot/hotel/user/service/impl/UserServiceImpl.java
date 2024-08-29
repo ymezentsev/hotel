@@ -7,6 +7,7 @@ import com.robot.hotel.exception.InvalidPasswordException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.UserNotAuthenticatedException;
 import com.robot.hotel.search_criteria.SpecificationBuilder;
+import com.robot.hotel.security.oauth2.CustomOAuth2User;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParametersDto;
@@ -188,9 +189,9 @@ public class UserServiceImpl implements UserService {
             String email;
             if (authentication.getPrincipal() instanceof UserDetails userDetails) {
                 email = userDetails.getUsername();
-            } /*else if (authentication.getPrincipal() instanceof CustomOAuth2User customOAuth2User) {
+            } else if (authentication.getPrincipal() instanceof CustomOAuth2User customOAuth2User) {
                 email = customOAuth2User.getEmail();
-            }*/ else {
+            } else {
                 email = null;
             }
 
