@@ -1,4 +1,4 @@
-package com.robot.hotel.user.service;
+package com.robot.hotel.user.service.impl;
 
 import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
@@ -7,6 +7,7 @@ import com.robot.hotel.exception.TokenAlreadyConfirmedException;
 import com.robot.hotel.exception.TokenExpiredException;
 import com.robot.hotel.user.model.ForgotPasswordToken;
 import com.robot.hotel.user.repository.ForgotPasswordTokenRepository;
+import com.robot.hotel.user.service.ForgotPasswordTokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
