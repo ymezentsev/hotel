@@ -27,20 +27,20 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column
     private String lastName;
 
     @ManyToOne
-    @JoinColumn(name = "phone_country_code", nullable = false)
+    @JoinColumn(name = "phone_country_code")
     private Country country;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String phoneNumber;
 
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
