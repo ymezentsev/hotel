@@ -57,6 +57,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/auth/**",
                                         "/api/v1/users/forgot-password/**",
                                         "/api/v1/users/reset-password/**",
+                                        "/api/v1/google/**",
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**")
                                 .permitAll()
