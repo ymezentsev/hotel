@@ -14,7 +14,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -25,15 +24,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final RoleRepository roleRepository;
 
     @Override
-    //todo add test
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User user = super.loadUser(userRequest);
         log.info("User with email {} loaded successfully ",
-                Objects.requireNonNull(user.getAttribute("email")).toString());
+                Optional.ofNullable(user.getAttribute("email")));
         return new CustomOAuth2User(user);
     }
 
-    //todo add test
     public User registerNewUserAfterOAuthLogin(CustomOAuth2User oAuth2User) {
         log.info("Registering new user after OAuth login");
         Role roleUser = roleRepository.findByName(RoleName.USER).orElseThrow();
