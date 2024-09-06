@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 })
 public class ChangePasswordRequestDto {
 
-    @NotBlank(message = "Current password is required")
     @Schema(description = "User Current Password", example = "Qwerty123456")
     private String oldPassword;
 
