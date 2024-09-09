@@ -5,6 +5,7 @@ import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.FailedToSendEmailException;
+import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.repository.ConfirmationTokenRepository;
 import com.robot.hotel.user.service.ConfirmationTokenService;
@@ -18,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

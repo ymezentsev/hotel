@@ -4,6 +4,7 @@ import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
+import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.room.dto.FreeRoomRequest;
@@ -20,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

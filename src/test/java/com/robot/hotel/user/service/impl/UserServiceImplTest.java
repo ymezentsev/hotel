@@ -4,10 +4,7 @@ import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBAuthentication;
 import com.robot.hotel.DBUtils;
-import com.robot.hotel.exception.DuplicateObjectException;
-import com.robot.hotel.exception.InvalidPasswordException;
-import com.robot.hotel.exception.NotEmptyObjectException;
-import com.robot.hotel.exception.UserNotAuthenticatedException;
+import com.robot.hotel.exception.*;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
@@ -23,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

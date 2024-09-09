@@ -4,6 +4,7 @@ import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
+import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.exception.NotEnoughInformationException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.service.PassportService;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

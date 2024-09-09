@@ -4,6 +4,7 @@ import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBUtils;
 import com.robot.hotel.exception.DuplicateObjectException;
+import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.roomtype.dto.RoomTypeRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,8 +12,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

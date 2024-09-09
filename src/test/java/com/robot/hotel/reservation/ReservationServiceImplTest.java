@@ -4,6 +4,7 @@ import com.robot.hotel.ContainerConfiguration;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBUtils;
 import com.robot.hotel.exception.GuestsQuantityException;
+import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.reservation.dto.ReservationRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
