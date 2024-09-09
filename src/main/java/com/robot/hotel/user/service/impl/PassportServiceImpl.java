@@ -2,6 +2,7 @@ package com.robot.hotel.user.service.impl;
 
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEnoughInformationException;
+import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.user.model.Passport;
 import com.robot.hotel.user.model.User;
 import com.robot.hotel.user.repository.PassportRepository;
@@ -12,7 +13,6 @@ import com.robot.hotel.user.service.PassportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service

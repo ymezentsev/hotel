@@ -1,6 +1,7 @@
 package com.robot.hotel.roomtype;
 
 import com.robot.hotel.exception.DuplicateObjectException;
+import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.roomtype.dto.RoomTypeDto;
 import com.robot.hotel.roomtype.dto.RoomTypeRequest;
@@ -9,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Slf4j
 @Service

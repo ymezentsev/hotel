@@ -6,6 +6,7 @@ import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.InvalidPasswordException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.UserNotAuthenticatedException;
+import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.search_criteria.SpecificationBuilder;
 import com.robot.hotel.security.oauth2.CustomOAuth2User;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
@@ -33,7 +34,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j

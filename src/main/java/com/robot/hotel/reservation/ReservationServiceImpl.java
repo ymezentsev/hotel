@@ -2,6 +2,7 @@ package com.robot.hotel.reservation;
 
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.WrongDatesException;
+import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.reservation.dto.ReservationDto;
 import com.robot.hotel.reservation.dto.ReservationRequest;
 import com.robot.hotel.room.Room;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 

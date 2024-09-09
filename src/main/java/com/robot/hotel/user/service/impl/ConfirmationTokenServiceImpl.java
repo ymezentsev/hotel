@@ -2,6 +2,7 @@ package com.robot.hotel.user.service.impl;
 
 import com.robot.hotel.exception.TokenAlreadyConfirmedException;
 import com.robot.hotel.exception.TokenExpiredException;
+import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.user.model.ConfirmationToken;
 import com.robot.hotel.user.repository.ConfirmationTokenRepository;
 import com.robot.hotel.user.model.User;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Slf4j

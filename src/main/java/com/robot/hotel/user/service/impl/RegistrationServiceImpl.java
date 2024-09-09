@@ -4,6 +4,7 @@ import com.robot.hotel.country.Country;
 import com.robot.hotel.country.CountryService;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.FailedToSendEmailException;
+import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.mapper.UserMapper;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.NoSuchElementException;
 
 @Slf4j
 @Service

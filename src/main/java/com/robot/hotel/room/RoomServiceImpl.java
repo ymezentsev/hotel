@@ -3,6 +3,7 @@ package com.robot.hotel.room;
 import com.robot.hotel.exception.DuplicateObjectException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.WrongDatesException;
+import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;
