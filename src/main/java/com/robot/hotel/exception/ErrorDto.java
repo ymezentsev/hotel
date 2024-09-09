@@ -1,4 +1,4 @@
-package com.robot.hotel.error;
+package com.robot.hotel.exception;
 
 import lombok.Builder;
 
