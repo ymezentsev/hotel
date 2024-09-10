@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Tag(name = "Users Controller", description = "API to work with Users")
 public interface UserControllerOpenApi {
 
-    @Operation(summary = "Get all users",
+    @Operation(summary = "Get all users (for admins and managers only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -33,7 +33,7 @@ public interface UserControllerOpenApi {
     })
     Page<UserDto> findAll(Pageable pageable);
 
-    @Operation(summary = "Get user by id",
+    @Operation(summary = "Get user by id (for admins and managers only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -46,7 +46,7 @@ public interface UserControllerOpenApi {
     UserDto findById(@PathVariable Long id);
 
     @Operation(summary = "Get all users filtered by firstname, lastname, phone number, " +
-            "email, role, passport serial number, reservation and country",
+            "email, role, passport serial number, reservation and country (for admins and managers only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -58,7 +58,7 @@ public interface UserControllerOpenApi {
     })
     Page<UserDto> search(UserSearchParametersDto parameters, Pageable pageable);
 
-    @Operation(summary = "Update user",
+    @Operation(summary = "Update user (for admins, managers and current user only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -82,7 +82,7 @@ public interface UserControllerOpenApi {
     })
     void update(@PathVariable Long id, @Valid @RequestBody RegistrationRequestDto registrationRequestDto);
 
-    @Operation(summary = "Delete user",
+    @Operation(summary = "Delete user (for admins, managers and current user only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
