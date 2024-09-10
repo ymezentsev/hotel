@@ -29,7 +29,7 @@ public interface RoomControllerOpenApi {
     })
     Page<RoomDto> findAll(Pageable pageable);
 
-    @Operation(summary = "Create new room",
+    @Operation(summary = "Create new room (for admins only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -100,7 +100,7 @@ public interface RoomControllerOpenApi {
     })
     Page<RoomDto> findFreeRooms(@Valid @RequestBody FreeRoomRequest freeRoomRequest, Pageable pageable);
 
-    @Operation(summary = "Update room",
+    @Operation(summary = "Update room (for admins only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -124,7 +124,7 @@ public interface RoomControllerOpenApi {
     })
     void update(@PathVariable Long id, @Valid @RequestBody RoomRequest roomRequest);
 
-    @Operation(summary = "Delete room",
+    @Operation(summary = "Delete room (for admins only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
