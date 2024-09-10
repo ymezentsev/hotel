@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +22,7 @@ public class RoomController implements RoomControllerOpenApi {
         return roomService.findAll(pageable);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping()
     public RoomDto save(@Valid @RequestBody RoomRequest roomRequest) {
         return roomService.save(roomRequest);
@@ -46,11 +48,13 @@ public class RoomController implements RoomControllerOpenApi {
         return roomService.findFreeRoomsPage(freeRoomRequest, pageable);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public void update(@PathVariable Long id, @Valid @RequestBody RoomRequest roomRequest) {
         roomService.update(id, roomRequest);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         roomService.deleteById(id);
