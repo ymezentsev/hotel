@@ -11,7 +11,8 @@ import org.mapstruct.Mappings;
 public interface UserWithoutReservationsMapper {
     @Mappings({
             @Mapping(target = "phoneNumber",
-                    expression = "java(user.getCountry().getPhoneCode() + user.getPhoneNumber())")
+                    expression = "java((user.getCountry() == null) ? null: " +
+                    "user.getCountry().getPhoneCode() + user.getPhoneNumber())"),
     })
     UserDtoWithoutReservation toDtoWithoutReservations(User user);
 }
