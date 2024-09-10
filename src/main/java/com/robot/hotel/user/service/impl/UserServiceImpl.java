@@ -2,11 +2,7 @@ package com.robot.hotel.user.service.impl;
 
 import com.robot.hotel.country.Country;
 import com.robot.hotel.country.CountryService;
-import com.robot.hotel.exception.DuplicateObjectException;
-import com.robot.hotel.exception.InvalidPasswordException;
-import com.robot.hotel.exception.NotEmptyObjectException;
-import com.robot.hotel.exception.UserNotAuthenticatedException;
-import com.robot.hotel.exception.NoSuchElementException;
+import com.robot.hotel.exception.*;
 import com.robot.hotel.search_criteria.SpecificationBuilder;
 import com.robot.hotel.security.oauth2.CustomOAuth2User;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
@@ -14,10 +10,11 @@ import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.mapper.UserMapper;
-import com.robot.hotel.user.model.enums.EmailSubject;
 import com.robot.hotel.user.model.ForgotPasswordToken;
 import com.robot.hotel.user.model.Passport;
 import com.robot.hotel.user.model.User;
+import com.robot.hotel.user.model.enums.EmailSubject;
+import com.robot.hotel.user.model.enums.RoleName;
 import com.robot.hotel.user.repository.UserRepository;
 import com.robot.hotel.user.service.*;
 import jakarta.transaction.Transactional;
@@ -26,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,19 +34,25 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.springframework.security.oauth2.core.OAuth2ErrorCodes.ACCESS_DENIED;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+
     private final UserMapper userMapper;
+
     private final CountryService countryService;
     private final PassportService passportService;
+    private final EmailSenderService emailSenderService;
+    private final EmailContentBuilderService emailContentBuilderService;
+
     private final SpecificationBuilder<User> specificationBuilder;
     private final ForgotPasswordTokenService forgotPasswordTokenService;
-    private final EmailSenderService emailSenderService;
     private final PasswordEncoder passwordEncoder;
-    private final EmailContentBuilderService emailContentBuilderService;
+
 
     private static final String USER_IS_ALREADY_EXISTS = "User with such %s already exists";
     private static final String USER_IS_NOT_EXISTS = "Such user not exists";
@@ -85,6 +89,8 @@ public class UserServiceImpl implements UserService {
         User userToUpdate = userRepository.findById(userId).orElseThrow(
                 () -> new NoSuchElementException(USER_IS_NOT_EXISTS)
         );
+
+        checkIfUserIsAvailable(userToUpdate);
 
         Country country = countryService.getCountryFromPhoneCode(registrationRequestDto.getPhoneCode());
 
@@ -202,5 +208,17 @@ public class UserServiceImpl implements UserService {
             }
         }
         throw new UserNotAuthenticatedException(USER_NOT_AUTHENTICATED);
+    }
+
+    private void checkIfUserIsAvailable(User user) {
+        User currentUser = getCurrentAuthenticatedUser();
+        if (!user.getEmail().equals(currentUser.getEmail()) &&
+                currentUser.getRoles()
+                        .stream()
+                        .noneMatch(role ->
+                                role.getName().equals(RoleName.ADMIN) || role.getName().equals(RoleName.MANAGER)
+                        )) {
+            throw new AccessDeniedException(ACCESS_DENIED);
+        }
     }
 }
