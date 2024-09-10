@@ -1,8 +1,8 @@
 package com.robot.hotel.reservation;
 
 import com.robot.hotel.exception.GuestsQuantityException;
-import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.exception.NoSuchElementException;
+import com.robot.hotel.exception.WrongDatesException;
 import com.robot.hotel.reservation.dto.ReservationDto;
 import com.robot.hotel.reservation.dto.ReservationRequest;
 import com.robot.hotel.room.Room;
@@ -12,28 +12,37 @@ import com.robot.hotel.room.RoomService;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.user.model.User;
+import com.robot.hotel.user.model.enums.RoleName;
 import com.robot.hotel.user.repository.UserRepository;
+import com.robot.hotel.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.springframework.security.oauth2.core.OAuth2ErrorCodes.ACCESS_DENIED;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
-    private final ReservationMapper reservationMapper;
-    private final RoomService roomService;
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
+
+    private final RoomService roomService;
+    private final UserService userService;
+
+    private final ReservationMapper reservationMapper;
     private final RoomMapper roomMapper;
 
     @Value("${max.duration.of.reservation.in.days}")
@@ -144,10 +153,26 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void deleteById(Long id) {
         log.info("Deleting reservation with id: {}", id);
-        if (!reservationRepository.existsById(id)) {
+
+        Optional<Reservation> reservationForDeleting = reservationRepository.findById(id);
+        if (reservationForDeleting.isEmpty()) {
             throw new NoSuchElementException(RESERVATION_IS_NOT_EXISTS);
         }
+        checkIfReservationIsAvailable(reservationForDeleting.get());
+
         reservationRepository.deleteById(id);
         log.info(String.format(SUCCESSFUL_ACTION_WITH_RESERVATION, "deleted"), id);
+    }
+
+    private void checkIfReservationIsAvailable(Reservation reservation) {
+        User currentUser = userService.getCurrentAuthenticatedUser();
+        if (!reservation.getUsers().contains(currentUser) &&
+                currentUser.getRoles()
+                        .stream()
+                        .noneMatch(role ->
+                                role.getName().equals(RoleName.ADMIN) || role.getName().equals(RoleName.MANAGER)
+                        )) {
+            throw new AccessDeniedException(ACCESS_DENIED);
+        }
     }
 }
