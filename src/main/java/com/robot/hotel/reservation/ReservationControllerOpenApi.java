@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "Reservations Controller", description = "API to work with Reservations")
 public interface ReservationControllerOpenApi {
-    @Operation(summary = "Get all reservations",
+    @Operation(summary = "Get all reservations (for admins and managers only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -27,7 +27,7 @@ public interface ReservationControllerOpenApi {
     })
     Page<ReservationDto> findAll(Pageable pageable);
 
-    @Operation(summary = "Get reservation by id",
+    @Operation(summary = "Get reservation by id (for admins and managers only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -75,7 +75,7 @@ public interface ReservationControllerOpenApi {
     })
     ReservationDto save(@Valid @RequestBody ReservationRequest reservationRequest);
 
-    @Operation(summary = "Get reservations by user id",
+    @Operation(summary = "Get reservations by user id (for admins and managers only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -84,7 +84,7 @@ public interface ReservationControllerOpenApi {
     })
     Page<ReservationDto> findReservationsByUserId(@PathVariable Long id, Pageable pageable);
 
-    @Operation(summary = "Get reservations by room's number",
+    @Operation(summary = "Get reservations by room's number (for admins and managers only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -96,7 +96,7 @@ public interface ReservationControllerOpenApi {
     })
     Page<ReservationDto> findReservationsByRoom(@PathVariable String roomNumber, Pageable pageable);
 
-    @Operation(summary = "Get all current reservations",
+    @Operation(summary = "Get all current reservations (for admins and managers only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -105,7 +105,7 @@ public interface ReservationControllerOpenApi {
     })
     Page<ReservationDto> findCurrentReservations(Pageable pageable);
 
-    @Operation(summary = "Get all current reservations for a specific room",
+    @Operation(summary = "Get all current reservations for a specific room (for admins and managers only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -117,7 +117,7 @@ public interface ReservationControllerOpenApi {
     })
     Page<ReservationDto> findCurrentReservationsForSpecificRoom(@PathVariable String roomNumber, Pageable pageable);
 
-    @Operation(summary = "Delete reservation",
+    @Operation(summary = "Delete reservation (for admins, managers and reservation's owner only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
