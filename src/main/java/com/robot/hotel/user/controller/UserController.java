@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,16 +25,19 @@ public class UserController implements UserControllerOpenApi {
     private final UserService userService;
     private final ForgotPasswordTokenService forgotPasswordTokenService;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
     @GetMapping()
     public Page<UserDto> findAll(Pageable pageable) {
         return userService.findAll(pageable);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
     @GetMapping(value = "/{id}")
     public UserDto findById(@PathVariable Long id) {
         return userService.findById(id);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
     @GetMapping("/search")
     public Page<UserDto> search(UserSearchParametersDto parameters, Pageable pageable) {
         return userService.search(parameters, pageable);
