@@ -17,7 +17,7 @@ import java.util.List;
 
 @Tag(name = "RoomTypes Controller", description = "API to work with RoomTypes")
 public interface RoomTypeControllerOpenApi {
-    @Operation(summary = "Create new room type",
+    @Operation(summary = "Create new room type (for admins only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -68,7 +68,7 @@ public interface RoomTypeControllerOpenApi {
     })
     RoomTypeDto findById(@PathVariable Long id);
 
-    @Operation(summary = "Update room type",
+    @Operation(summary = "Update room type (for admins only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
@@ -89,7 +89,7 @@ public interface RoomTypeControllerOpenApi {
     })
     void update(@PathVariable Long id, @Valid @RequestBody RoomTypeRequest roomTypeRequest);
 
-    @Operation(summary = "Delete room type",
+    @Operation(summary = "Delete room type (for admins only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(
