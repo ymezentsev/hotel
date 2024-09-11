@@ -1,7 +1,7 @@
 package com.robot.hotel.user.controller;
 
 import com.robot.hotel.user.dto.EmailRequestDto;
-import com.robot.hotel.user.dto.RegistrationRequestDto;
+import com.robot.hotel.user.dto.UpdateUserRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
@@ -44,8 +44,8 @@ public class UserController implements UserControllerOpenApi {
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable Long id, @Valid @RequestBody RegistrationRequestDto registrationRequestDto) {
-        userService.update(id, registrationRequestDto);
+    public void update(@PathVariable Long id, @Valid @RequestBody UpdateUserRequestDto updateUserRequestDto) {
+        userService.update(id, updateUserRequestDto);
     }
 
     @DeleteMapping("/{id}")
@@ -66,7 +66,7 @@ public class UserController implements UserControllerOpenApi {
 
         forgotPasswordTokenService.validateForgotPasswordToken(
                 forgotPasswordTokenService.getForgotPasswordToken(token));
-       // headers.add("Location", frontendBaseUrl + TOKEN_RESET_PASSWORD_URL + token);
+        // headers.add("Location", frontendBaseUrl + TOKEN_RESET_PASSWORD_URL + token);
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 

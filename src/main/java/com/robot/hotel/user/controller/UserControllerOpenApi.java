@@ -1,7 +1,7 @@
 package com.robot.hotel.user.controller;
 
 import com.robot.hotel.user.dto.EmailRequestDto;
-import com.robot.hotel.user.dto.RegistrationRequestDto;
+import com.robot.hotel.user.dto.UpdateUserRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
@@ -68,7 +68,7 @@ public interface UserControllerOpenApi {
                             @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema =
-                                    @Schema(implementation = RegistrationRequestDto.class))
+                                    @Schema(implementation = UpdateUserRequestDto.class))
                     }),
             @ApiResponse(
                     responseCode = "409",
@@ -80,7 +80,7 @@ public interface UserControllerOpenApi {
                     responseCode = "404",
                     description = "Such phone code is not exists")
     })
-    void update(@PathVariable Long id, @Valid @RequestBody RegistrationRequestDto registrationRequestDto);
+    void update(@PathVariable Long id, @Valid @RequestBody UpdateUserRequestDto updateUserRequestDto);
 
     @Operation(summary = "Delete user (for admins, managers and current user only)",
             security = @SecurityRequirement(name = "Bearer Authentication"))
