@@ -158,13 +158,13 @@ public class ReservationServiceImpl implements ReservationService {
         if (reservationForDeleting.isEmpty()) {
             throw new NoSuchElementException(RESERVATION_IS_NOT_EXISTS);
         }
-        checkIfReservationIsAvailable(reservationForDeleting.get());
+        checkIfUserHasAuthorityToDeleteReservation(reservationForDeleting.get());
 
         reservationRepository.deleteById(id);
         log.info(String.format(SUCCESSFUL_ACTION_WITH_RESERVATION, "deleted"), id);
     }
 
-    private void checkIfReservationIsAvailable(Reservation reservation) {
+    private void checkIfUserHasAuthorityToDeleteReservation(Reservation reservation) {
         User currentUser = userService.getCurrentAuthenticatedUser();
         if (!reservation.getUsers().contains(currentUser) &&
                 currentUser.getRoles()
