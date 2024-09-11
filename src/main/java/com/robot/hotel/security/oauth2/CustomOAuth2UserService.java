@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -40,8 +41,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if (existingUser.isEmpty()) {
             User user = new User();
             user.setEmail(oAuth2User.getEmail());
-            user.setFirstName(oAuth2User.getAttribute("given_name"));
-            user.setLastName(oAuth2User.getAttribute("family_name"));
+
+            String firstname = oAuth2User.getAttribute("given_name");
+            if (firstname != null) {
+                user.setFirstName(firstname.toLowerCase());
+            }
+            String lastname = oAuth2User.getAttribute("family_name");
+            if (lastname != null) {
+                user.setLastName(lastname.toLowerCase());
+            }
+
             user.setRoles(Collections.singleton(roleUser));
             if (Boolean.TRUE.equals(oAuth2User.getAttribute("email_verified"))) {
                 user.setEnabled(true);
