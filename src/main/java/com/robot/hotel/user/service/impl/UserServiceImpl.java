@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
                 () -> new NoSuchElementException(USER_IS_NOT_EXISTS)
         );
 
-        checkIfUserIsAvailable(userToUpdate);
+        checkIfUserHasAuthorityToUpdateOrDeleteUserInfo(userToUpdate);
 
         Country country = countryService.getCountryFromPhoneCode(registrationRequestDto.getPhoneCode());
 
@@ -125,10 +125,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(Long id) {
         log.info("Deleting user with id: {}", id);
-        if (userRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS))
-                .getReservations()
-                .isEmpty()) {
+
+        User userToDelete = userRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException(USER_IS_NOT_EXISTS)
+        );
+        checkIfUserHasAuthorityToUpdateOrDeleteUserInfo(userToDelete);
+
+        if (userToDelete.getReservations().isEmpty()) {
             userRepository.deleteById(id);
             log.info(String.format(SUCCESSFUL_ACTION_WITH_USER, "deleted"), id);
         } else {
@@ -210,7 +213,7 @@ public class UserServiceImpl implements UserService {
         throw new UserNotAuthenticatedException(USER_NOT_AUTHENTICATED);
     }
 
-    private void checkIfUserIsAvailable(User user) {
+    private void checkIfUserHasAuthorityToUpdateOrDeleteUserInfo(User user) {
         User currentUser = getCurrentAuthenticatedUser();
         if (!user.getEmail().equals(currentUser.getEmail()) &&
                 currentUser.getRoles()
