@@ -5,7 +5,7 @@ import com.robot.hotel.country.CountryService;
 import com.robot.hotel.exception.*;
 import com.robot.hotel.search_criteria.SpecificationBuilder;
 import com.robot.hotel.security.oauth2.CustomOAuth2User;
-import com.robot.hotel.user.dto.RegistrationRequestDto;
+import com.robot.hotel.user.dto.UpdateUserRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
@@ -53,8 +53,7 @@ public class UserServiceImpl implements UserService {
     private final ForgotPasswordTokenService forgotPasswordTokenService;
     private final PasswordEncoder passwordEncoder;
 
-
-    private static final String USER_IS_ALREADY_EXISTS = "User with such %s already exists";
+    private static final String USER_IS_ALREADY_EXISTS = "User with such phone number already exists";
     private static final String USER_IS_NOT_EXISTS = "Such user not exists";
     private static final String RESERVATIONS_FOR_THIS_USER_ARE_EXISTS =
             "This user has reservations. At first delete reservations";
@@ -84,7 +83,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(Long userId, RegistrationRequestDto registrationRequestDto) {
+    public void update(Long userId, UpdateUserRequestDto updateUserRequestDto) {
         log.info("Updating user with id: {}", userId);
         User userToUpdate = userRepository.findById(userId).orElseThrow(
                 () -> new NoSuchElementException(USER_IS_NOT_EXISTS)
@@ -92,29 +91,27 @@ public class UserServiceImpl implements UserService {
 
         checkIfUserHasAuthorityToUpdateOrDeleteUserInfo(userToUpdate);
 
-        Country country = countryService.getCountryFromPhoneCode(registrationRequestDto.getPhoneCode());
+        Country country = countryService.getCountryFromPhoneCode(updateUserRequestDto.getPhoneCode());
 
-        Optional<User> existingUser = userRepository.findByEmail(registrationRequestDto.getEmail().toLowerCase());
+        Optional<User> existingUser = userRepository.findByPhoneNumber(updateUserRequestDto.getPhoneNumber());
         if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
-            throw new DuplicateObjectException(String.format(USER_IS_ALREADY_EXISTS, "email"));
+            throw new DuplicateObjectException(USER_IS_ALREADY_EXISTS);
         }
 
-        existingUser = userRepository.findByPhoneNumber(registrationRequestDto.getPhoneNumber());
-        if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
-            throw new DuplicateObjectException(String.format(USER_IS_ALREADY_EXISTS, "phone number"));
-        }
+        Passport passport = passportService.getPassportFromUserRequest(
+                updateUserRequestDto.getPassportSerialNumber(),
+                updateUserRequestDto.getCountryCode(),
+                updateUserRequestDto.getIssueDate(),
+                userId);
 
-        Passport passport = passportService.getPassportFromUserRequest(registrationRequestDto, userId);
-
-        userToUpdate.setFirstName(registrationRequestDto.getFirstName().toLowerCase());
-        userToUpdate.setLastName(registrationRequestDto.getLastName().toLowerCase());
+        userToUpdate.setFirstName(updateUserRequestDto.getFirstName().toLowerCase());
+        userToUpdate.setLastName(updateUserRequestDto.getLastName().toLowerCase());
         userToUpdate.setCountry(country);
-        userToUpdate.setPhoneNumber(registrationRequestDto.getPhoneNumber());
-        userToUpdate.setEmail(registrationRequestDto.getEmail().toLowerCase());
-        userToUpdate.setPassword(registrationRequestDto.getPassword());
+        userToUpdate.setPhoneNumber(updateUserRequestDto.getPhoneNumber());
 
-        if (passport != null && userToUpdate.getPassport() != null &&
-                !userToUpdate.getPassport().getSerialNumber().equals(passport.getSerialNumber())) {
+        if ((passport != null && userToUpdate.getPassport() != null &&
+                !userToUpdate.getPassport().getSerialNumber().equals(passport.getSerialNumber())) ||
+                (passport != null && userToUpdate.getPassport() == null)) {
             userToUpdate.setPassport(passport);
         }
         userRepository.save(userToUpdate);

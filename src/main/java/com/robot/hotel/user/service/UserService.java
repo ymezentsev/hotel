@@ -1,6 +1,6 @@
 package com.robot.hotel.user.service;
 
-import com.robot.hotel.user.dto.RegistrationRequestDto;
+import com.robot.hotel.user.dto.UpdateUserRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
@@ -15,7 +15,7 @@ public interface UserService {
 
     Page<UserDto> search(UserSearchParametersDto params, Pageable pageable);
 
-    void update(Long userId, RegistrationRequestDto registrationRequestDto);
+    void update(Long userId, UpdateUserRequestDto updateUserRequestDto);
 
     void deleteById(Long id);
 

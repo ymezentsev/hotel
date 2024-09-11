@@ -6,10 +6,12 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Dto for update user")

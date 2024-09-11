@@ -8,7 +8,10 @@ import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.user.dto.RegistrationRequestDto;
 import com.robot.hotel.user.dto.UserDto;
 import com.robot.hotel.user.mapper.UserMapper;
-import com.robot.hotel.user.model.*;
+import com.robot.hotel.user.model.ConfirmationToken;
+import com.robot.hotel.user.model.Passport;
+import com.robot.hotel.user.model.Role;
+import com.robot.hotel.user.model.User;
 import com.robot.hotel.user.model.enums.EmailSubject;
 import com.robot.hotel.user.model.enums.RoleName;
 import com.robot.hotel.user.repository.RoleRepository;
@@ -54,7 +57,11 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new DuplicateObjectException(String.format(USER_IS_ALREADY_EXISTS, "email"));
         }
 
-        Passport passport = passportService.getPassportFromUserRequest(registrationRequestDto, null);
+        Passport passport = passportService.getPassportFromUserRequest(
+                registrationRequestDto.getPassportSerialNumber(),
+                registrationRequestDto.getCountryCode(),
+                registrationRequestDto.getIssueDate(),
+                null);
         Role roleUser = roleRepository.findByName(RoleName.USER).orElseThrow();
 
         User newUser = User.builder()
