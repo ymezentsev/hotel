@@ -41,7 +41,10 @@ class PassportServiceImplTest {
                 "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "usa", LocalDate.of(2018, 3, 8));
 
-        assertNotNull(passportService.getPassportFromUserRequest(registrationRequestDto, null));
+        assertNotNull(passportService.getPassportFromUserRequest(registrationRequestDto.getPassportSerialNumber(),
+                registrationRequestDto.getCountryCode(),
+                registrationRequestDto.getIssueDate(),
+                null));
     }
 
     @Test
@@ -50,7 +53,10 @@ class PassportServiceImplTest {
         RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
                 "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 null, null, null);
-        assertNull(passportService.getPassportFromUserRequest(registrationRequestDto, null));
+        assertNull(passportService.getPassportFromUserRequest(registrationRequestDto.getPassportSerialNumber(),
+                registrationRequestDto.getCountryCode(),
+                registrationRequestDto.getIssueDate(),
+                null));
     }
 
     @Test
@@ -60,7 +66,10 @@ class PassportServiceImplTest {
                 "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", null, LocalDate.of(2018, 3, 8));
         assertThrows(NotEnoughInformationException.class,
-                () -> passportService.getPassportFromUserRequest(registrationRequestDto, null));
+                () -> passportService.getPassportFromUserRequest(registrationRequestDto.getPassportSerialNumber(),
+                        registrationRequestDto.getCountryCode(),
+                        registrationRequestDto.getIssueDate(),
+                        null));
     }
 
     @Test
@@ -70,7 +79,10 @@ class PassportServiceImplTest {
                 "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "bb345678", "USA", LocalDate.of(2018, 3, 8));
         assertThrows(DuplicateObjectException.class,
-                () -> passportService.getPassportFromUserRequest(registrationRequestDto, null));
+                () -> passportService.getPassportFromUserRequest(registrationRequestDto.getPassportSerialNumber(),
+                        registrationRequestDto.getCountryCode(),
+                        registrationRequestDto.getIssueDate(),
+                        null));
     }
 
     @Test
@@ -80,7 +92,9 @@ class PassportServiceImplTest {
                 "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "bb345678", "USA", LocalDate.of(2018, 3, 8));
         assertThrows(DuplicateObjectException.class,
-                () -> passportService.getPassportFromUserRequest(registrationRequestDto,
+                () -> passportService.getPassportFromUserRequest(registrationRequestDto.getPassportSerialNumber(),
+                        registrationRequestDto.getCountryCode(),
+                        registrationRequestDto.getIssueDate(),
                         DBUtils.getUserIdByEmail("dmitr@gmail.com")));
     }
 
@@ -91,6 +105,9 @@ class PassportServiceImplTest {
                 "0953453434", "semenov@gmail.com", "Password1", "Password1",
                 "df123456", "UKK", LocalDate.of(2018, 3, 8));
         assertThrows(NoSuchElementException.class,
-                () -> passportService.getPassportFromUserRequest(registrationRequestDto, null));
+                () -> passportService.getPassportFromUserRequest(registrationRequestDto.getPassportSerialNumber(),
+                        registrationRequestDto.getCountryCode(),
+                        registrationRequestDto.getIssueDate(),
+                        null));
     }
 }
