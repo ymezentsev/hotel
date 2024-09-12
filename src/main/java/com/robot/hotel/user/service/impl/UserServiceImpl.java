@@ -109,9 +109,10 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setCountry(country);
         userToUpdate.setPhoneNumber(updateUserRequestDto.getPhoneNumber());
 
-        if ((passport != null && userToUpdate.getPassport() != null &&
-                !userToUpdate.getPassport().getSerialNumber().equals(passport.getSerialNumber())) ||
-                (passport != null && userToUpdate.getPassport() == null)) {
+        if (passport != null &&
+                (userToUpdate.getPassport() == null ||
+                        !userToUpdate.getPassport().getSerialNumber().equals(passport.getSerialNumber()))
+        ) {
             userToUpdate.setPassport(passport);
         }
         userRepository.save(userToUpdate);
