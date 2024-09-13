@@ -1,6 +1,7 @@
 package com.robot.hotel.reservation;
 
 import com.robot.hotel.ContainerConfiguration;
+import com.robot.hotel.DBAuthentication;
 import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBUtils;
 import com.robot.hotel.exception.GuestsQuantityException;
@@ -28,7 +29,10 @@ class ReservationServiceImplTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    DBUtils DBUtils;
+    DBUtils dbUtils;
+
+    @Autowired
+    DBAuthentication dbAuthentication;
 
     @BeforeEach
     void setUp() {
@@ -44,7 +48,7 @@ class ReservationServiceImplTest {
     @Test
     @DisplayName("Successful find reservation by id")
     void findByIdTest() {
-        Long id = DBUtils.getReservationIdByRoom("203");
+        Long id = dbUtils.getReservationIdByRoom("203");
         assertEquals(LocalDate.now().plusDays(4), reservationService.findById(id).checkInDate());
     }
 
@@ -58,7 +62,7 @@ class ReservationServiceImplTest {
     @Test
     @DisplayName("Find reservations by user id")
     void findReservationsByUserIdTest() {
-        Long id = DBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long id = dbUtils.getUserIdByEmail("sidor@gmail.com");
         assertEquals(2, reservationService.findReservationsByUserId(id, Pageable.unpaged()).getTotalElements());
     }
 
@@ -184,7 +188,9 @@ class ReservationServiceImplTest {
     @Test
     @DisplayName("Successful delete reservation")
     void deleteByIdTest() {
-        Long id = DBUtils.getReservationIdByRoom("101");
+        dbAuthentication.loginAdmin();
+
+        Long id = dbUtils.getReservationIdByRoom("101");
         reservationService.deleteById(id);
         assertEquals(3, reservationService.findAll(Pageable.unpaged()).getTotalElements());
     }

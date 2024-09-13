@@ -29,7 +29,7 @@ class ReservationControllerTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    DBUtils DBUtils;
+    DBUtils dbUtils;
 
     @Autowired
     DBAuthentication dbAuthentication;
@@ -60,7 +60,7 @@ class ReservationControllerTest {
         dbAuthentication.loginAdmin();
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
-                .pathParam("id", DBUtils.getReservationIdByRoom("203"))
+                .pathParam("id", dbUtils.getReservationIdByRoom("203"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -108,7 +108,7 @@ class ReservationControllerTest {
         dbAuthentication.loginAdmin();
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
-                .pathParam("id", DBUtils.getUserIdByEmail("sidor_andr@gmail.com"))
+                .pathParam("id", dbUtils.getUserIdByEmail("sidor_andr@gmail.com"))
                 .when().get("/user/{id}")
                 .then()
                 .statusCode(200)
@@ -163,7 +163,7 @@ class ReservationControllerTest {
         dbAuthentication.loginAdmin();
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
-                .pathParam("id", DBUtils.getReservationIdByRoom("101"))
+                .pathParam("id", dbUtils.getReservationIdByRoom("101"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);
