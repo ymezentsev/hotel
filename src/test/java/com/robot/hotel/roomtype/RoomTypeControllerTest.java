@@ -29,22 +29,22 @@ class RoomTypeControllerTest {
     DBUtils DBUtils;
 
     @Autowired
-    DBAuthentication DBAuthentication;
+    DBAuthentication dbAuthentication;
 
     @BeforeEach
     void setUp() {
         dbInitializer.populateDB();
-        DBAuthentication.loginUser();
         RestAssured.baseURI = "http://localhost:" + port + "/api/v1/roomTypes";
     }
 
     @Test
     @DisplayName("Successful create new room type")
     void saveTest() {
+        dbAuthentication.loginAdmin();
         RoomTypeRequest roomTypeRequest = new RoomTypeRequest("new lux");
 
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .body(roomTypeRequest)
                 .when().post()
                 .then()
@@ -56,10 +56,11 @@ class RoomTypeControllerTest {
     @Test
     @DisplayName("Fail create new room type (incorrect user input)")
     void saveWithIncorrectDataTest() {
+        dbAuthentication.loginAdmin();
         RoomTypeRequest roomTypeRequest = new RoomTypeRequest("  ");
 
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .body(roomTypeRequest)
                 .when().post()
                 .then()
@@ -71,8 +72,9 @@ class RoomTypeControllerTest {
     @Test
     @DisplayName("Find all room types")
     void findAllTest() {
+        dbAuthentication.loginUser();
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .when().get()
                 .then()
                 .statusCode(200)
@@ -83,8 +85,9 @@ class RoomTypeControllerTest {
     @Test
     @DisplayName("Find room type by type")
     void findByTypeTest() {
+        dbAuthentication.loginUser();
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .pathParam("type", "lux")
                 .when().get("/type/{type}")
                 .then()
@@ -96,8 +99,9 @@ class RoomTypeControllerTest {
     @Test
     @DisplayName("Find room type by id")
     void findByIdTest() {
+        dbAuthentication.loginUser();
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .pathParam("id", DBUtils.getRoomTypeIdByType("lux"))
                 .when().get("/{id}")
                 .then()
@@ -109,10 +113,11 @@ class RoomTypeControllerTest {
     @Test
     @DisplayName("Successful update room type")
     void updateTest() {
+        dbAuthentication.loginAdmin();
         RoomTypeRequest roomTypeRequest = new RoomTypeRequest("new lux");
 
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .body(roomTypeRequest)
                 .pathParam("id", DBUtils.getRoomTypeIdByType("lux"))
                 .when().put("/{id}")
@@ -123,10 +128,11 @@ class RoomTypeControllerTest {
     @Test
     @DisplayName("Fail update new room type (incorrect user input)")
     void updateWithIncorrectDataTest() {
+        dbAuthentication.loginAdmin();
         RoomTypeRequest roomTypeRequest = new RoomTypeRequest("  ");
 
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .body(roomTypeRequest)
                 .pathParam("id", DBUtils.getRoomTypeIdByType("lux"))
                 .when().put("/{id}")
@@ -139,8 +145,9 @@ class RoomTypeControllerTest {
     @Test
     @DisplayName("Delete room type")
     void deleteByIdTest() {
+        dbAuthentication.loginAdmin();
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .pathParam("id", DBUtils.getRoomTypeIdByType("king"))
                 .when().delete("/{id}")
                 .then()
