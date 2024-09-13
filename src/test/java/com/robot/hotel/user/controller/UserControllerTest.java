@@ -1,11 +1,11 @@
 package com.robot.hotel.user.controller;
 
 import com.robot.hotel.ContainerConfiguration;
-import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBAuthentication;
+import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBUtils;
 import com.robot.hotel.user.dto.EmailRequestDto;
-import com.robot.hotel.user.dto.RegistrationRequestDto;
+import com.robot.hotel.user.dto.UpdateUserRequestDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.dto.password.ForgotPasswordRequestDto;
 import io.restassured.RestAssured;
@@ -34,20 +34,20 @@ class UserControllerTest {
     DBUtils DBUtils;
 
     @Autowired
-    DBAuthentication DBAuthentication;
+    DBAuthentication dbAuthentication;
 
     @BeforeEach
     void setUp() {
         dbInitializer.populateDB();
-        DBAuthentication.loginUser();
         RestAssured.baseURI = "http://localhost:" + port + "/api/v1/users";
     }
 
     @Test
     @DisplayName("Find all users")
     void findAllTest() {
+        dbAuthentication.loginAdmin();
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .when().get()
                 .then()
                 .statusCode(200)
@@ -58,8 +58,9 @@ class UserControllerTest {
     @Test
     @DisplayName("Find user by id")
     void findByIdTest() {
+        dbAuthentication.loginAdmin();
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .pathParam("id", DBUtils.getUserIdByEmail("sidor@gmail.com"))
                 .when().get("/{id}")
                 .then()
@@ -71,8 +72,9 @@ class UserControllerTest {
     @Test
     @DisplayName("Successful search users")
     void searchTest() {
+        dbAuthentication.loginAdmin();
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .params("lastnames", "sidor")
                 .when().get("/search")
                 .then()
@@ -84,13 +86,14 @@ class UserControllerTest {
     @Test
     @DisplayName("Successful update user")
     void updateTest() {
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
+        dbAuthentication.loginAdmin();
+        UpdateUserRequestDto updateUserRequestDto = new UpdateUserRequestDto("dmitro", "semenov",
+                "+1", "0953453434",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
-                .body(registrationRequestDto)
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
+                .body(updateUserRequestDto)
                 .pathParam("id", DBUtils.getUserIdByEmail("kozlov@gmail.com"))
                 .when().put("/{id}")
                 .then()
@@ -100,26 +103,28 @@ class UserControllerTest {
     @Test
     @DisplayName("Fail update user (incorrect user input)")
     void updateWithIncorrectDataTest() {
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenovgmail.com", "Password1", "Password1",
+        dbAuthentication.loginAdmin();
+        UpdateUserRequestDto updateUserRequestDto = new UpdateUserRequestDto("dmitro", "semenov",
+                "+1", "0953453434t",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
-                .body(registrationRequestDto)
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
+                .body(updateUserRequestDto)
                 .pathParam("id", DBUtils.getUserIdByEmail("sidor@gmail.com"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(400)
                 .assertThat()
-                .body(containsString("Not valid email"));
+                .body(containsString("Not valid phone number"));
     }
 
     @Test
     @DisplayName("Delete user")
     void deleteByIdTest() {
+        dbAuthentication.loginAdmin();
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .pathParam("id", DBUtils.getUserIdByEmail("dmitr@gmail.com"))
                 .when().delete("/{id}")
                 .then()
@@ -175,8 +180,9 @@ class UserControllerTest {
     @Test
     @DisplayName("Successful change password")
     void changePasswordTest() {
+        dbAuthentication.loginUser();
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .body(new ChangePasswordRequestDto("Qwerty123456",
                         "newPassword1",
                         "newPassword1"))
@@ -188,8 +194,9 @@ class UserControllerTest {
     @Test
     @DisplayName("Fail change password (incorrect user input)")
     void changePasswordWithIncorrectDataTest() {
+        dbAuthentication.loginUser();
         given().contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + DBAuthentication.getToken())
+                .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .body(new ChangePasswordRequestDto("Qwerty123456",
                         "newPassword",
                         "Password"))
