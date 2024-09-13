@@ -29,7 +29,7 @@ class ForgotPasswordTokenServiceImplTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    DBUtils testUtils;
+    DBUtils dbUtils;
 
     @BeforeEach
     void setUp() {
@@ -43,7 +43,7 @@ class ForgotPasswordTokenServiceImplTest {
                 () -> assertNotNull(
                         forgotPasswordTokenService.saveForgotPasswordToken(
                                 forgotPasswordTokenService.generateForgotPasswordToken(
-                                        testUtils.getUserByEmail("sidor@gmail.com")))),
+                                        dbUtils.getUserByEmail("sidor@gmail.com")))),
                 () -> assertEquals(4, forgotPasswordTokenRepository.findAll().size())
         );
     }
@@ -66,7 +66,7 @@ class ForgotPasswordTokenServiceImplTest {
     @DisplayName("Generate forgot password token")
     void generateForgotPasswordTokenTest() {
         assertNotNull(
-                forgotPasswordTokenService.generateForgotPasswordToken(testUtils.getUserByEmail("sidor@gmail.com"))
+                forgotPasswordTokenService.generateForgotPasswordToken(dbUtils.getUserByEmail("sidor@gmail.com"))
                         .getToken()
         );
     }

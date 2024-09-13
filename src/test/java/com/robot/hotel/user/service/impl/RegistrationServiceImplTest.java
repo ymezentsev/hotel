@@ -40,7 +40,7 @@ class RegistrationServiceImplTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    DBUtils testUtils;
+    DBUtils dbUtils;
 
     @BeforeEach
     void setUp() {
@@ -95,14 +95,14 @@ class RegistrationServiceImplTest {
     @DisplayName("Successful confirm token")
     void confirmTokenTest() {
         assertAll(
-                () -> assertFalse(testUtils.getUserByEmail("nikola@gmail.com").isEnabled()),
+                () -> assertFalse(dbUtils.getUserByEmail("nikola@gmail.com").isEnabled()),
                 () -> assertNull(confirmationTokenService
                         .getConfirmationToken("6453fbfb-8ff9-4dea-b8c9-notConfirmed").getConfirmedAt())
         );
 
         registrationService.confirmToken("6453fbfb-8ff9-4dea-b8c9-notConfirmed");
         assertAll(
-                () -> assertTrue(testUtils.getUserByEmail("nikola@gmail.com").isEnabled()),
+                () -> assertTrue(dbUtils.getUserByEmail("nikola@gmail.com").isEnabled()),
                 () -> assertNotNull(confirmationTokenService
                         .getConfirmationToken("6453fbfb-8ff9-4dea-b8c9-notConfirmed").getConfirmedAt())
         );

@@ -31,7 +31,7 @@ class UserControllerTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    DBUtils DBUtils;
+    DBUtils dbUtils;
 
     @Autowired
     DBAuthentication dbAuthentication;
@@ -61,7 +61,7 @@ class UserControllerTest {
         dbAuthentication.loginAdmin();
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
-                .pathParam("id", DBUtils.getUserIdByEmail("sidor@gmail.com"))
+                .pathParam("id", dbUtils.getUserIdByEmail("sidor@gmail.com"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -94,7 +94,7 @@ class UserControllerTest {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .body(updateUserRequestDto)
-                .pathParam("id", DBUtils.getUserIdByEmail("kozlov@gmail.com"))
+                .pathParam("id", dbUtils.getUserIdByEmail("kozlov@gmail.com"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(200);
@@ -111,7 +111,7 @@ class UserControllerTest {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .body(updateUserRequestDto)
-                .pathParam("id", DBUtils.getUserIdByEmail("sidor@gmail.com"))
+                .pathParam("id", dbUtils.getUserIdByEmail("sidor@gmail.com"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(400)
@@ -125,7 +125,7 @@ class UserControllerTest {
         dbAuthentication.loginAdmin();
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
-                .pathParam("id", DBUtils.getUserIdByEmail("dmitr@gmail.com"))
+                .pathParam("id", dbUtils.getUserIdByEmail("dmitr@gmail.com"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);

@@ -1,11 +1,11 @@
 package com.robot.hotel.user.service.impl;
 
 import com.robot.hotel.ContainerConfiguration;
-import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBAuthentication;
+import com.robot.hotel.DBInitializer;
 import com.robot.hotel.DBUtils;
 import com.robot.hotel.exception.*;
-import com.robot.hotel.user.dto.RegistrationRequestDto;
+import com.robot.hotel.user.dto.UpdateUserRequestDto;
 import com.robot.hotel.user.dto.UserSearchParametersDto;
 import com.robot.hotel.user.dto.password.ChangePasswordRequestDto;
 import com.robot.hotel.user.model.User;
@@ -32,7 +32,10 @@ class UserServiceImplTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    DBUtils DBUtils;
+    DBUtils dbUtils;
+
+    @Autowired
+    DBAuthentication dbAuthentication;
 
     @Autowired
     ForgotPasswordTokenRepository forgotPasswordTokenRepository;
@@ -41,7 +44,7 @@ class UserServiceImplTest {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    DBAuthentication DBAuthentication;
+    DBAuthentication dbauthentication;
 
     @BeforeEach
     void setUp() {
@@ -57,7 +60,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful find user by id")
     void findByIdTest() {
-        Long id = DBUtils.getUserIdByEmail("sidor@gmail.com");
+        Long id = dbUtils.getUserIdByEmail("sidor@gmail.com");
         assertEquals("+380965467834", userService.findById(id).phoneNumber());
     }
 
@@ -114,8 +117,8 @@ class UserServiceImplTest {
                         new String[]{},
                         new String[]{},
                         new String[]{},
-                        new String[]{DBUtils.getReservationIdByRoom("101").toString(),
-                                DBUtils.getReservationIdByRoom("203").toString()},
+                        new String[]{dbUtils.getReservationIdByRoom("101").toString(),
+                                dbUtils.getReservationIdByRoom("203").toString()},
                         new String[]{});
         UserSearchParametersDto searchCountry =
                 new UserSearchParametersDto(new String[]{},
@@ -140,12 +143,13 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful update user")
     void updateTest() {
-        Long id = DBUtils.getUserIdByEmail("sidor@gmail.com");
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
+        dbAuthentication.loginAdmin();
+        Long id = dbUtils.getUserIdByEmail("sidor@gmail.com");
+        UpdateUserRequestDto updateUserRequestDto = new UpdateUserRequestDto("dmitro", "semenov",
+                "+1", "0953453434",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
-        userService.update(id, registrationRequestDto);
+        userService.update(id, updateUserRequestDto);
         assertAll(
                 () -> assertEquals("dmitro", userService.findById(id).firstName()),
                 () -> assertEquals(6, userService.findAll(Pageable.unpaged()).getTotalElements())
@@ -155,42 +159,33 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Fail update user (throw NoSuchElementException - wrong user id)")
     void updateThrowNoSuchElementExceptionWrongUserIdTest() {
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "semenov@gmail.com", "Password1", "Password1",
+        dbAuthentication.loginAdmin();
+        UpdateUserRequestDto updateUserRequestDto = new UpdateUserRequestDto("dmitro", "semenov",
+                "+1", "0953453434",
                 "df123456", "usa", LocalDate.of(2018, 3, 8));
 
         assertThrows(NoSuchElementException.class,
-                () -> userService.update(100L, registrationRequestDto));
-    }
-
-    @Test
-    @DisplayName("Fail update user (throw DuplicateObjectException - wrong email)")
-    void updateThrowDuplicateObjectExceptionWrongEmailTest() {
-        Long id = DBUtils.getUserIdByEmail("sidor@gmail.com");
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "0953453434", "kozlov@gmail.com", "Password1", "Password1",
-                "df123456", "UKR", LocalDate.of(2018, 3, 8));
-
-        assertThrows(DuplicateObjectException.class,
-                () -> userService.update(id, registrationRequestDto));
+                () -> userService.update(100L, updateUserRequestDto));
     }
 
     @Test
     @DisplayName("Fail update user (throw DuplicateObjectException - wrong phone number)")
     void updateThrowDuplicateObjectExceptionWrongPhoneTest() {
-        Long id = DBUtils.getUserIdByEmail("sidor@gmail.com");
-        RegistrationRequestDto registrationRequestDto = new RegistrationRequestDto("dmitro", "semenov", "+1",
-                "505463213", "semenov@gmail.com", "Password1", "Password1",
+        dbAuthentication.loginAdmin();
+        Long id = dbUtils.getUserIdByEmail("sidor@gmail.com");
+        UpdateUserRequestDto updateUserRequestDto = new UpdateUserRequestDto("dmitro", "semenov",
+                "+1", "505463213",
                 "df123456", "UKR", LocalDate.of(2018, 3, 8));
 
         assertThrows(DuplicateObjectException.class,
-                () -> userService.update(id, registrationRequestDto));
+                () -> userService.update(id, updateUserRequestDto));
     }
 
     @Test
     @DisplayName("Successful delete user")
     void deleteByIdTest() {
-        Long id = DBUtils.getUserIdByEmail("dmitr@gmail.com");
+        dbAuthentication.loginAdmin();
+        Long id = dbUtils.getUserIdByEmail("dmitr@gmail.com");
         userService.deleteById(id);
         assertEquals(5, userService.findAll(Pageable.unpaged()).getTotalElements());
     }
@@ -205,7 +200,8 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Fail delete user (throw NotEmptyObjectException)")
     void deleteByIdThrowNotEmptyObjectExceptionTest() {
-        Long id = DBUtils.getUserIdByEmail("sidor@gmail.com");
+        dbAuthentication.loginAdmin();
+        Long id = dbUtils.getUserIdByEmail("sidor@gmail.com");
 
         assertThrows(NotEmptyObjectException.class,
                 () -> userService.deleteById(id));
@@ -214,7 +210,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Enable user")
     void enableUser() {
-        User user = DBUtils.getUserByEmail("nikola@gmail.com");
+        User user = dbUtils.getUserByEmail("nikola@gmail.com");
         assertAll(
                 () -> assertFalse(user.isEnabled()),
                 () -> {
@@ -244,13 +240,13 @@ class UserServiceImplTest {
         userService.resetPassword("newPassword", "8ac319b4-990f-466f-8a5a-7c2a028b430c");
 
         assertTrue(passwordEncoder.matches("newPassword",
-                DBUtils.getUserByEmail("sidor@gmail.com").getPassword()));
+                dbUtils.getUserByEmail("sidor@gmail.com").getPassword()));
     }
 
     @Test
     @DisplayName("Successful change password")
     void changePasswordTest() {
-        DBAuthentication.loginUser();
+        dbauthentication.loginUser();
         ChangePasswordRequestDto changePasswordRequestDto = new ChangePasswordRequestDto();
         changePasswordRequestDto.setOldPassword("Qwerty123456");
         changePasswordRequestDto.setNewPassword("newPassword");
@@ -258,13 +254,13 @@ class UserServiceImplTest {
 
         userService.changePassword(changePasswordRequestDto);
         assertTrue(passwordEncoder.matches("newPassword",
-                DBUtils.getUserByEmail("sidor_andr@gmail.com").getPassword()));
+                dbUtils.getUserByEmail("sidor_andr@gmail.com").getPassword()));
     }
 
     @Test
     @DisplayName("Failed change password (throws InvalidPasswordException)")
     void changePasswordThrowsInvalidPasswordExceptionTest() {
-        DBAuthentication.loginUser();
+        dbauthentication.loginUser();
         ChangePasswordRequestDto changePasswordRequestDto = new ChangePasswordRequestDto();
         changePasswordRequestDto.setOldPassword("Qwerty");
         changePasswordRequestDto.setNewPassword("newPassword");
@@ -276,7 +272,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Successful get current authenticated user")
     void getCurrentAuthenticatedUserTest() {
-        DBAuthentication.loginUser();
+        dbauthentication.loginUser();
         assertEquals("sidor_andr@gmail.com", userService.getCurrentAuthenticatedUser().getEmail());
     }
 

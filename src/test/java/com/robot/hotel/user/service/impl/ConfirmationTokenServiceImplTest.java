@@ -29,7 +29,7 @@ class ConfirmationTokenServiceImplTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    DBUtils testUtils;
+    DBUtils dbUtils;
 
     @BeforeEach
     void setUp() {
@@ -43,7 +43,7 @@ class ConfirmationTokenServiceImplTest {
                 () -> assertNotNull(
                         confirmationTokenService.saveConfirmationToken(
                                 confirmationTokenService.generateConfirmationToken(
-                                        testUtils.getUserByEmail("sidor@gmail.com")))),
+                                        dbUtils.getUserByEmail("sidor@gmail.com")))),
                 () -> assertEquals(5, confirmationTokenRepository.findAll().size())
         );
     }
@@ -66,7 +66,7 @@ class ConfirmationTokenServiceImplTest {
     @DisplayName("Generate confirmation token")
     void generateConfirmationTokenTest() {
         assertNotNull(
-                confirmationTokenService.generateConfirmationToken(testUtils.getUserByEmail("sidor@gmail.com"))
+                confirmationTokenService.generateConfirmationToken(dbUtils.getUserByEmail("sidor@gmail.com"))
                         .getToken()
         );
     }

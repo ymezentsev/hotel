@@ -30,7 +30,7 @@ class RoomControllerTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    DBUtils DBUtils;
+    DBUtils dbUtils;
 
     @Autowired
     DBAuthentication dbAuthentication;
@@ -90,7 +90,7 @@ class RoomControllerTest {
     void findByIdTest() {
         dbAuthentication.loginUser();
         given().contentType(ContentType.JSON)
-                .pathParam("id", DBUtils.getRoomIdByNumber("101"))
+                .pathParam("id", dbUtils.getRoomIdByNumber("101"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -165,7 +165,7 @@ class RoomControllerTest {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .body(roomRequest)
-                .pathParam("id", DBUtils.getRoomIdByNumber("101"))
+                .pathParam("id", dbUtils.getRoomIdByNumber("101"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(200);
@@ -180,7 +180,7 @@ class RoomControllerTest {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .body(roomRequest)
-                .pathParam("id", DBUtils.getRoomIdByNumber("101"))
+                .pathParam("id", dbUtils.getRoomIdByNumber("101"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(400)
@@ -194,7 +194,7 @@ class RoomControllerTest {
         dbAuthentication.loginAdmin();
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
-                .pathParam("id", DBUtils.getRoomIdByNumber("201"))
+                .pathParam("id", dbUtils.getRoomIdByNumber("201"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);

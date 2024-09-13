@@ -26,7 +26,7 @@ class RoomTypeControllerTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    DBUtils DBUtils;
+    DBUtils dbUtils;
 
     @Autowired
     DBAuthentication dbAuthentication;
@@ -102,7 +102,7 @@ class RoomTypeControllerTest {
         dbAuthentication.loginUser();
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
-                .pathParam("id", DBUtils.getRoomTypeIdByType("lux"))
+                .pathParam("id", dbUtils.getRoomTypeIdByType("lux"))
                 .when().get("/{id}")
                 .then()
                 .statusCode(200)
@@ -119,7 +119,7 @@ class RoomTypeControllerTest {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .body(roomTypeRequest)
-                .pathParam("id", DBUtils.getRoomTypeIdByType("lux"))
+                .pathParam("id", dbUtils.getRoomTypeIdByType("lux"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(200);
@@ -134,7 +134,7 @@ class RoomTypeControllerTest {
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
                 .body(roomTypeRequest)
-                .pathParam("id", DBUtils.getRoomTypeIdByType("lux"))
+                .pathParam("id", dbUtils.getRoomTypeIdByType("lux"))
                 .when().put("/{id}")
                 .then()
                 .statusCode(400)
@@ -148,7 +148,7 @@ class RoomTypeControllerTest {
         dbAuthentication.loginAdmin();
         given().contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + dbAuthentication.getToken())
-                .pathParam("id", DBUtils.getRoomTypeIdByType("king"))
+                .pathParam("id", dbUtils.getRoomTypeIdByType("king"))
                 .when().delete("/{id}")
                 .then()
                 .statusCode(200);

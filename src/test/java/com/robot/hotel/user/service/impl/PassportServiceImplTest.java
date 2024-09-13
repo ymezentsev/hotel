@@ -27,7 +27,7 @@ class PassportServiceImplTest {
     DBInitializer dbInitializer;
 
     @Autowired
-    DBUtils DBUtils;
+    DBUtils dbUtils;
 
     @BeforeEach
     void setUp() {
@@ -95,7 +95,7 @@ class PassportServiceImplTest {
                 () -> passportService.getPassportFromUserRequest(registrationRequestDto.getPassportSerialNumber(),
                         registrationRequestDto.getCountryCode(),
                         registrationRequestDto.getIssueDate(),
-                        DBUtils.getUserIdByEmail("dmitr@gmail.com")));
+                        dbUtils.getUserIdByEmail("dmitr@gmail.com")));
     }
 
     @Test
