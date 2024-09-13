@@ -12,6 +12,11 @@ public class DBAuthentication {
 
     private static final ThreadLocal<String> token = new ThreadLocal<>();
 
+    public String getToken() {
+        return token.get();
+    }
+
+
     public void loginUser() {
         //  if (Objects.isNull(token.get())) {
         token.set(authenticationService
@@ -20,7 +25,10 @@ public class DBAuthentication {
         //  }
     }
 
-    public String getToken() {
-        return token.get();
+    public void loginAdmin() {
+        token.set(authenticationService
+                .authenticate(new LoginRequestDto("admin@gmail.com", "Admin123"))
+                .token());
     }
+
 }
