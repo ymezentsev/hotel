@@ -31,6 +31,7 @@ Follow these steps to get your application up and running:
 
 - Spring Boot
 - Spring Data
+- Spring Security
 - MySQL
 - FlyWay
 - Swagger/OpenApi 3.0
