@@ -490,7 +490,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"Admin123\"\r\n}",
+									"raw": "{\r\n    \"email\": \"Admin@gmail.com\",\r\n    \"password\": \"Admin123\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -583,11 +583,21 @@
 				{
 					"name": "update user's info",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjYwNTk3NzgsImV4cCI6MTcyNjQwNTM3OH0.kBNyMu0vJ8_d_7QFF6E-1WroZIlNPMbUlp3My-hdgOE",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \"firstName\": \"Andriy\",\r\n        \"lastName\": \"Fedorov\",\r\n        \"telCode\": \"+39\",\r\n        \"telNumber\": \"5036455458\",\r\n        \"email\": \"s14w32wf@f.d\",\r\n        \"password\": \"User1User1\",\r\n        \"passportSerialNumber\": \"ed334235\",\r\n        \"countryCode\": \"ita\",\r\n        \"issueDate\": \"2023-05-15\"\r\n    }",
+							"raw": "    {\r\n        \"firstName\": \"Andriy\",\r\n        \"lastName\": \"Fedorov\",\r\n        \"phoneCode\": \"+380\",\r\n        \"phoneNumber\": \"5034115458\",\r\n        \"passportSerialNumber\": \"ede312335\",\r\n        \"countryCode\": \"ita\",\r\n        \"issueDate\": \"2023-05-15\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -595,7 +605,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/v1/users/1",
+							"raw": "{{url}}/api/v1/users/5",
 							"host": [
 								"{{url}}"
 							],
@@ -603,7 +613,7 @@
 								"api",
 								"v1",
 								"users",
-								"1"
+								"5"
 							]
 						}
 					},
