@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 secret.properties
+appliction-h2.yaml
+application-mysql.yaml
 
 ### STS ###
 .apt_generated
