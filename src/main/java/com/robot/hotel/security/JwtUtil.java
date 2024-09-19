@@ -28,7 +28,7 @@ public class JwtUtil {
     }
 
     public String generateToken(String username) {
-        log.info("Generating JWT token for user {}", username);
+        log.debug("Generating JWT token for user {}", username);
         String token = Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -36,7 +36,7 @@ public class JwtUtil {
                 .signWith(secret)
                 .compact();
 
-        log.info("JWT token for user {} successfully generated", username);
+        log.debug("JWT token for user {} successfully generated", username);
         return token;
     }
 
