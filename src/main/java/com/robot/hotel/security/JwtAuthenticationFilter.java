@@ -31,11 +31,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        log.info("Starting JWT authentication process...");
+        log.debug("Starting JWT authentication process...");
         String token = getToken(request);
 
         if (token != null && jwtUtil.isValidToken(token)) {
-            log.info("JWT token is valid. Retrieving username...");
+            log.debug("JWT token is valid. Retrieving username...");
             String username = jwtUtil.getUsernameFromJwtToken(token);
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     null,
                     userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("User {} authenticated successfully", username);
+            log.debug("User {} authenticated successfully", username);
         } else {
             log.warn("JWT token is invalid or not present. Skipping authentication");
         }
