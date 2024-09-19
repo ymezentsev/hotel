@@ -1,7 +1,5 @@
-package com.robot.hotel.user.service.impl;
+package com.robot.hotel.email_sender;
 
-import com.robot.hotel.user.model.enums.EmailSubject;
-import com.robot.hotel.user.service.EmailContentBuilderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

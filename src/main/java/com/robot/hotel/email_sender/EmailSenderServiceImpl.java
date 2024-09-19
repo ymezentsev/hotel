@@ -1,7 +1,6 @@
-package com.robot.hotel.user.service.impl;
+package com.robot.hotel.email_sender;
 
 import com.robot.hotel.exception.FailedToSendEmailException;
-import com.robot.hotel.user.service.EmailSenderService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
