@@ -1,4 +1,4 @@
-package com.robot.hotel.email_sender;
+package com.robot.hotel.email;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.robot.hotel.email_sender;
+package com.robot.hotel.email;
 
 import com.robot.hotel.exception.FailedToSendEmailException;
 import jakarta.mail.MessagingException;

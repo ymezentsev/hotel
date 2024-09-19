@@ -1,4 +1,4 @@
-package com.robot.hotel.email_sender;
+package com.robot.hotel.email;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
