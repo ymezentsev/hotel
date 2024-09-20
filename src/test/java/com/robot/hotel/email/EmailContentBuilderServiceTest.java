@@ -23,13 +23,19 @@ class EmailContentBuilderServiceTest {
     })
     @DisplayName("Successful build email content")
     void buildEmailContentTest(EmailSubject subject, String result) {
-        assertTrue(emailContentBuilderService.buildEmailContent("test", "test", subject).contains(result));
+        assertTrue(emailContentBuilderService.buildEmailContent("test",
+                "test",
+                null,
+                subject).contains(result));
     }
 
     @Test
     @DisplayName("Fail build email content")
     void buildEmailContentThrowIllegalArgumentExceptionTest() {
         assertThrows(IllegalArgumentException.class,
-                () -> emailContentBuilderService.buildEmailContent("test", "test", EmailSubject.valueOf("TEST")));
+                () -> emailContentBuilderService.buildEmailContent("test",
+                        "test",
+                        null,
+                        EmailSubject.valueOf("TEST")));
     }
 }
