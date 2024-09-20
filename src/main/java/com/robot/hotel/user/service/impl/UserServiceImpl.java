@@ -157,7 +157,10 @@ public class UserServiceImpl implements UserService {
 
         emailSenderService.send(
                 user.getEmail().toLowerCase(),
-                emailContentBuilderService.buildEmailContent(user.getFirstName(), token, EmailSubject.FORGOT_PASSWORD),
+                emailContentBuilderService.buildEmailContent(user.getFirstName(),
+                        token,
+                        null,
+                        EmailSubject.FORGOT_PASSWORD),
                 EmailSubject.FORGOT_PASSWORD.getSubject());
         log.info("Forgot password email sent successfully to: {}", email);
     }

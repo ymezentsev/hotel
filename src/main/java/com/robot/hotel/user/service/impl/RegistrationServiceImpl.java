@@ -114,7 +114,10 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         emailSenderService.send(
                 user.getEmail().toLowerCase(),
-                emailContentBuilderService.buildEmailContent(user.getFirstName(), token, EmailSubject.CONFIRM_EMAIL),
+                emailContentBuilderService.buildEmailContent(user.getFirstName(),
+                        token,
+                        null,
+                        EmailSubject.CONFIRM_EMAIL),
                 EmailSubject.CONFIRM_EMAIL.getSubject());
         log.info("Confirmation email sent successfully to: {}", email);
     }
