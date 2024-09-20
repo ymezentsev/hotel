@@ -1,5 +1,8 @@
 package com.robot.hotel.reservation;
 
+import com.robot.hotel.email.EmailContentBuilderService;
+import com.robot.hotel.email.EmailSenderService;
+import com.robot.hotel.email.EmailSubject;
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.exception.WrongDatesException;
@@ -41,6 +44,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final RoomService roomService;
     private final UserService userService;
+    private final EmailSenderService emailSenderService;
+    private final EmailContentBuilderService emailContentBuilderService;
 
     private final ReservationMapper reservationMapper;
     private final RoomMapper roomMapper;
@@ -133,6 +138,8 @@ public class ReservationServiceImpl implements ReservationService {
 
         Reservation savedReservation = reservationRepository.save(newReservation);
         log.info(String.format(SUCCESSFUL_ACTION_WITH_RESERVATION, "created"), savedReservation.getId());
+
+        users.forEach(user -> sendReservationConfirmationEmail(user, savedReservation));
         return reservationMapper.toDto(savedReservation);
     }
 
@@ -174,5 +181,18 @@ public class ReservationServiceImpl implements ReservationService {
                         )) {
             throw new AccessDeniedException(ACCESS_DENIED);
         }
+    }
+
+    private void sendReservationConfirmationEmail(User user, Reservation reservation) {
+        log.info("Sending reservation confirmation email to: {}", user.getEmail());
+
+        emailSenderService.send(
+                user.getEmail().toLowerCase(),
+                emailContentBuilderService.buildEmailContent(user.getFirstName(),
+                        null,
+                        reservation,
+                        EmailSubject.RESERVATION_CONFIRMATION),
+                EmailSubject.RESERVATION_CONFIRMATION.getSubject());
+        log.info("Reservation confirmation email sent successfully to: {}", user.getEmail());
     }
 }
