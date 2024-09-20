@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum EmailSubject {
     CONFIRM_EMAIL("Email confirmation"),
-    FORGOT_PASSWORD("Reset password instruction");
+    FORGOT_PASSWORD("Reset password instruction"),
+    RESERVATION_CONFIRMATION("Reservation confirmation"),
+    RESERVATION_REMINDER("Reservation reminder");
 
     private final String subject;
 }
