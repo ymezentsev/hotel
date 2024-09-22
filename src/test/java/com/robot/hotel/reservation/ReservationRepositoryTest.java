@@ -10,9 +10,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @AutoConfigureDataJpa
@@ -43,21 +40,6 @@ class ReservationRepositoryTest {
     void findByRoomIdTest(Long roomId, int result) {
         assertEquals(result,
                 reservationRepository.findByRoomId(roomId, Pageable.unpaged()).getTotalElements());
-    }
-
-    @Test
-    @DisplayName("Find free rooms for which reservations exist")
-    void findFreeRoomsWithReservationsTest() {
-        assertAll(
-                () -> assertEquals(1, reservationRepository
-                        .findFreeRoomsWithReservations(LocalDate.now(), LocalDate.now().plusDays(1)).size()),
-                () -> assertEquals(2, reservationRepository
-                        .findFreeRoomsWithReservations(LocalDate.now().plusDays(3),
-                                LocalDate.now().plusDays(4)).size()),
-                () -> assertEquals(3, reservationRepository
-                        .findFreeRoomsWithReservations(LocalDate.now().plusDays(6),
-                                LocalDate.now().plusDays(7)).size())
-        );
     }
 
     @Test

@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -123,8 +124,9 @@ public class ReservationServiceImpl implements ReservationService {
                         .orElseThrow(() -> new NoSuchElementException(USER_IS_NOT_EXISTS)))
                 .collect(Collectors.toSet());
 
-        Set<RoomDto> freeRooms = roomService.findFreeRoomsSet(new FreeRoomRequest(
-                reservationRequest.getCheckInDate(), reservationRequest.getCheckOutDate()));
+        List<RoomDto> freeRooms = roomService
+                .findFreeRooms(new FreeRoomRequest(reservationRequest.getCheckInDate(),
+                        reservationRequest.getCheckOutDate()));
         if (!freeRooms.contains(roomMapper.toDto(room))) {
             throw new WrongDatesException(OCCUPIED_ROOM);
         }
@@ -139,7 +141,7 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation savedReservation = reservationRepository.save(newReservation);
         log.info(String.format(SUCCESSFUL_ACTION_WITH_RESERVATION, "created"), savedReservation.getId());
 
-        users.forEach(user -> sendReservationConfirmationEmail(user, savedReservation));
+        sendReservationConfirmationEmail(savedReservation);
         return reservationMapper.toDto(savedReservation);
     }
 
@@ -183,16 +185,18 @@ public class ReservationServiceImpl implements ReservationService {
         }
     }
 
-    private void sendReservationConfirmationEmail(User user, Reservation reservation) {
-        log.info("Sending reservation confirmation email to: {}", user.getEmail());
+    private void sendReservationConfirmationEmail(Reservation reservation) {
+        reservation.getUsers().forEach(user -> {
+            log.info("Sending reservation confirmation email to: {}", user.getEmail());
 
-        emailSenderService.send(
-                user.getEmail().toLowerCase(),
-                emailContentBuilderService.buildEmailContent(user.getFirstName(),
-                        null,
-                        reservation,
-                        EmailSubject.RESERVATION_CONFIRMATION),
-                EmailSubject.RESERVATION_CONFIRMATION.getSubject());
-        log.info("Reservation confirmation email sent successfully to: {}", user.getEmail());
+            emailSenderService.send(
+                    user.getEmail().toLowerCase(),
+                    emailContentBuilderService.buildEmailContent(user.getFirstName(),
+                            null,
+                            reservation,
+                            EmailSubject.RESERVATION_CONFIRMATION),
+                    EmailSubject.RESERVATION_CONFIRMATION.getSubject());
+            log.info("Reservation confirmation email sent successfully to: {}", user.getEmail());
+        });
     }
 }
