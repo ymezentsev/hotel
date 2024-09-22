@@ -1,10 +1,9 @@
 package com.robot.hotel.room;
 
 import com.robot.hotel.exception.DuplicateObjectException;
+import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.exception.NotEmptyObjectException;
 import com.robot.hotel.exception.WrongDatesException;
-import com.robot.hotel.exception.NoSuchElementException;
-import com.robot.hotel.reservation.ReservationRepository;
 import com.robot.hotel.room.dto.FreeRoomRequest;
 import com.robot.hotel.room.dto.RoomDto;
 import com.robot.hotel.room.dto.RoomRequest;
@@ -20,7 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -28,7 +29,7 @@ import java.util.*;
 public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final RoomTypeRepository roomTypeRepository;
-    private final ReservationRepository reservationRepository;
+
     private final RoomMapper roomMapper;
     private final SpecificationBuilder<Room> specificationBuilder;
 
@@ -91,30 +92,22 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Set<RoomDto> findFreeRoomsSet(FreeRoomRequest freeRoomRequest) {
+    public List<RoomDto> findFreeRooms(FreeRoomRequest freeRoomRequest) {
         if (freeRoomRequest.getCheckOutDate().isBefore(freeRoomRequest.getCheckInDate())
                 || freeRoomRequest.getCheckOutDate().isEqual(freeRoomRequest.getCheckInDate())) {
             throw new WrongDatesException(CHECK_OUT_LESS_THAN_CHECK_IN_DATE);
         }
 
-        List<RoomDto> roomsDtoWithMatchDates = reservationRepository.findFreeRoomsWithReservations(
-                        freeRoomRequest.getCheckInDate(), freeRoomRequest.getCheckOutDate())
+        return roomRepository.findFreeRooms(freeRoomRequest.getCheckInDate(),
+                        freeRoomRequest.getCheckOutDate())
                 .stream()
                 .map(roomMapper::toDto)
                 .toList();
-
-        List<RoomDto> roomsDtoWithoutReservations = roomRepository.findRoomsWithoutReservations().stream()
-                .map(roomMapper::toDto)
-                .toList();
-
-        Set<RoomDto> freeRoomsDto = new HashSet<>(roomsDtoWithMatchDates);
-        freeRoomsDto.addAll(roomsDtoWithoutReservations);
-        return freeRoomsDto;
     }
 
     @Override
     public Page<RoomDto> findFreeRoomsPage(FreeRoomRequest freeRoomRequest, Pageable pageable) {
-        List<RoomDto> freeRoomsDtoList = new ArrayList<>(findFreeRoomsSet(freeRoomRequest));
+        List<RoomDto> freeRoomsDtoList = new ArrayList<>(findFreeRooms(freeRoomRequest));
         return new PageImpl<>(freeRoomsDtoList, pageable, freeRoomsDtoList.size());
     }
 

@@ -7,7 +7,7 @@ import com.robot.hotel.room.dto.RoomSearchParameters;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Set;
+import java.util.List;
 
 public interface RoomService {
 
@@ -21,7 +21,7 @@ public interface RoomService {
 
     Page<RoomDto> search(RoomSearchParameters params, Pageable pageable);
 
-    Set<RoomDto> findFreeRoomsSet(FreeRoomRequest freeRoomRequest);
+    List<RoomDto> findFreeRooms(FreeRoomRequest freeRoomRequest);
 
     Page<RoomDto> findFreeRoomsPage(FreeRoomRequest freeRoomRequest, Pageable pageable);
 
