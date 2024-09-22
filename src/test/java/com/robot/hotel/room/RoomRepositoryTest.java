@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @AutoConfigureDataJpa
@@ -40,8 +43,17 @@ class RoomRepositoryTest {
     }
 
     @Test
-    @DisplayName("Find rooms without reservations")
-    void findRoomsWithoutReservationsTest() {
-        assertEquals(2, roomRepository.findRoomsWithoutReservations().size());
+    @DisplayName("Find free rooms")
+    void findFreeRoomsTest() {
+        assertAll(
+                () -> assertEquals(3, roomRepository
+                        .findFreeRooms(LocalDate.now(), LocalDate.now().plusDays(1)).size()),
+                () -> assertEquals(4, roomRepository
+                        .findFreeRooms(LocalDate.now().plusDays(3),
+                                LocalDate.now().plusDays(4)).size()),
+                () -> assertEquals(5, roomRepository
+                        .findFreeRooms(LocalDate.now().plusDays(6),
+                                LocalDate.now().plusDays(7)).size())
+        );
     }
 }
