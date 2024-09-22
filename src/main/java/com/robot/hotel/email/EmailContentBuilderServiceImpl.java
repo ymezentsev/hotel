@@ -58,7 +58,7 @@ public class EmailContentBuilderServiceImpl implements EmailContentBuilderServic
             BigDecimal totalPrice = reservation.getRoom().getPrice()
                     .multiply(BigDecimal.valueOf(ChronoUnit.DAYS.between(reservation.getCheckInDate(), reservation.getCheckOutDate())));
 
-           ctx.setVariable("checkIn", reservation.getCheckInDate().format(dateTimeFormatter) + " (14:00)");
+            ctx.setVariable("checkIn", reservation.getCheckInDate().format(dateTimeFormatter) + " (14:00)");
             ctx.setVariable("checkOut", reservation.getCheckOutDate().format(dateTimeFormatter) + " (12:00)");
             ctx.setVariable("room", "№" + reservation.getRoom().getNumber()
                     + ", " + reservation.getRoom().getRoomType().getType());
