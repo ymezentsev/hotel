@@ -1,6 +1,7 @@
 package com.robot.hotel.reservation;
 
 import com.robot.hotel.email.EmailContentBuilderService;
+import com.robot.hotel.email.EmailReservationService;
 import com.robot.hotel.email.EmailSenderService;
 import com.robot.hotel.email.EmailSubject;
 import com.robot.hotel.exception.GuestsQuantityException;
@@ -45,8 +46,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final RoomService roomService;
     private final UserService userService;
-    private final EmailSenderService emailSenderService;
-    private final EmailContentBuilderService emailContentBuilderService;
+    private final EmailReservationService emailReservationService;
 
     private final ReservationMapper reservationMapper;
     private final RoomMapper roomMapper;
@@ -141,7 +141,7 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation savedReservation = reservationRepository.save(newReservation);
         log.info(String.format(SUCCESSFUL_ACTION_WITH_RESERVATION, "created"), savedReservation.getId());
 
-        sendReservationConfirmationEmail(savedReservation);
+        emailReservationService.sendReservationConfirmationEmail(savedReservation);
         return reservationMapper.toDto(savedReservation);
     }
 
@@ -183,20 +183,5 @@ public class ReservationServiceImpl implements ReservationService {
                         )) {
             throw new AccessDeniedException(ACCESS_DENIED);
         }
-    }
-
-    private void sendReservationConfirmationEmail(Reservation reservation) {
-        reservation.getUsers().forEach(user -> {
-            log.info("Sending reservation confirmation email to: {}", user.getEmail());
-
-            emailSenderService.send(
-                    user.getEmail().toLowerCase(),
-                    emailContentBuilderService.buildEmailContent(user.getFirstName(),
-                            null,
-                            reservation,
-                            EmailSubject.RESERVATION_CONFIRMATION),
-                    EmailSubject.RESERVATION_CONFIRMATION.getSubject());
-            log.info("Reservation confirmation email sent successfully to: {}", user.getEmail());
-        });
     }
 }
