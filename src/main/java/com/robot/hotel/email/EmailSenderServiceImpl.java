@@ -24,7 +24,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
     //TODO add test
     @Override
-    @Async
+    @Async("myAsyncPoolTaskExecutor")
     public void send(String to, String email, String subject) {
         try {
             log.debug("Sending letter to {}", to.toLowerCase());
