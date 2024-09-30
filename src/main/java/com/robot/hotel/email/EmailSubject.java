@@ -40,6 +40,12 @@ public enum EmailSubject {
         public String getTemplate() {
             return TEMPLATE_FOR_RESERVATION_REMINDER;
         }
+    },
+    RESERVATION_CANCELED("Reservation was canceled") {
+        @Override
+        public String getTemplate() {
+            return TEMPLATE_FOR_CANCEL_RESERVATION;
+        }
     };
 
     private final String subject;
@@ -53,6 +59,7 @@ public enum EmailSubject {
     private static final String TEMPLATE_FOR_FORGOT_PASSWORD_EMAIL = "forgot-password-email";
     private static final String TEMPLATE_FOR_RESERVATION_CONFIRMATION = "reservation-confirmation";
     private static final String TEMPLATE_FOR_RESERVATION_REMINDER = "reservation-reminder";
+    private static final String TEMPLATE_FOR_CANCEL_RESERVATION = "reservation-canceled";
 
     public abstract String getTemplate();
 
