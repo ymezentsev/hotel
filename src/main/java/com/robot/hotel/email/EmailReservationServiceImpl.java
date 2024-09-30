@@ -2,6 +2,7 @@ package com.robot.hotel.email;
 
 import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.reservation.ReservationRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -21,8 +22,10 @@ public class EmailReservationServiceImpl implements EmailReservationService {
 
     private final ReservationRepository reservationRepository;
 
+    private static final int DAYS_TO_CHECK_IN = 2;
 
     @Override
+    @Async("myAsyncPoolTaskExecutor")
     public void sendReservationConfirmationEmail(Reservation reservation) {
         reservation.getUsers().forEach(user -> {
             log.info("Sending reservation confirmation email to: {}", user.getEmail());
@@ -39,6 +42,7 @@ public class EmailReservationServiceImpl implements EmailReservationService {
     }
 
     @Override
+    @Async("myAsyncPoolTaskExecutor")
     public void sendReservationCanceledEmail(Reservation reservation) {
         reservation.getUsers().forEach(user -> {
             log.info("Sending reservation canceled email to: {}", user.getEmail());
@@ -54,17 +58,17 @@ public class EmailReservationServiceImpl implements EmailReservationService {
         });
     }
 
-
     @Override
-    @Async
-    //cron = "@hourly"
-    //"*/30 * * * * *"
+    @Async("myAsyncPoolTaskExecutor")
+    //Scheduled every day at 14:00
     @Scheduled(cron = "0 0 14 * * *")
+    @Transactional
     public void sendReservationReminder() {
         log.info("Launching reservation reminder");
 
         reservationRepository.findAll().forEach(reservation -> {
-            if (reservation.getCheckInDate().compareTo(ChronoLocalDate.from(LocalDateTime.now().plusDays(2))) == 0) {
+            if (reservation.getCheckInDate()
+                    .compareTo(ChronoLocalDate.from(LocalDateTime.now().plusDays(DAYS_TO_CHECK_IN))) == 0) {
                 reservation.getUsers().forEach(user -> {
                     log.info("Sending reservation reminder email to: {}", user.getEmail());
                     emailSenderService.send(
