@@ -1,9 +1,6 @@
 package com.robot.hotel.reservation;
 
-import com.robot.hotel.email.EmailContentBuilderService;
 import com.robot.hotel.email.EmailReservationService;
-import com.robot.hotel.email.EmailSenderService;
-import com.robot.hotel.email.EmailSubject;
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.exception.WrongDatesException;
@@ -170,6 +167,7 @@ public class ReservationServiceImpl implements ReservationService {
         checkIfUserHasAuthorityToDeleteReservation(reservationForDeleting.get());
 
         reservationRepository.deleteById(id);
+        emailReservationService.sendReservationCanceledEmail(reservationForDeleting.get());
         log.info(String.format(SUCCESSFUL_ACTION_WITH_RESERVATION, "deleted"), id);
     }
 

@@ -36,12 +36,22 @@ public class EmailReservationServiceImpl implements EmailReservationService {
                     EmailSubject.RESERVATION_CONFIRMATION.getSubject());
             log.info("Reservation confirmation email sent successfully to: {}", user.getEmail());
         });
-
     }
 
     @Override
     public void sendReservationCanceledEmail(Reservation reservation) {
+        reservation.getUsers().forEach(user -> {
+            log.info("Sending reservation canceled email to: {}", user.getEmail());
 
+            emailSenderService.send(
+                    user.getEmail().toLowerCase(),
+                    emailContentBuilderService.buildEmailContent(user.getFirstName(),
+                            null,
+                            reservation,
+                            EmailSubject.RESERVATION_CANCELED),
+                    EmailSubject.RESERVATION_CONFIRMATION.getSubject());
+            log.info("Reservation canceled email sent successfully to: {}", user.getEmail());
+        });
     }
 
 
