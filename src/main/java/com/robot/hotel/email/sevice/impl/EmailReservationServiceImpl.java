@@ -1,5 +1,9 @@
-package com.robot.hotel.email;
+package com.robot.hotel.email.sevice.impl;
 
+import com.robot.hotel.email.sevice.EmailContentBuilderService;
+import com.robot.hotel.email.sevice.EmailReservationService;
+import com.robot.hotel.email.sevice.EmailSenderService;
+import com.robot.hotel.email.EmailSubject;
 import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.reservation.ReservationRepository;
 import jakarta.transaction.Transactional;

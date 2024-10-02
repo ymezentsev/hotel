@@ -1,6 +1,6 @@
 package com.robot.hotel.reservation;
 
-import com.robot.hotel.email.EmailReservationService;
+import com.robot.hotel.email.sevice.EmailReservationService;
 import com.robot.hotel.exception.GuestsQuantityException;
 import com.robot.hotel.exception.NoSuchElementException;
 import com.robot.hotel.exception.WrongDatesException;

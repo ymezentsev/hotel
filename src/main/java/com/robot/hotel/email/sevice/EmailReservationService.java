@@ -1,4 +1,4 @@
-package com.robot.hotel.email;
+package com.robot.hotel.email.sevice;
 
 import com.robot.hotel.reservation.Reservation;
 

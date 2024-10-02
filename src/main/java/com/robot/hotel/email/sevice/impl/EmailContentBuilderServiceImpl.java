@@ -1,5 +1,7 @@
-package com.robot.hotel.email;
+package com.robot.hotel.email.sevice.impl;
 
+import com.robot.hotel.email.sevice.EmailContentBuilderService;
+import com.robot.hotel.email.EmailSubject;
 import com.robot.hotel.reservation.Reservation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
