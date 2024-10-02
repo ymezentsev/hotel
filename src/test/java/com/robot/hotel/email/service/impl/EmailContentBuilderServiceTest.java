@@ -1,6 +1,7 @@
-package com.robot.hotel.email;
+package com.robot.hotel.email.service.impl;
 
 import com.robot.hotel.ContainerConfiguration;
+import com.robot.hotel.email.EmailSubject;
 import com.robot.hotel.email.sevice.EmailContentBuilderService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
