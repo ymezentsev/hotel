@@ -1,8 +1,8 @@
-package com.robot.hotel.email.sevice.impl;
+package com.robot.hotel.email.service.impl;
 
-import com.robot.hotel.email.sevice.EmailContentBuilderService;
-import com.robot.hotel.email.sevice.EmailReservationService;
-import com.robot.hotel.email.sevice.EmailSenderService;
+import com.robot.hotel.email.service.EmailContentBuilderService;
+import com.robot.hotel.email.service.EmailReservationService;
+import com.robot.hotel.email.service.EmailSenderService;
 import com.robot.hotel.email.EmailSubject;
 import com.robot.hotel.reservation.Reservation;
 import com.robot.hotel.reservation.ReservationRepository;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 
-//TODO add test
 @Slf4j
 @Service
 @RequiredArgsConstructor

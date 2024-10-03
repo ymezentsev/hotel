@@ -2,8 +2,8 @@ package com.robot.hotel.user.service.impl;
 
 import com.robot.hotel.country.Country;
 import com.robot.hotel.country.CountryService;
-import com.robot.hotel.email.sevice.EmailContentBuilderService;
-import com.robot.hotel.email.sevice.EmailSenderService;
+import com.robot.hotel.email.service.EmailContentBuilderService;
+import com.robot.hotel.email.service.EmailSenderService;
 import com.robot.hotel.exception.*;
 import com.robot.hotel.search_criteria.SpecificationBuilder;
 import com.robot.hotel.security.oauth2.CustomOAuth2User;

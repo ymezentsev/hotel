@@ -1,4 +1,4 @@
-package com.robot.hotel.email.sevice;
+package com.robot.hotel.email.service;
 
 public interface EmailSenderService {
 
